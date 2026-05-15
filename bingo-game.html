@@ -1,0 +1,2922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Big Game Bingo - Game Simulator</title>
+  <style>
+    /* ===== SIMULATOR SHELL STYLES ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #444444;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .mockup-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Game Simulator Panel - fixed to left */
+    .control-panel {
+      position: fixed;
+      left: 40px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 360px;
+      background: #1E1E1E;
+      border-radius: 16px;
+      padding: 32px 40px;
+      z-index: 100;
+    }
+
+    /* Phone Frame - centered in viewport */
+    .phone-mockup {
+      position: relative;
+      flex-shrink: 0;
+      width: 393px;
+      height: 852px;
+      background: #101113;
+      border-radius: 20px;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+    }
+
+    .simulator-logo {
+      margin-bottom: 24px;
+    }
+
+    .simulator-logo img {
+      height: 56px;
+      width: auto;
+    }
+
+    /* Text-based logo fallback */
+    .logo-text {
+      line-height: 1;
+    }
+
+    .logo-text .top {
+      font-size: 14px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .logo-text .bottom {
+      font-size: 32px;
+      font-weight: 900;
+      font-style: italic;
+      color: #00B4D8;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-top: -2px;
+    }
+
+    .control-panel h2 {
+      color: #ffffff;
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 24px;
+    }
+
+    /* Game Flow Card */
+    .game-flow-card {
+      background: #2A2A2A;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 16px;
+      border: 1px solid #3A3A3A;
+    }
+
+    .game-flow-card p {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 13px;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* Buttons */
+    .start-btn {
+      width: 100%;
+      padding: 16px 24px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #000000;
+      background: #ffffff;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-bottom: 16px;
+    }
+
+    .start-btn:hover {
+      background: #F0F0F0;
+    }
+
+    .start-btn.active {
+      background: #9B9B9B;
+      color: #ffffff;
+      cursor: not-allowed;
+    }
+
+    .start-btn.active:hover {
+      background: #9B9B9B;
+    }
+
+    /* Restart Button */
+    .restart-btn {
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.3);
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      cursor: not-allowed;
+      transition: all 0.2s ease;
+    }
+
+    .restart-btn:disabled {
+      color: rgba(255, 255, 255, 0.3);
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      cursor: not-allowed;
+    }
+
+    .restart-btn:not(:disabled) {
+      color: #333;
+      background: #ffffff;
+      border: 1px solid #E0E0E0;
+      cursor: pointer;
+    }
+
+    .restart-btn:not(:disabled):hover {
+      background: #F5F5F5;
+    }
+
+    /* Volume Control */
+    .volume-control {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 24px;
+      padding: 12px 16px;
+      background: #2A2A2A;
+      border-radius: 10px;
+      border: 1px solid #3A3A3A;
+    }
+
+    .volume-icon {
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.7);
+      transition: color 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .volume-icon:hover {
+      color: #ffffff;
+    }
+
+    .volume-icon svg {
+      width: 100%;
+      height: 100%;
+      fill: currentColor;
+    }
+
+    .volume-slider-wrapper {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .volume-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    .volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      background: #ffffff;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+
+    .volume-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+    }
+
+    .volume-slider::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      background: #ffffff;
+      border-radius: 50%;
+      cursor: pointer;
+      border: none;
+    }
+
+    .volume-percentage {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.5);
+      min-width: 36px;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    @media (max-width: 900px) {
+      body {
+        flex-direction: column;
+        padding: 20px;
+        gap: 40px;
+      }
+
+      .mockup-container {
+        flex-direction: column-reverse;
+        gap: 40px;
+      }
+
+      .control-panel {
+        width: 100%;
+        max-width: 393px;
+      }
+
+      .phone-mockup {
+        width: 100%;
+        max-width: 393px;
+        height: auto;
+        aspect-ratio: 393 / 852;
+      }
+    }
+
+    /* ===== BINGO GAME STYLES ===== */
+    /* ESPN Design System Fonts - BentonSans & Playoff Pro */
+    @font-face {
+      font-family: 'BentonSans';
+      src: local('BentonSans');
+      font-weight: 400;
+    }
+    @font-face {
+      font-family: 'BentonSans Cond';
+      src: local('BentonSans Cond');
+      font-weight: 700;
+    }
+    @font-face {
+      font-family: 'Playoff Pro Cond';
+      src: local('Playoff Pro Cond');
+      font-weight: 700 900;
+    }
+
+    :root {
+      /* ESPN Design System - Color Tokens */
+      --color-black: #000;
+      --color-grey-100: #101113;
+      --color-grey-95: #151617;
+      --color-grey-90: #1D1E1F;
+      --color-grey-85: #252627;
+      --color-grey-80: #2B2C2D;
+      --color-grey-75: #3A3B3C;
+      --color-grey-70: #48494A;
+      --color-grey-65: #5A5B5C;
+      --color-grey-60: #6C6E6F;
+      --color-grey-50: #8D8E90;
+      --color-grey-40: #A1A2A3;
+      --color-grey-30: #C7C7C9;
+      --color-grey-20: #DCDDDF;
+      --color-grey-10: #EDEEF0;
+      --color-grey-05: #F9F9FB;
+      --color-white: #FFFFFF;
+      
+      /* Blues */
+      --color-blue-100: #0B1A37;
+      --color-blue-90: #0E2D68;
+      --color-blue-80: #143F8F;
+      --color-blue-70: #2358BA;
+      --color-blue-60: #3772DF;
+      --color-blue-50: #5990F6;
+      --color-blue-30: #AFCBFF;
+      --color-blue-20: #CFE0FF;
+      --color-blue-10: #EFF2FF;
+      
+      /* Greens */
+      --color-green-100: #023503;
+      --color-green-70: #056C07;
+      --color-green-60: #0D830F;
+      --color-green-40: #41BA42;
+      --color-green-10: #E9FAE9;
+      
+      /* Oranges */
+      --color-orange-80: #B06400;
+      --color-orange-50: #FAA02A;
+      --color-orange-40: #FFB759;
+      --color-orange-10: #FFF7ED;
+      
+      /* Reds */
+      --color-red-70: #A10202;
+      --color-red-50: #FF0E0E;
+      --color-red-40: #FF7F7F;
+      --color-monza: #DD0000;
+      --color-carnation: #F35858;
+      
+      /* Sky/Cyan */
+      --color-sky-60: #0C7BB3;
+      --color-sky-40: #53BAED;
+      --color-cyan-60: #0381A1;
+      --color-cyan-40: #4BBCD9;
+      
+      /* ESPN Typography Tokens */
+      --type-large-title: 900 36px/42px "Playoff Pro Cond", "BentonSans", sans-serif;
+      --type-title-1: 700 30px/34px "BentonSans Cond", "BentonSans", sans-serif;
+      --type-title-2: 700 20px/24px "Playoff Pro Cond", "BentonSans", sans-serif;
+      --type-title-3: 700 14px/20px "BentonSans Cond", "BentonSans", sans-serif;
+      --type-headline: 500 14px/20px "BentonSans", sans-serif;
+      --type-body: 400 16px/24px "BentonSans", sans-serif;
+      --type-callout: 500 12px/16px "BentonSans", sans-serif;
+      --type-subhead: 400 14px/20px "BentonSans", sans-serif;
+      --type-footnote: 400 12px/16px "BentonSans", sans-serif;
+      --type-caption-1: 700 10px/14px "BentonSans", sans-serif;
+      --type-caption-2: 400 10px/14px "BentonSans", sans-serif;
+      
+      /* Semantic Colors - Dark Theme */
+      --semantic-bg: var(--color-grey-100);
+      --semantic-surface: var(--color-grey-90);
+      --semantic-text: var(--color-white);
+      --semantic-muted: var(--color-grey-30);
+      --semantic-border: var(--color-grey-80);
+      --semantic-accent: var(--color-blue-50);
+      --semantic-success: var(--color-green-40);
+      --semantic-warning: var(--color-orange-40);
+      --semantic-danger: var(--color-red-40);
+      
+      /* Legacy mappings for compatibility */
+      --bg-canvas: var(--color-grey-100);
+      --bg-card: var(--color-grey-90);
+      --text-primary: var(--color-white);
+      --text-secondary: var(--color-grey-40);
+      --text-secondary-alt: var(--color-grey-65);
+      --text-info: var(--color-grey-80);
+      --divider: var(--color-grey-75);
+      --divider-alt: var(--color-grey-20);
+      --success: var(--color-green-40);
+      --error: var(--color-carnation);
+      --error-alt: var(--color-monza);
+      --warning: var(--color-orange-50);
+      --action-secondary: var(--color-blue-50);
+      --disabled: var(--color-grey-60);
+      --secondary-blue: var(--color-blue-70);
+      
+      /* NFL Team Colors - Consistent Brand Colors */
+      --away-team-color: #003594;
+      --home-team-color: #A71930;
+      
+      /* Team colors */
+      --rams-primary: #003594;
+      --bucs-primary: #A71930;
+      --badbunny-primary: #E92228;
+      --coinflip-primary: #666666;
+      
+      /* Progress colors - using ESPN tokens */
+      --progress-orange: var(--color-orange-50);
+      --pending-blue: var(--color-sky-40);
+      --border-yellow: var(--color-orange-40);
+    }
+
+    /* Game Container (inside phone mockup) */
+    #game-container {
+      font-family: "BentonSans", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg-canvas);
+      color: var(--text-primary);
+      width: 393px;
+      height: 852px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Top Header */
+    .top-header {
+      width: 393px;
+      height: 136px;
+      background: var(--secondary-blue);
+      position: relative;
+      box-shadow: 0px 2px 8px 0px rgba(18, 18, 19, 0.24);
+      flex-shrink: 0;
+    }
+
+    .status-bar {
+      height: 44px;
+      background: var(--secondary-blue);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      position: relative;
+    }
+
+    .status-time {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 22px;
+      letter-spacing: -0.408px;
+    }
+
+    .status-icons {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+
+    .header-content {
+      height: 48px;
+      background: var(--secondary-blue);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 16px;
+      position: relative;
+    }
+
+    .header-logo {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 16px;
+      background: linear-gradient(100deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%);
+      border-radius: 4px;
+      transform: translate(-50%, -50%) skewX(-8deg);
+    }
+
+    .header-logo-text {
+      font-family: 'ESPN Ignite Display', 'Impact', 'Arial Black', sans-serif;
+      font-size: 21px;
+      font-style: italic;
+      font-weight: 900;
+      color: var(--text-primary);
+      text-align: center;
+      white-space: nowrap;
+      line-height: 24px;
+      transform: skewX(8deg);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+
+    .back-button {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .back-button:hover {
+      opacity: 0.7;
+    }
+
+    .back-button svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .info-button {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+
+    .info-button:hover {
+      opacity: 1;
+    }
+
+    .info-button svg {
+      width: 100%;
+      height: 100%;
+      fill: var(--text-primary);
+    }
+
+    .nav-tabs {
+      width: 393px;
+      background: #000000;
+      height: 44px;
+      display: flex;
+      box-shadow: 0px 1px 4px 0px rgba(16, 17, 19, 0.24);
+      flex-shrink: 0;
+    }
+
+    .nav-tab {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font: var(--type-footnote);
+      color: var(--color-grey-60);
+      cursor: pointer;
+      position: relative;
+      transition: color 0.2s;
+    }
+
+    .nav-tab.active {
+      color: var(--text-primary);
+    }
+
+    .nav-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--action-secondary);
+    }
+
+    /* Entry Card Section */
+    .entry-card {
+      width: 393px;
+      background: var(--bg-card);
+      padding: 12px 16px;
+      border-radius: 8px;
+      box-shadow: 0px 3px 12px 0px rgba(18, 18, 19, 0.24);
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 8px;
+    }
+
+    .entry-card-header {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .entry-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .card-name {
+      font-family: 'Benton Sans', -apple-system, sans-serif;
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--text-primary);
+      line-height: 24px;
+    }
+
+    .stats-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .stat-value {
+      font-family: 'Benton Sans', -apple-system, sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--text-primary);
+      line-height: 24px;
+    }
+
+    .stat-label {
+      font-family: 'Benton Sans', -apple-system, sans-serif;
+      font-size: 10px;
+      font-weight: 400;
+      color: var(--color-grey-60);
+      line-height: 12px;
+    }
+
+    .stat-divider {
+      width: 0.5px;
+      align-self: stretch;
+      background: var(--divider);
+      flex-shrink: 0;
+    }
+
+    .settings-icon {
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+      color: #3772DF;
+    }
+
+    .settings-icon:hover {
+      opacity: 1;
+    }
+
+    .settings-icon svg {
+      width: 100%;
+      height: 100%;
+      fill: currentColor;
+    }
+
+    /* Game Strip */
+    .game-strip {
+      width: 393px;
+      background: var(--bg-card);
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--divider);
+      position: relative;
+      overflow: hidden;
+      min-height: 76px;
+      flex-shrink: 0;
+    }
+
+    .game-strip::before,
+    .game-strip::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      width: 152px;
+      height: 76px;
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    .game-strip::before {
+      left: 0;
+      background: radial-gradient(ellipse at center, rgba(0, 102, 255, 0.2) 0%, transparent 70%);
+    }
+
+    .game-strip::after {
+      right: 0;
+      background: radial-gradient(ellipse at center, rgba(0, 102, 255, 0.2) 0%, transparent 70%);
+    }
+
+    .team-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      flex: 0 0 auto;
+    }
+
+    .team-logo-container {
+      position: relative;
+      width: 56px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .team-logo {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      border-radius: 8px;
+      background: var(--bg-card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    .team-logo-container.has-possession::before {
+      content: '★';
+      position: absolute;
+      left: -2px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 8px;
+      color: #ffffff;
+    }
+    
+    .team-logo-container.has-possession.right::before {
+      left: auto;
+      right: -2px;
+    }
+
+    .team-info {
+      display: flex;
+      align-items: baseline;
+      gap: 1px;
+      font-size: 12px;
+      height: 14px;
+      justify-content: center;
+    }
+
+    .team-abbreviation {
+      font: var(--type-callout);
+      color: var(--text-primary);
+    }
+
+    .score-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      flex: 1;
+      max-width: 86px;
+      position: relative;
+      padding: 10px 0;
+    }
+
+    .score-value {
+      font: var(--type-large-title);
+      color: var(--text-primary);
+      letter-spacing: 0;
+      padding-top: 3px;
+    }
+
+    .possession-indicator {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--primary-blue);
+      opacity: 0;
+      transition: opacity 0.3s;
+      position: absolute;
+      top: 23px;
+    }
+
+    .possession-indicator.left {
+      left: 11px;
+    }
+
+    .possession-indicator.right {
+      right: 11px;
+    }
+
+    .possession-indicator.active {
+      opacity: 1;
+    }
+
+    .status-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      flex: 1;
+      max-width: 86px;
+      padding: 10px 0;
+    }
+
+    .game-clock {
+      font: var(--type-headline);
+      color: #F35858;
+      letter-spacing: 0;
+      margin-bottom: 0;
+    }
+
+    .game-period {
+      font: var(--type-headline);
+      color: #F35858;
+      letter-spacing: 0;
+      margin-top: 2px;
+    }
+
+    /* Bingo Grid */
+    .bingo-container {
+      padding: 8px;
+      width: 393px;
+      margin: 0;
+      flex-shrink: 0;
+      background: var(--bg-canvas);
+      overflow: visible;
+    }
+
+    .bingo-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 69px);
+      overflow: visible;
+      grid-template-rows: repeat(5, 90px);
+      gap: 8px;
+      width: 100%;
+      justify-content: center;
+      perspective: 1000px;
+    }
+
+    .bingo-tile {
+      width: 69px;
+      height: 90px;
+      background: #1d1e1f;
+      border-radius: 4px;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      position: relative;
+      cursor: pointer;
+      transition: border-color 0.3s ease, background 0.3s ease;
+      --progress: 0;
+      border: 3px solid transparent;
+      overflow: hidden;
+      box-sizing: border-box;
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .bingo-tile:not(.free-spot):active {
+      transform: scale(0.95);
+    }
+
+    .bingo-tile.free-spot {
+      cursor: default;
+      background: linear-gradient(180deg, #003594 0%, #0c2340 100%);
+    }
+
+    /* Tile States - Progress Border System */
+    .bingo-tile.state-normal {
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .bingo-tile.state-in-progress {
+      border-color: transparent;
+      background: 
+        linear-gradient(#1d1e1f, #1d1e1f) padding-box,
+        conic-gradient(
+          from 0deg at 50% 50%,
+          #FF8C00 0deg,
+          #FF8C00 calc(var(--progress) * 3.6deg),
+          rgba(100, 100, 100, 0.3) calc(var(--progress) * 3.6deg),
+          rgba(100, 100, 100, 0.3) 360deg
+        ) border-box;
+      box-shadow: 0 0 calc(var(--progress) * 0.1px) rgba(255, 140, 0, 0.3);
+    }
+
+    .bingo-tile.state-pending {
+      border: 3px solid transparent !important;  /* Same as in-progress - keeps size consistent */
+      position: relative;
+      z-index: 0;
+      overflow: visible !important;
+    }
+
+    /* Hide SVG shimmer - using CSS instead */
+    .shimmer-border {
+      display: none;
+    }
+
+    /* Shimmer border effect using pseudo-element */
+    .bingo-tile.state-pending::after {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      /* Match tile's 4px radius + slight adjustment for visual alignment */
+      border-radius: 6px;
+      padding: 3px;
+      
+      /* Shimmer gradient */
+      background: linear-gradient(
+        90deg,
+        #41BA42 0%,
+        #FFFFFF 20%,
+        #41BA42 40%,
+        rgba(65, 186, 66, 0.3) 60%,
+        #41BA42 80%,
+        #FFFFFF 100%
+      );
+      background-size: 200% 200%;
+      
+      /* Mask to show only border area */
+      -webkit-mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      
+      pointer-events: none;
+      z-index: 50;
+      
+      animation: shimmer 2.5s linear infinite;
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: 0% 0%;
+      }
+      100% {
+        background-position: 200% 200%;
+      }
+    }
+
+    .bingo-tile.state-complete {
+      border-color: var(--success);
+      background: linear-gradient(#1d1e1f, #1d1e1f);
+    }
+
+    .bingo-tile.free-spot {
+      border-color: transparent;
+      background: 
+        linear-gradient(#1d1e1f, #1d1e1f) padding-box,
+        linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1)) border-box;
+    }
+
+    .bingo-tile.free-spot.state-complete {
+      border-color: var(--success);
+      background: linear-gradient(#1d1e1f, #1d1e1f);
+    }
+
+    .bingo-tile.state-tapped {
+      border-color: var(--progress-orange);
+    }
+
+    /* Coin flip tile */
+    .bingo-tile.coin-flip-tile .tile-header-bg {
+      background: #333333 !important;
+    }
+    
+    .bingo-tile.coin-flip-tile .tile-content {
+      background: #1a1a1a;
+    }
+
+    /* Tile Content */
+    .tile-header {
+      width: calc(100% + 6px);
+      height: 45px;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+      margin: -3px -3px 0 -3px;
+      border-radius: 4px 4px 0 0;
+      z-index: 1;
+    }
+
+    /* Keep tile content positioned but let shimmer render on top of border area */
+    .bingo-tile.state-pending .tile-header,
+    .bingo-tile.state-pending .tile-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .tile-header-bg {
+      position: absolute;
+      inset: 0;
+      background: var(--bucs-primary);
+      border-radius: 4px 4px 0 0;
+    }
+
+    .tile-header-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .tile-team-logo-bg-img {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 75px;
+      height: 75px;
+      object-fit: contain;
+      opacity: 0.08;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .tile-emoji-bg {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 75px;
+      height: 75px;
+      font-size: 60px;
+      line-height: 75px;
+      text-align: center;
+      opacity: 0.08;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .tile-image {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      height: 42px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 2;
+      overflow: hidden;
+    }
+
+    .tile-headshot {
+      width: 100%;
+      height: 42px;
+      object-fit: cover;
+      object-position: top center;
+    }
+
+    .tile-team-logo-img {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      margin-bottom: 2px;
+    }
+
+    .custom-icon {
+      font-size: 28px;
+      line-height: 1;
+      margin-bottom: 2px;
+    }
+
+    .tile-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      padding: 4px 4px;
+      width: 100%;
+      min-height: 0;
+      background: #1d1e1f;
+      border-radius: 0 0 4px 4px;
+    }
+
+    .tile-name {
+      font: var(--type-caption-1);
+      color: var(--color-white);
+      text-align: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width: 100%;
+    }
+
+    .tile-stat-value {
+      font: var(--type-title-3);
+      color: var(--color-white);
+      text-align: center;
+      display: flex;
+      gap: 2px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tile-stat-label {
+      font: var(--type-caption-2);
+      color: var(--color-grey-40);
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    /* Tile State Indicators */
+    .tile-checkmark {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: 18px;
+      height: 18px;
+      background: var(--success);
+      border-radius: 50%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      animation: checkmarkPop 0.5s ease-out;
+      z-index: 10;
+    }
+
+    .bingo-tile.state-complete .tile-checkmark {
+      display: flex;
+    }
+
+    @keyframes checkmarkPop {
+      0% { transform: scale(0); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    .tile-checkmark svg {
+      width: 10px;
+      height: 10px;
+      fill: white;
+    }
+
+    .tile-pending-icon {
+      display: none;
+    }
+
+    /* Grid Entry Animation */
+    .bingo-tile.animate-entry {
+      opacity: 0;
+      transform: scale(0.8);
+      animation: tileReveal 0.4s ease-out forwards;
+    }
+
+    @keyframes tileReveal {
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    /* Card Flip Animation for Reset */
+    .bingo-tile.animate-flip {
+      animation: cardFlip 0.6s ease-out forwards;
+      transform-style: preserve-3d;
+    }
+
+    @keyframes cardFlip {
+      0% {
+        transform: rotateY(180deg) scale(0.8);
+        opacity: 0;
+      }
+      50% {
+        transform: rotateY(90deg) scale(0.9);
+        opacity: 0.5;
+      }
+      100% {
+        transform: rotateY(0deg) scale(1);
+        opacity: 1;
+      }
+    }
+
+    /* Stagger animation delays */
+    .bingo-tile.animate-entry:nth-child(1), .bingo-tile.animate-flip:nth-child(1) { animation-delay: 0.02s; }
+    .bingo-tile.animate-entry:nth-child(2), .bingo-tile.animate-flip:nth-child(2) { animation-delay: 0.04s; }
+    .bingo-tile.animate-entry:nth-child(3), .bingo-tile.animate-flip:nth-child(3) { animation-delay: 0.06s; }
+    .bingo-tile.animate-entry:nth-child(4), .bingo-tile.animate-flip:nth-child(4) { animation-delay: 0.08s; }
+    .bingo-tile.animate-entry:nth-child(5), .bingo-tile.animate-flip:nth-child(5) { animation-delay: 0.1s; }
+    .bingo-tile.animate-entry:nth-child(6), .bingo-tile.animate-flip:nth-child(6) { animation-delay: 0.06s; }
+    .bingo-tile.animate-entry:nth-child(7), .bingo-tile.animate-flip:nth-child(7) { animation-delay: 0.08s; }
+    .bingo-tile.animate-entry:nth-child(8), .bingo-tile.animate-flip:nth-child(8) { animation-delay: 0.1s; }
+    .bingo-tile.animate-entry:nth-child(9), .bingo-tile.animate-flip:nth-child(9) { animation-delay: 0.12s; }
+    .bingo-tile.animate-entry:nth-child(10), .bingo-tile.animate-flip:nth-child(10) { animation-delay: 0.14s; }
+    .bingo-tile.animate-entry:nth-child(11), .bingo-tile.animate-flip:nth-child(11) { animation-delay: 0.1s; }
+    .bingo-tile.animate-entry:nth-child(12), .bingo-tile.animate-flip:nth-child(12) { animation-delay: 0.12s; }
+    .bingo-tile.animate-entry:nth-child(13), .bingo-tile.animate-flip:nth-child(13) { animation-delay: 0.14s; }
+    .bingo-tile.animate-entry:nth-child(14), .bingo-tile.animate-flip:nth-child(14) { animation-delay: 0.16s; }
+    .bingo-tile.animate-entry:nth-child(15), .bingo-tile.animate-flip:nth-child(15) { animation-delay: 0.18s; }
+    .bingo-tile.animate-entry:nth-child(16), .bingo-tile.animate-flip:nth-child(16) { animation-delay: 0.14s; }
+    .bingo-tile.animate-entry:nth-child(17), .bingo-tile.animate-flip:nth-child(17) { animation-delay: 0.16s; }
+    .bingo-tile.animate-entry:nth-child(18), .bingo-tile.animate-flip:nth-child(18) { animation-delay: 0.18s; }
+    .bingo-tile.animate-entry:nth-child(19), .bingo-tile.animate-flip:nth-child(19) { animation-delay: 0.2s; }
+    .bingo-tile.animate-entry:nth-child(20), .bingo-tile.animate-flip:nth-child(20) { animation-delay: 0.22s; }
+    .bingo-tile.animate-entry:nth-child(21), .bingo-tile.animate-flip:nth-child(21) { animation-delay: 0.18s; }
+    .bingo-tile.animate-entry:nth-child(22), .bingo-tile.animate-flip:nth-child(22) { animation-delay: 0.2s; }
+    .bingo-tile.animate-entry:nth-child(23), .bingo-tile.animate-flip:nth-child(23) { animation-delay: 0.22s; }
+    .bingo-tile.animate-entry:nth-child(24), .bingo-tile.animate-flip:nth-child(24) { animation-delay: 0.24s; }
+    .bingo-tile.animate-entry:nth-child(25), .bingo-tile.animate-flip:nth-child(25) { animation-delay: 0.26s; }
+
+    /* Winning States */
+    .bingo-grid.has-winner .bingo-tile {
+      opacity: 0.10;
+      transition: opacity 0.4s ease;
+    }
+
+    .bingo-grid.has-winner .bingo-tile.winning-tile {
+      opacity: 1;
+      box-shadow: 
+        0 0 20px rgba(65, 186, 66, 0.8),
+        0 0 40px rgba(65, 186, 66, 0.6),
+        inset 0 0 15px rgba(65, 186, 66, 0.2);
+      border: 2px solid #41BA42 !important;
+      background: #1d1e1f !important;
+      z-index: 10;
+      animation: winningPulse 1.5s ease-in-out infinite;
+      transform: none !important;
+    }
+
+    @keyframes winningPulse {
+      0%, 100% {
+        box-shadow: 
+          0 0 20px rgba(65, 186, 66, 0.8),
+          0 0 40px rgba(65, 186, 66, 0.6),
+          inset 0 0 15px rgba(65, 186, 66, 0.2);
+      }
+      50% {
+        box-shadow: 
+          0 0 30px rgba(65, 186, 66, 1),
+          0 0 60px rgba(65, 186, 66, 0.8),
+          inset 0 0 20px rgba(65, 186, 66, 0.3);
+      }
+    }
+
+    /* Confetti Canvas */
+    #confetti-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 393px;
+      height: 852px;
+      pointer-events: none;
+      z-index: 200;
+    }
+
+    /* BINGO Celebration Overlay */
+    .bingo-celebration {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 393px;
+      height: 852px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 150;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .bingo-celebration.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .celebration-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 34px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .bingo-text {
+      font-family: "ESPN Ignite Text Condensed", "Impact", "Arial Black", sans-serif;
+      font-size: 80px;
+      font-weight: 700;
+      color: #FFFFFF;
+      filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.4)) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      animation: bingoTextPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      transform: scale(0);
+      margin-bottom: 32px;
+    }
+
+    @keyframes bingoTextPop {
+      0% { transform: scale(0) rotate(-5deg); opacity: 0; }
+      60% { transform: scale(1.15) rotate(2deg); }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    .celebration-stats {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      margin-bottom: 40px;
+      opacity: 0;
+      animation: fadeInUp 0.4s ease-out 0.3s forwards;
+    }
+
+    .celebration-stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .celebration-stat-value {
+      font-family: "ESPN Ignite Text Condensed", "BentonSans", sans-serif;
+      font-size: 30px;
+      font-weight: 700;
+      color: #FFFFFF;
+    }
+
+    .celebration-stat-label {
+      font-family: "BentonSans", sans-serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.6);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 4px;
+    }
+
+    .celebration-divider {
+      width: 100%;
+      max-width: 325px;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.2);
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fadeIn 0.3s ease-out 0.5s forwards;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    .celebration-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      max-width: 325px;
+      opacity: 0;
+      animation: fadeInUp 0.4s ease-out 0.6s forwards;
+    }
+
+    .celebration-btn-primary {
+      width: 100%;
+      height: 48px;
+      border-radius: 24px;
+      background: #3478F6;
+      border: none;
+      color: #FFFFFF;
+      font-family: "BentonSans", sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .celebration-btn-primary:hover {
+      background: #2968E0;
+      transform: scale(1.02);
+    }
+
+    .celebration-btn-secondary {
+      width: 100%;
+      height: 48px;
+      border-radius: 24px;
+      background: transparent;
+      border: 2px solid #3478F6;
+      color: #3478F6;
+      font-family: "BentonSans", sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .celebration-btn-secondary:hover {
+      background: rgba(52, 120, 246, 0.1);
+      transform: scale(1.02);
+    }
+
+    .celebration-btn-secondary svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Detail Sheet */
+    .detail-sheet-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.75);
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .detail-sheet-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .detail-sheet {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      max-width: 393px;
+      background: #101113;
+      border-radius: 20px 20px 0 0;
+      z-index: 1001;
+      transform: translateY(100%);
+      transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+      max-height: 85vh;
+      overflow: hidden;
+    }
+
+    .detail-sheet.active {
+      transform: translateY(0);
+    }
+
+    .detail-sheet-header {
+      position: relative;
+      height: 248px;
+      overflow: hidden;
+    }
+
+    .detail-sheet-glow {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 168px;
+      opacity: 0.6;
+    }
+
+    .detail-sheet-glow.team-lar {
+      background: radial-gradient(ellipse at center, #003594 0%, transparent 70%);
+    }
+
+    .detail-sheet-glow.team-tb {
+      background: radial-gradient(ellipse at center, #A71930 0%, transparent 70%);
+    }
+
+    .detail-sheet-glow.team-ht {
+      background: radial-gradient(ellipse at center, #E92228 0%, transparent 70%);
+    }
+
+    .detail-sheet-glow.team-nfl {
+      background: radial-gradient(ellipse at center, #666666 0%, transparent 70%);
+    }
+
+    .detail-sheet-headshot {
+      position: absolute;
+      top: 16px;
+      right: 0;
+      width: 210px;
+      height: 152px;
+      object-fit: contain;
+      object-position: right bottom;
+    }
+
+    .detail-sheet-gradient {
+      position: absolute;
+      bottom: 80px;
+      left: 0;
+      right: 0;
+      height: 48px;
+      background: linear-gradient(to bottom, transparent, #101113);
+    }
+
+    .detail-sheet-close {
+      position: absolute;
+      top: 11px;
+      right: 16px;
+      width: 24px;
+      height: 24px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: 10;
+      padding: 0;
+    }
+
+    .detail-sheet-close svg {
+      width: 24px;
+      height: 24px;
+      fill: white;
+    }
+
+    .detail-sheet-content {
+      position: absolute;
+      top: 70px;
+      left: 16px;
+      right: 16px;
+    }
+
+    .detail-sheet-name {
+      font-size: 24px;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 0 0 4px 0;
+      text-transform: uppercase;
+      max-width: 200px;
+      line-height: 1.1;
+    }
+
+    .detail-sheet-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .detail-sheet-team-logo {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+    }
+
+    .detail-sheet-position {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .detail-sheet-statbox {
+      position: absolute;
+      top: 168px;
+      left: 16px;
+      right: 16px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 12px;
+    }
+
+    .detail-sheet-stat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .detail-sheet-stat-label {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.6);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .detail-sheet-stat-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .detail-sheet-progress-bar {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .detail-sheet-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #FF6B00, #FFB800);
+      border-radius: 4px;
+      transition: width 0.5s ease;
+    }
+
+    .detail-sheet-progress-fill.complete {
+      background: linear-gradient(90deg, #00C853, #69F0AE);
+    }
+
+    .detail-sheet-progress-fill.pending {
+      background: linear-gradient(
+        90deg,
+        #41BA42 0%,
+        #FFFFFF 25%,
+        #41BA42 50%,
+        rgba(65, 186, 66, 0.3) 75%,
+        #41BA42 100%
+      );
+      background-size: 200% 100%;
+      animation: shimmer-progress 2.5s linear infinite;
+    }
+
+    @keyframes shimmer-progress {
+      0% {
+        background-position: 0% 0%;
+      }
+      100% {
+        background-position: 200% 0%;
+      }
+    }
+
+    .detail-sheet-indicator {
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-bottom: 8px;
+    }
+
+    .detail-sheet-indicator-bar {
+      width: 134px;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 2.5px;
+    }
+
+    /* Home Indicator */
+    .home-indicator {
+      width: 393px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-bottom: env(safe-area-inset-bottom);
+      flex-shrink: 0;
+    }
+
+    .home-indicator-bar {
+      width: 134px;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <div class="mockup-container">
+    <!-- Game Simulator Panel on LEFT -->
+    <aside class="control-panel">
+      <div class="simulator-logo">
+        <div class="logo-text">
+          <div class="top">BIG GAME</div>
+          <div class="bottom">BINGO</div>
+        </div>
+      </div>
+
+      <h2>Game Simulator</h2>
+
+      <div class="game-flow-card">
+        <p>Click Start Game to simulate the bingo experience. Tap a bingo tile to see more details and track your progress. Good luck!</p>
+      </div>
+
+      <button class="start-btn" id="simulate-btn">Start Game</button>
+      <button class="restart-btn" id="restart-btn" disabled>Restart Game</button>
+
+      <!-- Volume Control -->
+      <div class="volume-control">
+        <div class="volume-icon" id="volume-icon" title="Click to mute/unmute">
+          <svg id="volume-icon-high" viewBox="0 0 24 24">
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+          </svg>
+          <svg id="volume-icon-low" viewBox="0 0 24 24" style="display:none;">
+            <path d="M18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM5 9v6h4l5 5V4L9 9H5z"/>
+          </svg>
+          <svg id="volume-icon-muted" viewBox="0 0 24 24" style="display:none;">
+            <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+          </svg>
+        </div>
+        <div class="volume-slider-wrapper">
+          <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="70">
+          <span class="volume-percentage" id="volume-percentage">70%</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Phone Mockup on RIGHT -->
+    <div class="phone-mockup">
+      <div id="game-container">
+        <!-- Top Header -->
+        <div class="top-header">
+          <div class="status-bar">
+            <div class="status-time">9:41</div>
+            <div class="status-icons">
+              <svg width="17" height="11" viewBox="0 0 17 11" fill="none">
+                <rect x="0" y="8" width="3" height="3" rx="0.5" fill="white"/>
+                <rect x="4.5" y="5" width="3" height="6" rx="0.5" fill="white"/>
+                <rect x="9" y="2" width="3" height="9" rx="0.5" fill="white"/>
+                <rect x="13.5" y="0" width="3" height="11" rx="0.5" fill="white"/>
+              </svg>
+              <svg width="15" height="12" viewBox="0 0 15 12" fill="none">
+                <path d="M7.5 10.5a1.25 1.25 0 100 2.5 1.25 1.25 0 000-2.5z" fill="white"/>
+                <path d="M4.5 8.25a4.24 4.24 0 016 0" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M2 5.5a7.07 7.07 0 0111 0" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+              <svg width="25" height="12" viewBox="0 0 25 12" fill="none">
+                <rect x="0.5" y="0.5" width="21" height="11" rx="2.5" stroke="white" stroke-opacity="0.35"/>
+                <path d="M23 4v4a2 2 0 001.5-2 2 2 0 00-1.5-2z" fill="white" fill-opacity="0.4"/>
+                <rect x="2" y="2" width="18" height="8" rx="1.5" fill="white"/>
+              </svg>
+            </div>
+          </div>
+          <div class="header-content">
+            <div class="back-button">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M15 6L9 12L15 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="header-logo">
+              <span class="header-logo-text"><span class="superbowl">SUPERBOWL </span><span class="bingo">BINGO</span></span>
+            </div>
+            <div class="info-button">
+              <svg viewBox="0 0 20 20" fill="white">
+                <circle cx="10" cy="10" r="9" fill="white"/>
+                <text x="10" y="14" text-anchor="middle" font-size="12" font-weight="600" font-family="serif" font-style="italic" fill="#0077C8">i</text>
+              </svg>
+            </div>
+          </div>
+          <div class="nav-tabs">
+            <div class="nav-tab">HOME</div>
+            <div class="nav-tab active">MY ENTRIES</div>
+            <div class="nav-tab">GROUPS</div>
+            <div class="nav-tab">LEADERS</div>
+          </div>
+        </div>
+
+        <!-- Entry Card -->
+        <div class="entry-card">
+          <div class="entry-card-header">
+            <div class="entry-card-top">
+              <div class="card-name">Jake's Picks</div>
+              <div class="settings-icon">
+                <svg viewBox="0 0 24 24" fill="#0077C8">
+                  <path d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+                </svg>
+              </div>
+            </div>
+            <div class="stats-row">
+              <div class="stat-item">
+                <div class="stat-value" id="tiles-hit">1/24</div>
+                <div class="stat-label">TILES</div>
+              </div>
+              <div class="stat-divider"></div>
+              <div class="stat-item">
+                <div class="stat-value" id="hit-time">--</div>
+                <div class="stat-label">HIT TIME</div>
+              </div>
+              <div class="stat-divider"></div>
+              <div class="stat-item">
+                <div class="stat-value" id="rank">--</div>
+                <div class="stat-label">RANK</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Game Strip -->
+        <div class="game-strip">
+          <div class="team-section">
+            <div class="team-logo-container has-possession">
+              <img src="https://a.espncdn.com/i/teamlogos/nfl/500/lar.png" alt="LAR" class="team-logo" id="away-logo">
+            </div>
+            <div class="team-info">
+              <span class="team-abbreviation" id="away-abbr">LAR</span>
+            </div>
+          </div>
+          <div class="score-section">
+            <div class="possession-indicator left active"></div>
+            <div class="score-value" id="away-score">0</div>
+          </div>
+          <div class="status-section">
+            <div class="game-clock" id="game-clock">15:00</div>
+            <div class="game-period" id="game-period">1st</div>
+          </div>
+          <div class="score-section">
+            <div class="score-value" id="home-score">0</div>
+            <div class="possession-indicator right"></div>
+          </div>
+          <div class="team-section">
+            <div class="team-logo-container has-possession right">
+              <img src="https://a.espncdn.com/i/teamlogos/nfl/500/tb.png" alt="TB" class="team-logo" id="home-logo">
+            </div>
+            <div class="team-info">
+              <span class="team-abbreviation" id="home-abbr">TB</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bingo Grid -->
+        <div class="bingo-container">
+          <div class="bingo-grid" id="bingo-grid">
+            <!-- Tiles generated by JavaScript -->
+          </div>
+        </div>
+
+        <!-- Home Indicator -->
+        <div class="home-indicator">
+          <div class="home-indicator-bar"></div>
+        </div>
+
+        <!-- Confetti Canvas -->
+        <canvas id="confetti-canvas"></canvas>
+
+        <!-- BINGO Celebration Overlay -->
+        <div class="bingo-celebration" id="bingo-celebration">
+          <div class="celebration-content">
+            <div class="bingo-text">BINGO!</div>
+            <div class="celebration-stats">
+              <div class="celebration-stat">
+                <span class="celebration-stat-value" id="celebration-rank">1st</span>
+                <span class="celebration-stat-label">Rank</span>
+              </div>
+              <div class="celebration-stat">
+                <span class="celebration-stat-value" id="celebration-hit-time">3rd - 2:00</span>
+                <span class="celebration-stat-label">Hit Time</span>
+              </div>
+            </div>
+            <div class="celebration-divider"></div>
+            <div class="celebration-buttons">
+              <button class="celebration-btn-primary" id="admire-bingo-btn">Behold My Board</button>
+              <button class="celebration-btn-secondary" id="share-bingo-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+                  <polyline points="16,6 12,2 8,6"/>
+                  <line x1="12" y1="2" x2="12" y2="15"/>
+                </svg>
+                Share
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Detail Sheet Overlay -->
+        <div class="detail-sheet-overlay" id="detail-sheet-overlay"></div>
+        
+        <!-- Detail Sheet -->
+        <div class="detail-sheet" id="detail-sheet">
+          <div class="detail-sheet-header">
+            <div class="detail-sheet-glow" id="detail-sheet-glow"></div>
+            <img class="detail-sheet-headshot" id="detail-sheet-headshot" src="" alt="">
+            <div class="detail-sheet-gradient"></div>
+            <button class="detail-sheet-close" id="detail-sheet-close">
+              <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+            </button>
+            <div class="detail-sheet-content">
+              <h2 class="detail-sheet-name" id="detail-sheet-name"></h2>
+              <div class="detail-sheet-meta">
+                <img class="detail-sheet-team-logo" id="detail-sheet-team-logo" src="" alt="">
+                <span class="detail-sheet-position" id="detail-sheet-position"></span>
+              </div>
+            </div>
+            <div class="detail-sheet-statbox">
+              <div class="detail-sheet-stat-header">
+                <span class="detail-sheet-stat-label" id="detail-sheet-stat-label"></span>
+                <span class="detail-sheet-stat-value" id="detail-sheet-stat-value"></span>
+              </div>
+              <div class="detail-sheet-progress-bar">
+                <div class="detail-sheet-progress-fill" id="detail-sheet-progress-fill"></div>
+              </div>
+            </div>
+          </div>
+          <div class="detail-sheet-indicator">
+            <div class="detail-sheet-indicator-bar"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== BINGO GAME LOGIC =====
+    
+    // ESPN CDN URL helpers
+    const ESPN_CDN = {
+      playerHeadshot: (playerId) => `https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/${playerId}.png&w=96&h=70&cb=1`,
+      teamLogo: (team) => `https://a.espncdn.com/i/teamlogos/nfl/500/${team.toLowerCase()}.png`
+    };
+
+    // Local Figma headshot assets
+    const LOCAL_HEADSHOTS = {
+      12483: 'assets/1cbd6f1e8f94bda4b89229f401e9ac19e554f3c8.png',
+      3052587: 'assets/7ba737ec1214e3d170d68d686e9b4ad2a2fdcb30.png',
+      4362887: 'assets/4e85ccefb759e866838263a9128e2f4d680da9fa.png',
+      4429795: 'assets/e51be7ea776155731957bde0dfeefc9b45818190.png',
+      4685306: 'assets/203695398027bf3a17743f96e252de5f65ac5e36.png',
+      4361438: 'assets/3dc88dcee16ea61d2e03d9b7a0a9f7680a88a459.png',
+      'colby-parkinson': 'assets/880b87ad2c3f5650c3704eb48c3a606a1c6cb93c.png',
+      'emeka-egbuka': 'assets/f4ef25ceca5cd2833d612e9cba80f09e856a02e4.png',
+      'tykee-smith': 'assets/8e3c7129019e78d206fd86f39f9ec75c167c8001.png',
+      'nate-landman': 'assets/fe40ee8f309bd00be6f5f09a9d9ee7e515ffcba9.png'
+    };
+
+    const SPECIAL_ASSETS = {
+      badBunny: 'assets/05622e3c35ec2edaaf130be0d4446291cffc4417.png',
+      freeSquareSponsor: 'assets/283f5e356f90fbd4c6c6e93bc1232b1f866048d4.png'
+    };
+
+    // Fixed team configuration
+    var currentTeams = {
+      away: { abbr: 'LAR', name: 'Los Angeles Rams', color: '#003594' },
+      home: { abbr: 'TB', name: 'Tampa Bay Buccaneers', color: '#D50A0A' }
+    };
+
+    // Bingo tiles
+    var sampleTiles = [
+      { id: '1', type: 'player', name: 'M. Stafford', fullName: 'MATTHEW STAFFORD', team: 'LAR', position: 'QB', number: '9', stat: 'Pass Yds', target: 250, current: 0, state: 'normal', playerId: 12483 },
+      { id: '2', type: 'player', name: 'B. Mayfield', fullName: 'BAKER MAYFIELD', team: 'TB', position: 'QB', number: '6', stat: 'Pass TDs', target: 2, current: 0, state: 'normal', playerId: 3052587 },
+      { id: '3', type: 'team', name: 'LAR', fullName: 'LOS ANGELES RAMS', team: 'LAR', stat: 'Total Pts', target: 24, current: 0, state: 'normal' },
+      { id: '4', type: 'team', name: 'TB', fullName: 'TAMPA BAY BUCCANEERS', team: 'TB', stat: 'Total Pts', target: 27, current: 0, state: 'normal' },
+      { id: '5', type: 'halftime', name: 'Bad Bunny', fullName: 'BAD BUNNY', team: 'HT', stat: '2+ Songs', target: 2, current: 0, state: 'normal', customIcon: 'badbunny' },
+      { id: '6', type: 'team', name: 'TB', fullName: 'TAMPA BAY BUCCANEERS', team: 'TB', stat: '1st Half Pts', target: 14, current: 0, state: 'normal' },
+      { id: '7', type: 'player', name: 'K. Williams', fullName: 'KYREN WILLIAMS', team: 'LAR', position: 'RB', number: '23', stat: 'Rush Yds', target: 75, current: 0, state: 'normal', playerId: 4362887 },
+      { id: '8', type: 'player', name: 'E. Egbuka', fullName: 'EMEKA EGBUKA', team: 'TB', position: 'WR', number: '5', stat: 'Rec Yds', target: 80, current: 0, state: 'normal', playerId: 'emeka-egbuka' },
+      { id: '9', type: 'player', name: 'P. Nacua', fullName: 'PUKA NACUA', team: 'LAR', position: 'WR', number: '17', stat: 'Receptions', target: 6, current: 0, state: 'normal', playerId: 4429795 },
+      { id: '10', type: 'team', name: 'LAR', fullName: 'LOS ANGELES RAMS', team: 'LAR', stat: '1st Half Pts', target: 10, current: 0, state: 'normal' },
+      { id: '11', type: 'player', name: 'N. Landman', fullName: 'NATE LANDMAN', team: 'LAR', position: 'LB', number: '46', stat: 'Tackles', target: 6, current: 0, state: 'normal', playerId: 'nate-landman' },
+      { id: '12', type: 'team', name: 'TB', fullName: 'TAMPA BAY BUCCANEERS', team: 'TB', stat: 'Total TDs', target: 3, current: 0, state: 'normal' },
+      { id: '13', type: 'freespot', name: 'Free Square', fullName: 'FREE SQUARE', team: 'HT', stat: 'MICHELOB ULTRA', target: 0, current: 0, state: 'complete', customIcon: 'freespot' },
+      { id: '14', type: 'player', name: 'B. Irving', fullName: 'BUCKY IRVING', team: 'TB', position: 'RB', number: '7', stat: 'Rush Yds', target: 60, current: 0, state: 'normal', playerId: 4685306 },
+      { id: '15', type: 'team', name: 'TB', fullName: 'TAMPA BAY BUCCANEERS', team: 'TB', stat: 'Rushing Yds', target: 100, current: 0, state: 'normal' },
+      { id: '16', type: 'player', name: 'C. Otton', fullName: 'CADE OTTON', team: 'TB', position: 'TE', number: '88', stat: 'Receptions', target: 4, current: 0, state: 'normal', playerId: 4361438 },
+      { id: '17', type: 'player', name: 'C. Parkinson', fullName: 'COLBY PARKINSON', team: 'LAR', position: 'TE', number: '84', stat: 'Rec Yds', target: 40, current: 0, state: 'normal', playerId: 'colby-parkinson' },
+      { id: '18', type: 'prop', name: 'Coin Flip', fullName: 'COIN FLIP', team: 'NFL', stat: 'Heads', target: 0, current: 0, state: 'normal', customIcon: 'coin' },
+      { id: '19', type: 'team', name: 'LAR', fullName: 'LOS ANGELES RAMS', team: 'LAR', stat: 'Passing Yds', target: 275, current: 0, state: 'normal' },
+      { id: '20', type: 'prop', name: 'First TD', fullName: 'FIRST TOUCHDOWN', team: 'LAR', stat: 'Pass TD', target: 0, current: 0, state: 'normal', customIcon: 'firsttd' },
+      { id: '21', type: 'team', name: 'TB', fullName: 'TAMPA BAY BUCCANEERS', team: 'TB', stat: 'Passing Yds', target: 285, current: 0, state: 'normal' },
+      { id: '22', type: 'player', name: 'M. Stafford', fullName: 'MATTHEW STAFFORD', team: 'LAR', position: 'QB', number: '9', stat: 'Pass TDs', target: 2, current: 0, state: 'normal', playerId: 12483 },
+      { id: '23', type: 'player', name: 'T. Smith', fullName: 'TYKEE SMITH', team: 'TB', position: 'DB', number: '24', stat: 'Tackles', target: 4, current: 0, state: 'normal', playerId: 'tykee-smith' },
+      { id: '24', type: 'halftime', name: 'Bad Bunny', fullName: 'BAD BUNNY', team: 'HT', stat: 'Guest Artist', target: 1, current: 0, state: 'normal', customIcon: 'badbunny' },
+      { id: '25', type: 'team', name: 'TB', fullName: 'TAMPA BAY BUCCANEERS', team: 'TB', stat: 'Sacks', target: 2, current: 0, state: 'normal' }
+    ];
+
+    const PENDING_THRESHOLD = 5;
+    let currentSheetTile = null;
+    const tiles = [...sampleTiles];
+    let gridInitialized = false;
+
+    // ===== SOUND EFFECTS =====
+    const sounds = {
+      tileComplete: new Audio('sounds/title-complete.mp3'),
+      tilePending: new Audio('sounds/title-pending.mp3'),
+      bingoLine: new Audio('sounds/bingo-line.mp3'),
+      bingoWin: new Audio('sounds/bingo-win.mp3'),
+      confetti: new Audio('sounds/confetti.mp3'),
+      resetGame: new Audio('sounds/reset-game.mp3'),
+      cardIn: new Audio('sounds/card-in.mp3'),
+      cardOut: new Audio('sounds/card-out.mp3'),
+      gameStart: new Audio('sounds/game-start.mp3')
+    };
+
+    // Volume control system
+    const volumeControl = {
+      level: 0.7,
+      muted: false,
+      previousLevel: 0.7,
+
+      init() {
+        // Load saved volume from localStorage
+        const savedVolume = localStorage.getItem('bingoVolume');
+        const savedMuted = localStorage.getItem('bingoMuted');
+        
+        if (savedVolume !== null) {
+          this.level = parseFloat(savedVolume);
+        }
+        if (savedMuted === 'true') {
+          this.muted = true;
+          this.previousLevel = this.level;
+        }
+        
+        this.applyVolume();
+        this.updateUI();
+      },
+
+      setVolume(level) {
+        this.level = Math.max(0, Math.min(1, level));
+        this.muted = this.level === 0;
+        this.applyVolume();
+        this.updateUI();
+        localStorage.setItem('bingoVolume', this.level);
+        localStorage.setItem('bingoMuted', this.muted);
+      },
+
+      applyVolume() {
+        const effectiveVolume = this.muted ? 0 : this.level;
+        Object.entries(sounds).forEach(([key, sound]) => {
+          sound.volume = effectiveVolume;
+        });
+      },
+
+      toggleMute() {
+        if (this.muted) {
+          this.muted = false;
+          this.level = this.previousLevel > 0 ? this.previousLevel : 0.7;
+        } else {
+          this.previousLevel = this.level;
+          this.muted = true;
+        }
+        this.applyVolume();
+        this.updateUI();
+        localStorage.setItem('bingoVolume', this.level);
+        localStorage.setItem('bingoMuted', this.muted);
+      },
+
+      updateUI() {
+        const slider = document.getElementById('volume-slider');
+        const percentage = document.getElementById('volume-percentage');
+        const iconHigh = document.getElementById('volume-icon-high');
+        const iconLow = document.getElementById('volume-icon-low');
+        const iconMuted = document.getElementById('volume-icon-muted');
+
+        if (slider) slider.value = this.muted ? 0 : this.level * 100;
+        if (percentage) percentage.textContent = `${Math.round(this.muted ? 0 : this.level * 100)}%`;
+
+        // Update icon visibility
+        if (iconHigh && iconLow && iconMuted) {
+          iconHigh.style.display = 'none';
+          iconLow.style.display = 'none';
+          iconMuted.style.display = 'none';
+
+          if (this.muted || this.level === 0) {
+            iconMuted.style.display = 'block';
+          } else if (this.level < 0.5) {
+            iconLow.style.display = 'block';
+          } else {
+            iconHigh.style.display = 'block';
+          }
+        }
+      }
+    };
+
+    // Preload sounds
+    Object.values(sounds).forEach(sound => {
+      sound.load();
+    });
+
+    function playSound(soundName) {
+      const sound = sounds[soundName];
+      if (sound && !volumeControl.muted) {
+        sound.currentTime = 0;
+        sound.play().catch(() => {}); // Ignore autoplay errors
+      }
+    }
+
+    function playBingoCelebration() {
+      if (!volumeControl.muted) {
+        sounds.bingoWin.currentTime = 0;
+        sounds.confetti.currentTime = 0;
+        sounds.bingoWin.play().catch(() => {});
+        sounds.confetti.play().catch(() => {});
+      }
+    }
+
+    // Helper functions
+    function calculateTileState(tile) {
+      if (tile.type === 'freespot') return 'complete';
+      if (tile.target <= 0) return tile.state;
+      if (tile.current < tile.target) return 'in-progress';
+      if (tile.current >= tile.target && tile.current < tile.target + PENDING_THRESHOLD) return 'pending';
+      if (tile.current >= tile.target + PENDING_THRESHOLD) return 'complete';
+      return 'normal';
+    }
+
+    function updateTileState(tile) {
+      const oldState = tile.state;
+      const newState = calculateTileState(tile);
+      tile.state = newState;
+      
+      // Play sounds on state transitions
+      if (oldState !== newState) {
+        if (newState === 'pending' && oldState !== 'pending') {
+          playSound('tilePending');
+        } else if (newState === 'complete' && oldState !== 'complete') {
+          playSound('tileComplete');
+        }
+      }
+      
+      return tile;
+    }
+
+    function getTeamColor(team, tile = null) {
+      if (tile) {
+        if (tile.customIcon === 'badbunny' || tile.type === 'halftime') return '#E92228';
+        if (tile.customIcon === 'coin') return '#666666';
+      }
+      if (team === 'HT') return '#E92228';
+      if (team === 'NFL') return '#666666';
+      if (team === 'LAR') return '#003594';
+      if (team === 'TB') return '#A71930';
+      return '#003594';
+    }
+
+    function getTeamLogoUrl(team) {
+      if (!team || team === 'NFL') return 'https://a.espncdn.com/i/teamlogos/nfl/500/nfl.png';
+      return `https://a.espncdn.com/i/teamlogos/nfl/500/${team.toLowerCase()}.png`;
+    }
+
+    function getPlayerHeadshotUrl(playerId) {
+      if (!playerId) return null;
+      if (LOCAL_HEADSHOTS[playerId]) return LOCAL_HEADSHOTS[playerId];
+      return null;
+    }
+
+    function getTileBackground(tile) {
+      if (tile.customIcon === 'badbunny' || tile.type === 'halftime') {
+        return `<div class="tile-emoji-bg">🇵🇷</div>`;
+      } else if (tile.customIcon === 'coin') {
+        return `<div class="tile-emoji-bg">🪙</div>`;
+      } else if (tile.customIcon === 'firsttd') {
+        return `<img src="${getTeamLogoUrl(tile.team)}" alt="${tile.team}" class="tile-team-logo-bg-img">`;
+      } else {
+        return `<img src="${getTeamLogoUrl(tile.team)}" alt="${tile.team}" class="tile-team-logo-bg-img" onerror="this.style.opacity='0.08'">`;
+      }
+    }
+
+    function getTileImage(tile) {
+      if (tile.type === 'player' && tile.playerId) {
+        return `<img src="${getPlayerHeadshotUrl(tile.playerId)}" alt="${tile.name}" class="tile-headshot" onerror="this.style.display='none'">`;
+      } else if (tile.type === 'team') {
+        return `<img src="${getTeamLogoUrl(tile.team)}" alt="${tile.team}" class="tile-team-logo-img">`;
+      } else if (tile.customIcon === 'badbunny' || tile.type === 'halftime') {
+        return `<img src="${SPECIAL_ASSETS.badBunny}" alt="Bad Bunny" class="tile-headshot" style="object-position: center 20%;">`;
+      } else if (tile.customIcon === 'coin') {
+        return `<div class="custom-icon coin-icon">🪙</div>`;
+      } else if (tile.customIcon === 'firsttd') {
+        return `<img src="${getTeamLogoUrl(tile.team)}" alt="${tile.team}" class="tile-team-logo-img">`;
+      }
+      return `<img src="${getTeamLogoUrl(tile.team)}" alt="${tile.team}" class="tile-team-logo-img">`;
+    }
+
+    // Detail Sheet Functions
+    function showDetailSheet(tileId) {
+      const tile = tiles.find(t => t.id === tileId);
+      if (!tile) return;
+
+      playSound('cardIn'); // Play card slide-in sound
+      currentSheetTile = tile;
+      
+      const overlay = document.getElementById('detail-sheet-overlay');
+      const sheet = document.getElementById('detail-sheet');
+      const glow = document.getElementById('detail-sheet-glow');
+      const headshot = document.getElementById('detail-sheet-headshot');
+      const name = document.getElementById('detail-sheet-name');
+      const teamLogo = document.getElementById('detail-sheet-team-logo');
+      const position = document.getElementById('detail-sheet-position');
+      const statLabel = document.getElementById('detail-sheet-stat-label');
+      const statValue = document.getElementById('detail-sheet-stat-value');
+      const progressFill = document.getElementById('detail-sheet-progress-fill');
+
+      glow.className = 'detail-sheet-glow';
+      glow.style.background = '';
+      
+      if (tile.customIcon === 'badbunny' || tile.type === 'halftime') {
+        glow.classList.add('team-ht');
+      } else if (tile.customIcon === 'coin' || (tile.type === 'prop' && tile.team === 'NFL')) {
+        glow.classList.add('team-nfl');
+      } else if (tile.team === 'LAR') {
+        glow.classList.add('team-lar');
+      } else if (tile.team === 'TB') {
+        glow.classList.add('team-tb');
+      }
+
+      if (tile.type === 'player' && tile.playerId) {
+        if (LOCAL_HEADSHOTS[tile.playerId]) {
+          headshot.src = LOCAL_HEADSHOTS[tile.playerId];
+        } else {
+          headshot.src = `https://a.espncdn.com/i/headshots/nfl/players/full/${tile.playerId}.png`;
+        }
+        headshot.style.display = 'block';
+        headshot.alt = tile.name;
+      } else if (tile.type === 'team') {
+        headshot.src = getTeamLogoUrl(tile.team);
+        headshot.style.display = 'block';
+        headshot.alt = tile.team;
+      } else if (tile.type === 'halftime' || tile.customIcon === 'badbunny') {
+        headshot.src = SPECIAL_ASSETS.badBunny;
+        headshot.style.display = 'block';
+        headshot.alt = 'Bad Bunny';
+      } else if (tile.customIcon === 'coin') {
+        headshot.style.display = 'none';
+        let coinEmoji = document.getElementById('detail-sheet-coin-emoji');
+        if (!coinEmoji) {
+          coinEmoji = document.createElement('div');
+          coinEmoji.id = 'detail-sheet-coin-emoji';
+          coinEmoji.style.cssText = 'position: absolute; top: 16px; right: 20px; width: 150px; height: 150px; font-size: 120px; line-height: 150px; text-align: center; z-index: 5;';
+          headshot.parentElement.appendChild(coinEmoji);
+        }
+        coinEmoji.textContent = '🪙';
+        coinEmoji.style.display = 'block';
+      } else {
+        headshot.style.display = 'none';
+      }
+      
+      if (tile.customIcon !== 'coin') {
+        const coinEmoji = document.getElementById('detail-sheet-coin-emoji');
+        if (coinEmoji) coinEmoji.style.display = 'none';
+      }
+
+      name.textContent = tile.fullName || tile.name;
+
+      if (tile.type === 'player') {
+        teamLogo.src = getTeamLogoUrl(tile.team);
+        teamLogo.style.display = 'block';
+        const posText = tile.position ? `${tile.team} • ${tile.position}` : tile.team;
+        position.textContent = tile.number ? `${posText} • #${tile.number}` : posText;
+      } else if (tile.type === 'team') {
+        teamLogo.src = getTeamLogoUrl(tile.team);
+        teamLogo.style.display = 'block';
+        position.textContent = 'Team Prop';
+      } else {
+        teamLogo.style.display = 'none';
+        position.textContent = tile.type === 'halftime' ? 'Halftime Show' : 'Special Prop';
+      }
+
+      if (tile.target > 0) {
+        statLabel.textContent = `${tile.target} ${tile.stat}`;
+        statValue.textContent = `${Math.round(tile.current)}/${tile.target}`;
+        const progress = Math.min((tile.current / tile.target) * 100, 100);
+        progressFill.style.width = `${progress}%`;
+        progressFill.className = 'detail-sheet-progress-fill';
+        if (tile.state === 'complete') progressFill.classList.add('complete');
+        if (tile.state === 'pending') progressFill.classList.add('pending');
+      } else {
+        statLabel.textContent = tile.stat || 'Complete to win';
+        statValue.textContent = tile.state === 'complete' ? '✓' : '—';
+        progressFill.style.width = tile.state === 'complete' ? '100%' : '0%';
+        progressFill.className = 'detail-sheet-progress-fill';
+        if (tile.state === 'complete') progressFill.classList.add('complete');
+        if (tile.state === 'pending') progressFill.classList.add('pending');
+      }
+
+      overlay.classList.add('active');
+      sheet.classList.add('active');
+    }
+
+    function closeDetailSheet() {
+      playSound('cardOut'); // Play card slide-out sound
+      document.getElementById('detail-sheet-overlay').classList.remove('active');
+      document.getElementById('detail-sheet').classList.remove('active');
+      currentSheetTile = null;
+    }
+
+    // Grid rendering
+    const displayedProgress = {};
+
+    function updateTileInPlace(index) {
+      const tile = tiles[index];
+      const tileEl = document.querySelector(`.bingo-tile[data-tile-id="${tile.id}"]`);
+      if (!tileEl || tile.type === 'freespot') return;
+      
+      tileEl.className = tileEl.className.replace(/state-\w+/g, '').replace(/\s+/g, ' ').trim();
+      tileEl.classList.add(`state-${tile.state}`);
+      
+      if (tile.target > 0) {
+        const targetProgress = Math.min((tile.current / tile.target) * 100, 100);
+        tileEl.style.setProperty('--progress', targetProgress);
+        displayedProgress[tile.id] = targetProgress;
+      }
+    }
+
+    function updateAllTilesInPlace() {
+      tiles.forEach((tile, index) => updateTileInPlace(index));
+      updateStats();
+    }
+
+    function renderGrid(withAnimation = true) {
+      const grid = document.getElementById('bingo-grid');
+      grid.innerHTML = '';
+
+      tiles.forEach((tile, index) => {
+        const tileEl = document.createElement('div');
+        const animationClass = withAnimation && !gridInitialized ? 'animate-entry' : '';
+        const coinFlipClass = tile.customIcon === 'coin' ? 'coin-flip-tile' : '';
+        tileEl.className = `bingo-tile ${animationClass} state-${tile.state} ${tile.type === 'freespot' ? 'free-spot' : ''} ${coinFlipClass}`.trim();
+        tileEl.dataset.tileId = tile.id;
+
+        const progress = tile.target > 0 ? Math.min((tile.current / tile.target) * 100, 100) : 100;
+        const teamColor = tile.type === 'freespot' ? 'transparent' : getTeamColor(tile.team, tile);
+
+        if (tile.target > 0) tileEl.style.setProperty('--progress', progress);
+
+        if (tile.type === 'freespot') {
+          tileEl.innerHTML = `
+            <div class="tile-content" style="height: 100%; justify-content: center; align-items: center; background: linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 100%); gap: 4px; padding: 8px;">
+              <div style="font-size: 11px; font-weight: 700; color: #ffffff; text-align: center; line-height: 1.2; margin-bottom: 4px;">Free<br>Square</div>
+              <img src="${SPECIAL_ASSETS.freeSquareSponsor}" alt="Michelob Ultra" style="width: 100%; max-width: 58px; height: auto; object-fit: contain;">
+            </div>
+            <div class="tile-checkmark" style="display: flex;">
+              <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            </div>
+          `;
+        } else {
+          const tileBackgroundHtml = getTileBackground(tile);
+          const tileImageHtml = getTileImage(tile);
+          const statLabel = tile.stat ? tile.stat.replace(/\n/g, '<br>') : '';
+          const statValue = tile.target > 0 ? tile.target : '';
+          
+          tileEl.innerHTML = `
+            <div class="tile-header">
+              <div class="tile-header-bg" style="background: ${teamColor};"></div>
+              <div class="tile-header-gradient"></div>
+              ${tileBackgroundHtml}
+              <div class="tile-image">${tileImageHtml}</div>
+            </div>
+            <div class="tile-content">
+              <div class="tile-name">${tile.name}</div>
+              ${statValue ? `<div class="tile-stat-value">${statValue}</div>` : ''}
+              ${statLabel ? `<div class="tile-stat-label">${statLabel}</div>` : ''}
+            </div>
+            <div class="tile-checkmark">
+              <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            </div>
+            <svg class="shimmer-border" viewBox="0 0 75 96" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="shimmerGradient-${tile.id}" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#41BA42" />
+                  <stop offset="50%" stop-color="#FFFFFF" />
+                  <stop offset="100%" stop-color="#41BA42" />
+                </linearGradient>
+              </defs>
+              <rect class="border-base" x="1.5" y="1.5" width="72" height="93" rx="6" ry="6" />
+              <rect class="border-shimmer" x="1.5" y="1.5" width="72" height="93" rx="6" ry="6" stroke="url(#shimmerGradient-${tile.id})" />
+            </svg>
+          `;
+        }
+
+        if (tile.type !== 'freespot') {
+          tileEl.addEventListener('click', () => showDetailSheet(tile.id));
+        }
+
+        grid.appendChild(tileEl);
+      });
+
+      gridInitialized = true;
+      updateStats();
+    }
+
+    function updateStats() {
+      const hitTiles = tiles.filter(t => t.state === 'complete').length;
+      const tilesHitEl = document.getElementById('tiles-hit');
+      if (tilesHitEl) tilesHitEl.textContent = `${hitTiles}/24`;
+    }
+
+    // ===== SIMULATION SYSTEM =====
+    let simulationRunning = false;
+    let simulationInterval = null;
+    let gameScores = { away: 0, home: 0 };
+    let gameQuarter = 1;
+    let gameClock = 900;
+
+    const BINGO_PATTERNS = [
+      { name: 'Row 1', indices: [0, 1, 2, 3, 4] },
+      { name: 'Row 2', indices: [5, 6, 7, 8, 9] },
+      { name: 'Row 3', indices: [10, 11, 12, 13, 14] },
+      { name: 'Row 4', indices: [15, 16, 17, 18, 19] },
+      { name: 'Row 5', indices: [20, 21, 22, 23, 24] },
+      { name: 'Col 1', indices: [0, 5, 10, 15, 20] },
+      { name: 'Col 2', indices: [1, 6, 11, 16, 21] },
+      { name: 'Col 3', indices: [2, 7, 12, 17, 22] },
+      { name: 'Col 4', indices: [3, 8, 13, 18, 23] },
+      { name: 'Col 5', indices: [4, 9, 14, 19, 24] },
+      { name: 'Diag 1', indices: [0, 6, 12, 18, 24] },
+      { name: 'Diag 2', indices: [4, 8, 12, 16, 20] }
+    ];
+
+    function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+
+    function detectBingo() {
+      const winningPatterns = [];
+      for (const pattern of BINGO_PATTERNS) {
+        if (pattern.indices.every(i => tiles[i].state === 'complete')) {
+          winningPatterns.push(pattern);
+        }
+      }
+      return winningPatterns.length > 0 ? winningPatterns : null;
+    }
+
+    function drawWinningLine(patterns) {
+      const grid = document.getElementById('bingo-grid');
+      const patternArray = Array.isArray(patterns) ? patterns : [patterns];
+      grid.classList.add('has-winner');
+      
+      // Play bingo line sound immediately when line is detected
+      playSound('bingoLine');
+      
+      patternArray.forEach((pattern) => {
+        pattern.indices.forEach(i => {
+          const tileEl = document.querySelectorAll('.bingo-tile')[i];
+          if (tileEl) tileEl.classList.add('winning-tile');
+        });
+      });
+    }
+
+    // Enhanced Realistic Confetti System
+    let confettiAnimationId = null;
+    
+    function launchConfetti() {
+      const canvas = document.getElementById('confetti-canvas');
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      canvas.width = 393;
+      canvas.height = 852;
+      
+      // Rich color palette with metallic shades
+      const confettiColors = [
+        // Golds (dominant)
+        { fill: '#FFD700', shadow: '#B8860B' },
+        { fill: '#FFD700', shadow: '#DAA520' },
+        { fill: '#FFC125', shadow: '#CD950C' },
+        { fill: '#FFEC8B', shadow: '#EEC900' },
+        // Team colors
+        { fill: '#003594', shadow: '#001f5c' },
+        { fill: '#A71930', shadow: '#6B101F' },
+        // Metallics
+        { fill: '#C0C0C0', shadow: '#808080' },
+        { fill: '#FFFFFF', shadow: '#E0E0E0' },
+        { fill: '#FFB347', shadow: '#CC8800' }
+      ];
+      
+      const confettiPieces = [];
+      const confettiCount = 300;
+      
+      // Physics constants - more realistic
+      const GRAVITY = 0.15;
+      const AIR_RESISTANCE = 0.992;
+      const WIND_STRENGTH = 0.02;
+      const FLUTTER_INTENSITY = 0.08;
+      
+      // Cannon positions
+      const leftCannon = { x: 30, y: 852 };
+      const rightCannon = { x: 363, y: 852 };
+      const leftAngle = -Math.PI / 3.5;
+      const rightAngle = -Math.PI + Math.PI / 3.5;
+      
+      for (let i = 0; i < confettiCount; i++) {
+        const isLeftCannon = i % 2 === 0;
+        const cannon = isLeftCannon ? leftCannon : rightCannon;
+        const baseAngle = isLeftCannon ? leftAngle : rightAngle;
+        
+        // More varied spread
+        const angleSpread = (Math.random() - 0.5) * (Math.PI / 4);
+        const angle = baseAngle + angleSpread;
+        
+        // Varied velocities for depth effect
+        const velocity = 14 + Math.random() * 16;
+        
+        // Random shape types with weights
+        const shapeRand = Math.random();
+        let shapeType;
+        if (shapeRand < 0.4) shapeType = 0;      // Rectangle (40%)
+        else if (shapeRand < 0.7) shapeType = 1; // Square (30%)
+        else if (shapeRand < 0.85) shapeType = 2; // Circle (15%)
+        else shapeType = 3;                       // Streamer/ribbon (15%)
+        
+        const colorData = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+        const size = 4 + Math.random() * 8;
+        
+        confettiPieces.push({
+          x: cannon.x + (Math.random() - 0.5) * 20,
+          y: cannon.y - 30 - Math.random() * 40,
+          vx: Math.cos(angle) * velocity + (Math.random() - 0.5) * 3,
+          vy: Math.sin(angle) * velocity,
+          color: colorData.fill,
+          shadowColor: colorData.shadow,
+          width: shapeType === 3 ? size * 0.4 : size,
+          height: shapeType === 3 ? size * 3 : size * (0.4 + Math.random() * 0.4),
+          // 3D rotation simulation
+          rotationX: Math.random() * Math.PI * 2,
+          rotationY: Math.random() * Math.PI * 2,
+          rotationZ: Math.random() * Math.PI * 2,
+          rotationSpeedX: (Math.random() - 0.5) * 0.15,
+          rotationSpeedY: (Math.random() - 0.5) * 0.15,
+          rotationSpeedZ: (Math.random() - 0.5) * 0.2,
+          // Flutter/wobble
+          flutter: Math.random() * Math.PI * 2,
+          flutterSpeed: 0.03 + Math.random() * 0.05,
+          flutterAmplitude: 0.5 + Math.random() * 1.5,
+          // Wind sensitivity
+          windFactor: 0.5 + Math.random() * 1,
+          shapeType: shapeType,
+          opacity: 1,
+          mass: 0.5 + Math.random() * 0.5,
+          delay: Math.floor(i / 8) * 12 + Math.random() * 50,
+          // Depth for parallax
+          depth: 0.7 + Math.random() * 0.3
+        });
+      }
+      
+      let startTime = null;
+      const maxDuration = 7000;
+      let windPhase = 0;
+      
+      function animate(timestamp) {
+        if (!startTime) startTime = timestamp;
+        const elapsed = timestamp - startTime;
+        
+        if (elapsed >= maxDuration) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          confettiAnimationId = null;
+          return;
+        }
+        
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Global wind oscillation
+        windPhase += 0.01;
+        const globalWind = Math.sin(windPhase) * WIND_STRENGTH;
+        
+        // Sort by depth for proper layering
+        confettiPieces.sort((a, b) => a.depth - b.depth);
+        
+        confettiPieces.forEach(piece => {
+          if (elapsed < piece.delay) return;
+          
+          // Physics
+          piece.vy += GRAVITY * piece.mass;
+          piece.vx += globalWind * piece.windFactor;
+          piece.vx *= AIR_RESISTANCE;
+          piece.vy *= AIR_RESISTANCE;
+          
+          // Flutter effect (simulates air catching flat surface)
+          piece.flutter += piece.flutterSpeed;
+          const flutterX = Math.sin(piece.flutter) * piece.flutterAmplitude * FLUTTER_INTENSITY;
+          const flutterY = Math.cos(piece.flutter * 0.7) * piece.flutterAmplitude * FLUTTER_INTENSITY * 0.3;
+          
+          piece.x += piece.vx + flutterX;
+          piece.y += piece.vy + flutterY;
+          
+          // 3D rotation
+          piece.rotationX += piece.rotationSpeedX;
+          piece.rotationY += piece.rotationSpeedY;
+          piece.rotationZ += piece.rotationSpeedZ;
+          
+          // Slow down rotation over time
+          piece.rotationSpeedX *= 0.998;
+          piece.rotationSpeedY *= 0.998;
+          piece.rotationSpeedZ *= 0.995;
+          
+          // Fade out
+          if (elapsed > maxDuration - 1500) {
+            piece.opacity = Math.max(0, 1 - (elapsed - (maxDuration - 1500)) / 1500);
+          }
+          
+          if (piece.y > 900 || piece.opacity <= 0) return;
+          
+          // Calculate apparent size based on 3D rotation
+          const scaleX = Math.abs(Math.cos(piece.rotationY)) * 0.3 + 0.7;
+          const scaleY = Math.abs(Math.cos(piece.rotationX)) * 0.3 + 0.7;
+          const apparentWidth = piece.width * scaleX * piece.depth;
+          const apparentHeight = piece.height * scaleY * piece.depth;
+          
+          ctx.save();
+          ctx.translate(piece.x, piece.y);
+          ctx.rotate(piece.rotationZ);
+          ctx.globalAlpha = piece.opacity * piece.depth;
+          
+          // Draw shadow for depth
+          if (piece.depth > 0.8) {
+            ctx.fillStyle = piece.shadowColor;
+            ctx.globalAlpha = piece.opacity * 0.3;
+            if (piece.shapeType === 2) {
+              ctx.beginPath();
+              ctx.ellipse(2, 2, apparentWidth / 2, apparentHeight / 2, 0, 0, Math.PI * 2);
+              ctx.fill();
+            } else {
+              ctx.fillRect(-apparentWidth / 2 + 2, -apparentHeight / 2 + 2, apparentWidth, apparentHeight);
+            }
+          }
+          
+          ctx.globalAlpha = piece.opacity * piece.depth;
+          ctx.fillStyle = piece.color;
+          
+          if (piece.shapeType === 0 || piece.shapeType === 1) {
+            // Rectangle/Square with subtle gradient
+            const gradient = ctx.createLinearGradient(-apparentWidth/2, -apparentHeight/2, apparentWidth/2, apparentHeight/2);
+            gradient.addColorStop(0, piece.color);
+            gradient.addColorStop(0.5, piece.color);
+            gradient.addColorStop(1, piece.shadowColor);
+            ctx.fillStyle = gradient;
+            ctx.fillRect(-apparentWidth / 2, -apparentHeight / 2, apparentWidth, apparentHeight);
+          } else if (piece.shapeType === 2) {
+            // Circle/dot
+            ctx.beginPath();
+            ctx.ellipse(0, 0, apparentWidth / 2, apparentHeight / 2, 0, 0, Math.PI * 2);
+            ctx.fill();
+          } else {
+            // Streamer/ribbon with curve
+            ctx.beginPath();
+            const curl = Math.sin(piece.flutter * 2) * 3;
+            ctx.moveTo(-apparentWidth / 2, -apparentHeight / 2);
+            ctx.quadraticCurveTo(curl, 0, -apparentWidth / 2, apparentHeight / 2);
+            ctx.lineTo(apparentWidth / 2, apparentHeight / 2);
+            ctx.quadraticCurveTo(-curl, 0, apparentWidth / 2, -apparentHeight / 2);
+            ctx.closePath();
+            ctx.fill();
+          }
+          
+          ctx.restore();
+        });
+        
+        confettiAnimationId = requestAnimationFrame(animate);
+      }
+      
+      if (confettiAnimationId) cancelAnimationFrame(confettiAnimationId);
+      confettiAnimationId = requestAnimationFrame(animate);
+    }
+    
+    function stopConfetti() {
+      if (confettiAnimationId) {
+        cancelAnimationFrame(confettiAnimationId);
+        confettiAnimationId = null;
+      }
+      const canvas = document.getElementById('confetti-canvas');
+      if (canvas) canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    // Celebration
+    let celebrationHitTime = null;
+    let celebrationRank = 1;
+    
+    function showBingoCelebration() {
+      const celebration = document.getElementById('bingo-celebration');
+      const clockText = document.getElementById('game-clock')?.textContent || '0:00';
+      const periodText = document.getElementById('game-period')?.textContent || '1st';
+      celebrationHitTime = `${periodText} - ${clockText}`;
+      
+      // Update celebration overlay stats
+      const hitTimeEl = document.getElementById('celebration-hit-time');
+      const rankEl = document.getElementById('celebration-rank');
+      if (hitTimeEl) hitTimeEl.textContent = celebrationHitTime;
+      if (rankEl) rankEl.textContent = `${celebrationRank}${getOrdinalSuffix(celebrationRank)}`;
+      
+      // Update entry card stats
+      const entryHitTimeEl = document.getElementById('hit-time');
+      const entryRankEl = document.getElementById('rank');
+      if (entryHitTimeEl) entryHitTimeEl.textContent = celebrationHitTime;
+      if (entryRankEl) entryRankEl.textContent = `${celebrationRank}${getOrdinalSuffix(celebrationRank)}`;
+      
+      celebration.classList.add('active');
+      if (navigator.vibrate) navigator.vibrate([100, 50, 100, 50, 200]);
+      setTimeout(() => {
+        launchConfetti();
+        playBingoCelebration(); // Play bingo-win.mp3 + confetti.mp3 layered together
+      }, 200);
+    }
+    
+    function hideBingoCelebration() {
+      document.getElementById('bingo-celebration').classList.remove('active');
+      stopConfetti();
+    }
+    
+    function getOrdinalSuffix(n) {
+      const s = ['th', 'st', 'nd', 'rd'];
+      const v = n % 100;
+      return s[(v - 20) % 10] || s[v] || s[0];
+    }
+
+    function resetTileValues() {
+      tiles.forEach((tile) => {
+        if (tile.type === 'freespot') return;
+        tile.current = 0;
+        tile.state = 'normal';
+        updateTileState(tile);
+      });
+      
+      gameScores = { away: 0, home: 0 };
+      gameQuarter = 1;
+      gameClock = 900;
+      
+      document.getElementById('away-score').textContent = '0';
+      document.getElementById('home-score').textContent = '0';
+      document.getElementById('game-clock').textContent = '15:00';
+      document.getElementById('game-period').textContent = '1st';
+      
+      document.querySelectorAll('.winning-tile').forEach(el => el.classList.remove('winning-tile'));
+      document.getElementById('bingo-grid').classList.remove('has-winner');
+      hideBingoCelebration();
+      updateAllTilesInPlace();
+    }
+
+    function resetGame() {
+      if (simulationInterval) {
+        clearInterval(simulationInterval);
+        simulationInterval = null;
+      }
+      simulationRunning = false;
+      
+      tiles.forEach((tile) => {
+        if (tile.type === 'freespot') return;
+        tile.current = 0;
+        tile.state = 'normal';
+      });
+      
+      gameScores = { away: 0, home: 0 };
+      gameQuarter = 1;
+      gameClock = 900;
+      
+      document.getElementById('away-score').textContent = '0';
+      document.getElementById('home-score').textContent = '0';
+      document.getElementById('game-clock').textContent = '15:00';
+      document.getElementById('game-period').textContent = '1st';
+      
+      // Reset entry card to default values
+      document.getElementById('tiles-hit').textContent = '1/24';
+      document.getElementById('hit-time').textContent = '--';
+      document.getElementById('rank').textContent = '--';
+      
+      document.querySelectorAll('.winning-tile').forEach(el => el.classList.remove('winning-tile'));
+      document.getElementById('bingo-grid').classList.remove('has-winner');
+      hideBingoCelebration();
+      
+      const allTiles = document.querySelectorAll('.bingo-tile');
+      allTiles.forEach(tile => {
+        tile.classList.remove('animate-flip');
+        void tile.offsetWidth;
+        tile.classList.add('animate-flip');
+      });
+      
+      setTimeout(() => {
+        updateAllTilesInPlace();
+        setTimeout(() => allTiles.forEach(tile => tile.classList.remove('animate-flip')), 800);
+      }, 50);
+      
+      // Reset button states
+      document.getElementById('simulate-btn').textContent = 'Start Game';
+      document.getElementById('simulate-btn').classList.remove('active');
+      document.getElementById('restart-btn').disabled = true;
+    }
+
+    function simulateGame(options = {}) {
+      const { duration = 45000, updateInterval = 300, winRate = 0.7 } = options;
+
+      if (simulationRunning) return;
+      
+      resetTileValues();
+      simulationRunning = true;
+      
+      const totalUpdates = duration / updateInterval;
+      let updateCount = 0;
+      
+      const willWin = winRate >= 1.0 || Math.random() < winRate;
+      let targetPattern = null;
+      if (willWin) {
+        targetPattern = BINGO_PATTERNS[Math.floor(Math.random() * BINGO_PATTERNS.length)];
+      }
+      
+      const priorityTiles = new Set();
+      const priorityTileSchedule = {};
+      if (willWin && targetPattern) {
+        targetPattern.indices.forEach((tileIndex, i) => {
+          priorityTiles.add(tileIndex);
+          priorityTileSchedule[tileIndex] = 0.5 + (i * 0.1);
+        });
+      }
+      
+      simulationInterval = setInterval(() => {
+        updateCount++;
+        const progress = updateCount / totalUpdates;
+        
+        gameClock = Math.max(0, 900 - Math.floor(progress * 900));
+        const minutes = Math.floor(gameClock / 60);
+        const seconds = gameClock % 60;
+        document.getElementById('game-clock').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        
+        if (progress > 0.75) {
+          gameQuarter = 4;
+          document.getElementById('game-period').textContent = '4th';
+        } else if (progress > 0.5) {
+          gameQuarter = 3;
+          document.getElementById('game-period').textContent = '3rd';
+        } else if (progress > 0.25) {
+          gameQuarter = 2;
+          document.getElementById('game-period').textContent = '2nd';
+        }
+        
+        if (Math.random() < 0.03) {
+          const scoringTeam = Math.random() < 0.5 ? 'away' : 'home';
+          const points = [3, 6, 7][Math.floor(Math.random() * 3)];
+          gameScores[scoringTeam] += points;
+          document.getElementById(`${scoringTeam}-score`).textContent = gameScores[scoringTeam];
+        }
+        
+        tiles.forEach((tile, index) => {
+          if (tile.type === 'freespot') return;
+          
+          const isPriorityTile = priorityTiles.has(index);
+          
+          if (tile.target <= 0) {
+            if (tile.state !== 'complete') {
+              if (isPriorityTile && willWin) {
+                const scheduleTime = priorityTileSchedule[index] || 0.8;
+                if (progress >= scheduleTime) {
+                  tile.state = 'complete';
+                  updateTileInPlace(index);
+                }
+              } else if (Math.random() < 0.02) {
+                tile.state = 'complete';
+                updateTileInPlace(index);
+              }
+            }
+            return;
+          }
+          
+          if (isPriorityTile && willWin) {
+            const scheduleTime = priorityTileSchedule[index] || 0.8;
+            const targetProgress = Math.min(progress / scheduleTime, 1.0);
+            const eased = easeOutCubic(targetProgress);
+            const targetValue = tile.target + PENDING_THRESHOLD + 1;
+            const newValue = Math.round(Math.max(tile.current, eased * targetValue));
+            
+            if (newValue > tile.current) {
+              tile.current = newValue;
+              updateTileState(tile);
+              updateTileInPlace(index);
+            }
+          } else {
+            if (Math.random() < 0.10) {
+              const remainingProgress = tile.target - tile.current;
+              const increment = Math.random() * (remainingProgress * 0.12) + 0.5;
+              tile.current = Math.round(Math.min(tile.current + increment, tile.target * 1.3));
+              updateTileState(tile);
+              updateTileInPlace(index);
+            }
+          }
+        });
+        
+        updateStats();
+        
+        const winningPattern = detectBingo();
+        if (winningPattern) {
+          clearInterval(simulationInterval);
+          simulationInterval = null;
+          simulationRunning = false;
+          drawWinningLine(winningPattern);
+          setTimeout(() => showBingoCelebration(), 800);
+          return;
+        }
+        
+        if (updateCount >= totalUpdates) {
+          clearInterval(simulationInterval);
+          simulationInterval = null;
+          simulationRunning = false;
+          document.getElementById('game-period').textContent = 'FINAL';
+        }
+        
+      }, updateInterval);
+    }
+
+    // Initialize
+    tiles.forEach(updateTileState);
+    renderGrid(true);
+
+    // Event listeners
+    document.getElementById('detail-sheet-overlay').addEventListener('click', closeDetailSheet);
+    document.getElementById('detail-sheet-close').addEventListener('click', closeDetailSheet);
+    
+    document.getElementById('admire-bingo-btn').addEventListener('click', hideBingoCelebration);
+    document.getElementById('share-bingo-btn').addEventListener('click', () => {
+      console.log('Share button clicked');
+    });
+
+    // Simulator controls
+    document.getElementById('simulate-btn').addEventListener('click', function() {
+      if (!simulationRunning) {
+        playSound('gameStart'); // Play game start sound
+        simulateGame({ duration: 45000, winRate: 1.0 });
+        this.textContent = 'Simulating...';
+        this.classList.add('active');
+        document.getElementById('restart-btn').disabled = false;
+      }
+    });
+
+    document.getElementById('restart-btn').addEventListener('click', function() {
+      playSound('resetGame'); // Play reset sound
+      resetGame();
+    });
+
+    // Volume control event listeners
+    document.getElementById('volume-slider').addEventListener('input', function() {
+      volumeControl.setVolume(this.value / 100);
+    });
+
+    document.getElementById('volume-icon').addEventListener('click', function() {
+      volumeControl.toggleMute();
+    });
+
+    // Initialize volume control
+    volumeControl.init();
+
+    // Expose API globally
+    window.bingoGame = {
+      simulateGame,
+      resetGame,
+      showBingoCelebration,
+      hideBingoCelebration,
+      isSimulating: () => simulationRunning
+    };
+  </script>
+</body>
+</html>
