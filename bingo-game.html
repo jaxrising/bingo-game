@@ -904,11 +904,11 @@
       /* Shimmer gradient */
       background: linear-gradient(
         90deg,
-        #41BA42 0%,
+        #3A3B3C 0%,
         #FFFFFF 20%,
-        #41BA42 40%,
-        rgba(65, 186, 66, 0.3) 60%,
-        #41BA42 80%,
+        #3A3B3C 40%,
+        rgba(58, 59, 60, 0.3) 60%,
+        #3A3B3C 80%,
         #FFFFFF 100%
       );
       background-size: 200% 200%;
@@ -933,6 +933,136 @@
       100% {
         background-position: 200% 200%;
       }
+    }
+
+    .bingo-tile.state-pending-win {
+      border: 2px solid #ffffff;
+      box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+      background: linear-gradient(#1d1e1f, #1d1e1f);
+      cursor: pointer;
+      animation: pendingWinPulse 1.5s ease-in-out infinite;
+    }
+
+    .bingo-tile.state-pending-win .tile-content .tile-stat-value,
+    .bingo-tile.state-pending-win .tile-content .tile-stat-label {
+      opacity: 0;
+    }
+
+    .bingo-tile.state-pending-win > .claim-btn {
+      display: flex;
+    }
+
+    .claim-btn {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 16px;
+      background: #3772DF;
+      border-radius: 100px;
+      border: none;
+      font-family: inherit;
+      font-size: 10px;
+      font-weight: 700;
+      color: #ffffff;
+      cursor: pointer;
+      padding: 0;
+      position: absolute;
+      bottom: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+    }
+
+    @keyframes pendingWinPulse {
+      0%, 100% { box-shadow: 0 0 6px rgba(255, 255, 255, 0.8); }
+      50% { box-shadow: 0 0 14px rgba(255, 255, 255, 0.9), 0 0 24px rgba(255, 255, 255, 0.4); }
+    }
+
+    /* Heart shape achievement glow */
+    .bingo-tile.state-heart-glow {
+      border: 2px solid #eb34a4 !important;
+      box-shadow: 0 0 6px #eb36a5;
+      animation: heartGlowPulse 1.5s ease-in-out infinite !important;
+    }
+
+    @keyframes heartGlowPulse {
+      0%, 100% { box-shadow: 0 0 6px #eb36a5; }
+      50% { box-shadow: 0 0 14px #eb36a5, 0 0 24px rgba(235, 52, 164, 0.4); }
+    }
+
+    /* Heart burst animation */
+    .heart-particle {
+      position: absolute;
+      pointer-events: none;
+      z-index: 100;
+      font-size: var(--heart-size, 20px);
+      animation: heartBurst var(--heart-duration, 800ms) ease-out forwards;
+      opacity: 0;
+    }
+
+    @keyframes heartBurst {
+      0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(0) rotate(var(--heart-rotation, 0deg));
+      }
+      30% {
+        opacity: 1;
+        transform: translate(
+          calc(var(--heart-x, 0px) * 0.4),
+          calc(var(--heart-y, 0px) * 0.4)
+        ) scale(1.2) rotate(var(--heart-rotation, 0deg));
+      }
+      100% {
+        opacity: 0;
+        transform: translate(var(--heart-x, 0px), var(--heart-y, 0px)) scale(0.6) rotate(var(--heart-rotation, 0deg));
+      }
+    }
+
+    /* Achievement toast */
+    .achievement-toast {
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%) translateY(120px);
+      background: #1d1e1f;
+      border: 1.5px solid #eb34a4;
+      border-radius: 14px;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 8px 32px rgba(235, 52, 164, 0.3), 0 2px 8px rgba(0,0,0,0.4);
+      z-index: 9999;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      min-width: 280px;
+    }
+
+    .achievement-toast.active {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .achievement-toast-icon {
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+
+    .achievement-toast-content {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .achievement-toast-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .achievement-toast-subtitle {
+      font-size: 12px;
+      font-weight: 400;
+      color: #a1a2a3;
     }
 
     .bingo-tile.state-complete {
@@ -1203,21 +1333,11 @@
 
     /* Winning States */
     .bingo-grid.has-winner .bingo-tile {
-      opacity: 0.10;
       transition: opacity 0.4s ease;
     }
 
     .bingo-grid.has-winner .bingo-tile.winning-tile {
       opacity: 1;
-      box-shadow: 
-        0 0 20px rgba(65, 186, 66, 0.8),
-        0 0 40px rgba(65, 186, 66, 0.6),
-        inset 0 0 15px rgba(65, 186, 66, 0.2);
-      border: 2px solid #41BA42 !important;
-      background: #1d1e1f !important;
-      z-index: 10;
-      animation: winningPulse 1.5s ease-in-out infinite;
-      transform: none !important;
     }
 
     @keyframes winningPulse {
@@ -1670,13 +1790,23 @@
       <h2>Game Simulator</h2>
 
       <div class="game-flow-card">
-        <p>Click Start Game to simulate the bingo experience. Tap a bingo tile to see more details and track your progress. Good luck!</p>
+        <p>Hit <strong>Start Game</strong> to kick off the simulation. As props hit, tiles will glow and show a <strong>CLAIM</strong> button — tap it to lock in your win. Complete a row for Bingo, or claim the secret heart pattern for a hidden achievement.</p>
       </div>
 
       <button class="start-btn" id="simulate-btn">Start Game</button>
       <button class="restart-btn" id="restart-btn" disabled>Restart Game</button>
 
       <!-- Volume Control -->
+      <div class="volume-control">
+        <div class="volume-icon" title="Game Speed" style="display:flex;align-items:center;justify-content:center;font-size:20px;">
+          🕐
+        </div>
+        <div class="volume-slider-wrapper">
+          <input type="range" class="volume-slider" id="speed-slider" min="10" max="200" value="100">
+          <span class="volume-percentage" id="speed-percentage">1x</span>
+        </div>
+      </div>
+
       <div class="volume-control">
         <div class="volume-icon" id="volume-icon" title="Click to mute/unmute">
           <svg id="volume-icon-high" viewBox="0 0 24 24">
@@ -1780,7 +1910,7 @@
         <div class="game-strip">
           <div class="team-section">
             <div class="team-logo-container has-possession">
-              <img src="https://a.espncdn.com/i/teamlogos/nfl/500/lar.png" alt="LAR" class="team-logo" id="away-logo">
+              <img src="https://a.espncdn.com/i/teamlogos/nfl/500-dark/lar.png" alt="LAR" class="team-logo" id="away-logo">
             </div>
             <div class="team-info">
               <span class="team-abbreviation" id="away-abbr">LAR</span>
@@ -1800,7 +1930,7 @@
           </div>
           <div class="team-section">
             <div class="team-logo-container has-possession right">
-              <img src="https://a.espncdn.com/i/teamlogos/nfl/500/tb.png" alt="TB" class="team-logo" id="home-logo">
+              <img src="https://a.espncdn.com/i/teamlogos/nfl/500-dark/tb.png" alt="TB" class="team-logo" id="home-logo">
             </div>
             <div class="team-info">
               <span class="team-abbreviation" id="home-abbr">TB</span>
@@ -1895,7 +2025,7 @@
     // ESPN CDN URL helpers
     const ESPN_CDN = {
       playerHeadshot: (playerId) => `https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/${playerId}.png&w=96&h=70&cb=1`,
-      teamLogo: (team) => `https://a.espncdn.com/i/teamlogos/nfl/500/${team.toLowerCase()}.png`
+      teamLogo: (team) => `https://a.espncdn.com/i/teamlogos/nfl/500-dark/${team.toLowerCase()}.png`
     };
 
     // Local Figma headshot assets
@@ -1959,15 +2089,15 @@
 
     // ===== SOUND EFFECTS =====
     const sounds = {
-      tileComplete: new Audio('sounds/title-complete.mp3'),
-      tilePending: new Audio('sounds/title-pending.mp3'),
-      bingoLine: new Audio('sounds/bingo-line.mp3'),
-      bingoWin: new Audio('sounds/bingo-win.mp3'),
-      confetti: new Audio('sounds/confetti.mp3'),
-      resetGame: new Audio('sounds/reset-game.mp3'),
-      cardIn: new Audio('sounds/card-in.mp3'),
-      cardOut: new Audio('sounds/card-out.mp3'),
-      gameStart: new Audio('sounds/game-start.mp3')
+      tileComplete: new Audio('_assets/Positive Gain.mp3'),
+      tilePending: new Audio('_assets/Progress Gain.mp3'),
+      bingoLine: new Audio('_assets/Bingo Win.mp3'),
+      bingoWin: new Audio('_assets/Bingo Win.mp3'),
+      confetti: new Audio('_assets/Bingo Win.mp3'),
+      resetGame: new Audio('_assets/Bingo Loss.mp3'),
+      cardIn: new Audio('_assets/Progress Gain.mp3'),
+      cardOut: new Audio('_assets/Progress Gain.mp3'),
+      gameStart: new Audio('_assets/Positive Gain.mp3')
     };
 
     // Volume control system
@@ -2075,10 +2205,11 @@
     // Helper functions
     function calculateTileState(tile) {
       if (tile.type === 'freespot') return 'complete';
+      if (tile.confirmed) return 'complete';
       if (tile.target <= 0) return tile.state;
       if (tile.current < tile.target) return 'in-progress';
       if (tile.current >= tile.target && tile.current < tile.target + PENDING_THRESHOLD) return 'pending';
-      if (tile.current >= tile.target + PENDING_THRESHOLD) return 'complete';
+      if (tile.current >= tile.target + PENDING_THRESHOLD) return 'pending-win';
       return 'normal';
     }
 
@@ -2086,16 +2217,18 @@
       const oldState = tile.state;
       const newState = calculateTileState(tile);
       tile.state = newState;
-      
+
       // Play sounds on state transitions
       if (oldState !== newState) {
         if (newState === 'pending' && oldState !== 'pending') {
+          playSound('tilePending');
+        } else if (newState === 'pending-win' && oldState !== 'pending-win') {
           playSound('tilePending');
         } else if (newState === 'complete' && oldState !== 'complete') {
           playSound('tileComplete');
         }
       }
-      
+
       return tile;
     }
 
@@ -2112,13 +2245,15 @@
     }
 
     function getTeamLogoUrl(team) {
-      if (!team || team === 'NFL') return 'https://a.espncdn.com/i/teamlogos/nfl/500/nfl.png';
-      return `https://a.espncdn.com/i/teamlogos/nfl/500/${team.toLowerCase()}.png`;
+      if (!team || team === 'NFL') return 'https://a.espncdn.com/i/teamlogos/nfl/500-dark/nfl.png';
+      return `https://a.espncdn.com/i/teamlogos/nfl/500-dark/${team.toLowerCase()}.png`;
     }
 
     function getPlayerHeadshotUrl(playerId) {
       if (!playerId) return null;
-      if (LOCAL_HEADSHOTS[playerId]) return LOCAL_HEADSHOTS[playerId];
+      if (typeof playerId === 'number') {
+        return `https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/${playerId}.png&w=96&h=70&cb=1`;
+      }
       return null;
     }
 
@@ -2239,14 +2374,14 @@
         const progress = Math.min((tile.current / tile.target) * 100, 100);
         progressFill.style.width = `${progress}%`;
         progressFill.className = 'detail-sheet-progress-fill';
-        if (tile.state === 'complete') progressFill.classList.add('complete');
+        if (tile.state === 'complete' || tile.state === 'pending-win') progressFill.classList.add('complete');
         if (tile.state === 'pending') progressFill.classList.add('pending');
       } else {
         statLabel.textContent = tile.stat || 'Complete to win';
         statValue.textContent = tile.state === 'complete' ? '✓' : '—';
         progressFill.style.width = tile.state === 'complete' ? '100%' : '0%';
         progressFill.className = 'detail-sheet-progress-fill';
-        if (tile.state === 'complete') progressFill.classList.add('complete');
+        if (tile.state === 'complete' || tile.state === 'pending-win') progressFill.classList.add('complete');
         if (tile.state === 'pending') progressFill.classList.add('pending');
       }
 
@@ -2269,7 +2404,7 @@
       const tileEl = document.querySelector(`.bingo-tile[data-tile-id="${tile.id}"]`);
       if (!tileEl || tile.type === 'freespot') return;
       
-      tileEl.className = tileEl.className.replace(/state-\w+/g, '').replace(/\s+/g, ' ').trim();
+      tileEl.className = tileEl.className.replace(/state-[\w-]+/g, '').replace(/\s+/g, ' ').trim();
       tileEl.classList.add(`state-${tile.state}`);
       
       if (tile.target > 0) {
@@ -2328,6 +2463,7 @@
               ${statValue ? `<div class="tile-stat-value">${statValue}</div>` : ''}
               ${statLabel ? `<div class="tile-stat-label">${statLabel}</div>` : ''}
             </div>
+            <div class="claim-btn">CLAIM</div>
             <div class="tile-checkmark">
               <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
             </div>
@@ -2346,7 +2482,32 @@
         }
 
         if (tile.type !== 'freespot') {
-          tileEl.addEventListener('click', () => showDetailSheet(tile.id));
+          tileEl.addEventListener('click', (e) => {
+            if (tile.state === 'pending-win') {
+              e.stopPropagation();
+              confirmCount++;
+              tile.confirmed = true;
+              updateTileState(tile);
+              if (shouldSpawnHearts()) {
+                spawnHearts(tileEl);
+              }
+              updateTileInPlace(index);
+              updateStats();
+              if (checkHeartPattern()) {
+                triggerHeartAchievement();
+              }
+              if (!bingoTriggered) {
+                const winningPattern = detectBingo();
+                if (winningPattern) {
+                  bingoTriggered = true;
+                  drawWinningLine(winningPattern);
+                  setTimeout(() => showBingoCelebration(), 800);
+                }
+              }
+            } else {
+              showDetailSheet(tile.id);
+            }
+          });
         }
 
         grid.appendChild(tileEl);
@@ -2364,6 +2525,7 @@
 
     // ===== SIMULATION SYSTEM =====
     let simulationRunning = false;
+    let bingoTriggered = false;
     let simulationInterval = null;
     let gameScores = { away: 0, home: 0 };
     let gameQuarter = 1;
@@ -2681,6 +2843,7 @@
       tiles.forEach((tile) => {
         if (tile.type === 'freespot') return;
         tile.current = 0;
+        tile.confirmed = false;
         tile.state = 'normal';
         updateTileState(tile);
       });
@@ -2710,13 +2873,14 @@
       tiles.forEach((tile) => {
         if (tile.type === 'freespot') return;
         tile.current = 0;
+        tile.confirmed = false;
         tile.state = 'normal';
       });
-      
+
       gameScores = { away: 0, home: 0 };
       gameQuarter = 1;
       gameClock = 900;
-      
+
       document.getElementById('away-score').textContent = '0';
       document.getElementById('home-score').textContent = '0';
       document.getElementById('game-clock').textContent = '15:00';
@@ -2728,9 +2892,10 @@
       document.getElementById('rank').textContent = '--';
       
       document.querySelectorAll('.winning-tile').forEach(el => el.classList.remove('winning-tile'));
+      document.querySelectorAll('.state-heart-glow').forEach(el => el.classList.remove('state-heart-glow'));
       document.getElementById('bingo-grid').classList.remove('has-winner');
       hideBingoCelebration();
-      
+
       const allTiles = document.querySelectorAll('.bingo-tile');
       allTiles.forEach(tile => {
         tile.classList.remove('animate-flip');
@@ -2749,31 +2914,56 @@
       document.getElementById('restart-btn').disabled = true;
     }
 
+    function getSpeedMultiplier() {
+      const slider = document.getElementById('speed-slider');
+      return slider ? slider.value / 100 : 1;
+    }
+
     function simulateGame(options = {}) {
-      const { duration = 45000, updateInterval = 300, winRate = 0.7 } = options;
+      const speedMult = getSpeedMultiplier();
+      const baseInterval = 300;
+      const scaledInterval = Math.round(baseInterval / speedMult);
+      const { duration = 45000, updateInterval = scaledInterval, winRate = 0.7 } = options;
 
       if (simulationRunning) return;
-      
+
+      simulationCount++;
+      heartAchievementTriggered = false;
+      bingoTriggered = false;
+      confirmCount = 0;
+      heartsCollected = 0;
       resetTileValues();
       simulationRunning = true;
       
       const totalUpdates = duration / updateInterval;
       let updateCount = 0;
       
-      const willWin = winRate >= 1.0 || Math.random() < winRate;
-      let targetPattern = null;
-      if (willWin) {
-        targetPattern = BINGO_PATTERNS[Math.floor(Math.random() * BINGO_PATTERNS.length)];
-      }
-      
+      const willWin = true;
+      let targetPattern = BINGO_PATTERNS[Math.floor(Math.random() * BINGO_PATTERNS.length)];
+
       const priorityTiles = new Set();
       const priorityTileSchedule = {};
-      if (willWin && targetPattern) {
-        targetPattern.indices.forEach((tileIndex, i) => {
+
+      // Coin flip hits very early (it happens at the start of a real game)
+      const coinFlipIndex = tiles.findIndex(t => t.customIcon === 'coin');
+      if (coinFlipIndex >= 0) {
+        priorityTiles.add(coinFlipIndex);
+        priorityTileSchedule[coinFlipIndex] = 0.05;
+      }
+
+      // Always prioritize heart pattern tiles + a bingo line
+      HEART_PATTERN.forEach((tileIndex, i) => {
+        if (tiles[tileIndex].type === 'freespot') return;
+        if (tileIndex === coinFlipIndex) return;
+        priorityTiles.add(tileIndex);
+        priorityTileSchedule[tileIndex] = 0.25 + (i * 0.05);
+      });
+      targetPattern.indices.forEach((tileIndex, i) => {
+        if (!priorityTiles.has(tileIndex)) {
           priorityTiles.add(tileIndex);
           priorityTileSchedule[tileIndex] = 0.5 + (i * 0.1);
-        });
-      }
+        }
+      });
       
       simulationInterval = setInterval(() => {
         updateCount++;
@@ -2808,15 +2998,15 @@
           const isPriorityTile = priorityTiles.has(index);
           
           if (tile.target <= 0) {
-            if (tile.state !== 'complete') {
+            if (tile.state !== 'complete' && tile.state !== 'pending-win') {
               if (isPriorityTile && willWin) {
                 const scheduleTime = priorityTileSchedule[index] || 0.8;
                 if (progress >= scheduleTime) {
-                  tile.state = 'complete';
+                  tile.state = 'pending-win';
                   updateTileInPlace(index);
                 }
               } else if (Math.random() < 0.02) {
-                tile.state = 'complete';
+                tile.state = 'pending-win';
                 updateTileInPlace(index);
               }
             }
@@ -2847,16 +3037,6 @@
         });
         
         updateStats();
-        
-        const winningPattern = detectBingo();
-        if (winningPattern) {
-          clearInterval(simulationInterval);
-          simulationInterval = null;
-          simulationRunning = false;
-          drawWinningLine(winningPattern);
-          setTimeout(() => showBingoCelebration(), 800);
-          return;
-        }
         
         if (updateCount >= totalUpdates) {
           clearInterval(simulationInterval);
@@ -2897,6 +3077,12 @@
       resetGame();
     });
 
+    // Speed control
+    document.getElementById('speed-slider').addEventListener('input', function() {
+      const val = this.value / 100;
+      document.getElementById('speed-percentage').textContent = val <= 1 ? `${val.toFixed(1)}x` : `${val.toFixed(1)}x`;
+    });
+
     // Volume control event listeners
     document.getElementById('volume-slider').addEventListener('input', function() {
       volumeControl.setVolume(this.value / 100);
@@ -2917,6 +3103,126 @@
       hideBingoCelebration,
       isSimulating: () => simulationRunning
     };
+
+    // ===== VALENTINE'S DAY HEARTS + ACHIEVEMENT =====
+    let confirmCount = 0;
+    let heartsCollected = 0;
+    let powerOfLoveTriggered = false;
+    const HEARTS = ['❤️', '💗', '💖', '💝', '💕'];
+
+    function shouldSpawnHearts() {
+      return confirmCount > 0 && confirmCount % 3 === 0;
+    }
+
+    function spawnHearts(tileEl) {
+      const rect = tileEl.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const count = 7;
+
+      for (let i = 0; i < count; i++) {
+        const heart = document.createElement('span');
+        heart.className = 'heart-particle';
+        heart.textContent = HEARTS[Math.floor(Math.random() * HEARTS.length)];
+
+        const angle = -30 + (Math.random() * 180 - 90); // upward arc
+        const distance = 60 + Math.random() * 70;
+        const rad = angle * (Math.PI / 180);
+        const x = Math.cos(rad) * distance;
+        const y = -Math.abs(Math.sin(rad) * distance) - 20;
+        const size = 16 + Math.random() * 14;
+        const duration = 600 + Math.random() * 400;
+        const rotation = -30 + Math.random() * 60;
+
+        heart.style.cssText = `
+          position: fixed;
+          left: ${centerX}px;
+          top: ${centerY}px;
+          --heart-x: ${x}px;
+          --heart-y: ${y}px;
+          --heart-size: ${size}px;
+          --heart-duration: ${duration}ms;
+          --heart-rotation: ${rotation}deg;
+        `;
+
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), duration + 50);
+      }
+
+      heartsCollected++;
+      if (heartsCollected === 3 && !powerOfLoveTriggered) {
+        powerOfLoveTriggered = true;
+        setTimeout(() => showAchievementToast('💝', "That's the Power of Love", 'You collected 3 secret hearts'), 600);
+      }
+    }
+
+    function showAchievementToast(icon, title, subtitle) {
+      let toast = document.getElementById('achievement-toast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'achievement-toast';
+        toast.className = 'achievement-toast';
+        document.body.appendChild(toast);
+      }
+      toast.innerHTML = `
+        <span class="achievement-toast-icon">${icon}</span>
+        <div class="achievement-toast-content">
+          <span class="achievement-toast-title">${title}</span>
+          <span class="achievement-toast-subtitle">${subtitle}</span>
+        </div>
+      `;
+      toast.classList.remove('active');
+      requestAnimationFrame(() => {
+        toast.classList.add('active');
+      });
+      setTimeout(() => {
+        toast.classList.remove('active');
+      }, 4000);
+    }
+
+    // ===== HEART SHAPE ACHIEVEMENT =====
+    const HEART_PATTERN = [0, 1, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 17];
+    let heartAchievementTriggered = false;
+    let simulationCount = 0;
+
+    function checkHeartPattern() {
+      if (heartAchievementTriggered) return false;
+      return HEART_PATTERN.every(i => tiles[i].state === 'complete');
+    }
+
+    function triggerHeartAchievement() {
+      heartAchievementTriggered = true;
+
+      // Add pink glow to all heart pattern tiles with stagger
+      HEART_PATTERN.forEach((tileIndex, i) => {
+        const tileEl = document.querySelector(`.bingo-tile[data-tile-id="${tiles[tileIndex].id}"]`);
+        if (!tileEl) return;
+        setTimeout(() => {
+          tileEl.classList.add('state-heart-glow');
+        }, i * 80);
+      });
+
+      // Spawn hearts from all heart pattern tiles with stagger
+      setTimeout(() => {
+        HEART_PATTERN.forEach((tileIndex, i) => {
+          const tileEl = document.querySelector(`.bingo-tile[data-tile-id="${tiles[tileIndex].id}"]`);
+          if (!tileEl) return;
+          setTimeout(() => spawnHearts(tileEl), i * 100);
+        });
+      }, 400);
+
+      // Show achievement toast
+      setTimeout(() => {
+        showAchievementToast('🏆', 'Heart of a Champion', 'You completed the secret heart pattern');
+      }, 2200);
+
+      // Fade out pink glow after 5 seconds
+      setTimeout(() => {
+        document.querySelectorAll('.state-heart-glow').forEach(el => {
+          el.classList.remove('state-heart-glow');
+        });
+      }, 5000);
+    }
   </script>
 </body>
 </html>
