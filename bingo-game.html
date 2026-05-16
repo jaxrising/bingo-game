@@ -2392,10 +2392,13 @@
       const tile = tiles[index];
       const tileEl = document.querySelector(`.bingo-tile[data-tile-id="${tile.id}"]`);
       if (!tileEl || tile.type === 'freespot') return;
-      
+
+      // During heart achievement, don't touch tiles
+      if (heartAchievementActive) return;
+
       tileEl.className = tileEl.className.replace(/state-[\w-]+/g, '').replace(/\s+/g, ' ').trim();
       tileEl.classList.add(`state-${tile.state}`);
-      
+
       if (tile.target > 0) {
         const targetProgress = Math.min((tile.current / tile.target) * 100, 100);
         tileEl.style.setProperty('--progress', targetProgress);
@@ -3172,6 +3175,7 @@
     // ===== HEART SHAPE ACHIEVEMENT =====
     const HEART_PATTERN = [0, 1, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 17];
     let heartAchievementTriggered = false;
+    let heartAchievementActive = false;
     let simulationCount = 0;
 
     function checkHeartPattern() {
@@ -3181,6 +3185,7 @@
 
     function triggerHeartAchievement() {
       heartAchievementTriggered = true;
+      heartAchievementActive = true;
 
       const heartSet = new Set(HEART_PATTERN);
 
@@ -3192,6 +3197,13 @@
         tileEl.style.transition = 'opacity 0.4s ease';
         tileEl.style.opacity = '0.25';
       });
+
+      // Also dim the freespot
+      const freeEl = document.querySelector('.bingo-tile.free-spot');
+      if (freeEl && !heartSet.has(12)) {
+        freeEl.style.transition = 'opacity 0.4s ease';
+        freeEl.style.opacity = '0.25';
+      }
 
       // Add pink glow to all heart pattern tiles with stagger
       HEART_PATTERN.forEach((tileIndex, i) => {
@@ -3218,6 +3230,8 @@
 
       // Revert after 3.5 seconds: remove glow + restore opacity
       setTimeout(() => {
+        heartAchievementActive = false;
+
         document.querySelectorAll('.state-heart-glow').forEach(el => {
           el.classList.remove('state-heart-glow');
         });
@@ -3225,8 +3239,13 @@
           if (heartSet.has(index)) return;
           const tileEl = document.querySelector(`.bingo-tile[data-tile-id="${tile.id}"]`);
           if (!tileEl) return;
+          tileEl.style.transition = 'opacity 0.4s ease';
           tileEl.style.opacity = '';
         });
+        if (freeEl && !heartSet.has(12)) {
+          freeEl.style.transition = 'opacity 0.4s ease';
+          freeEl.style.opacity = '';
+        }
       }, 3500);
     }
   </script>
