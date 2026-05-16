@@ -979,11 +979,28 @@
       50% { box-shadow: 0 0 14px rgba(255, 255, 255, 0.9), 0 0 24px rgba(255, 255, 255, 0.4); }
     }
 
-    /* Heart shape achievement glow */
-    .bingo-tile.state-heart-glow {
+    /* Heart shape achievement glow — driven by grid-level class */
+    .bingo-grid.heart-reveal .bingo-tile {
+      opacity: 0.25 !important;
+      transition: opacity 0.4s ease;
+    }
+    .bingo-grid.heart-reveal .bingo-tile[data-heart="true"] {
+      opacity: 1 !important;
       border: 2px solid #eb34a4 !important;
       box-shadow: 0 0 6px #eb36a5;
       animation: heartGlowPulse 1.5s ease-in-out infinite !important;
+    }
+    .bingo-grid.heart-reveal .bingo-tile[data-heart="true"].state-pending-win .tile-content .tile-stat-value,
+    .bingo-grid.heart-reveal .bingo-tile[data-heart="true"].state-pending-win .tile-content .tile-stat-label {
+      opacity: 1 !important;
+    }
+    .bingo-grid.heart-reveal .bingo-tile[data-heart="true"].state-pending-win > .claim-btn {
+      display: none !important;
+    }
+    .bingo-grid.heart-reveal .bingo-tile[data-heart="true"].state-pending-win {
+      animation: heartGlowPulse 1.5s ease-in-out infinite !important;
+      border: 2px solid #eb34a4 !important;
+      cursor: default;
     }
 
     @keyframes heartGlowPulse {
@@ -2393,9 +2410,6 @@
       const tileEl = document.querySelector(`.bingo-tile[data-tile-id="${tile.id}"]`);
       if (!tileEl || tile.type === 'freespot') return;
 
-      // During heart achievement, don't touch tiles
-      if (heartAchievementActive) return;
-
       tileEl.className = tileEl.className.replace(/state-[\w-]+/g, '').replace(/\s+/g, ' ').trim();
       tileEl.classList.add(`state-${tile.state}`);
 
@@ -2884,8 +2898,9 @@
       document.getElementById('rank').textContent = '--';
       
       document.querySelectorAll('.winning-tile').forEach(el => el.classList.remove('winning-tile'));
-      document.querySelectorAll('.state-heart-glow').forEach(el => el.classList.remove('state-heart-glow'));
+      document.querySelectorAll('.bingo-tile[data-heart]').forEach(el => delete el.dataset.heart);
       document.getElementById('bingo-grid').classList.remove('has-winner');
+      document.getElementById('bingo-grid').classList.remove('heart-reveal');
       hideBingoCelebration();
 
       const allTiles = document.querySelectorAll('.bingo-tile');
@@ -3190,36 +3205,20 @@
       heartAchievementTriggered = true;
       heartAchievementActive = true;
 
-      const heartSet = new Set(HEART_PATTERN);
+      const grid = document.getElementById('bingo-grid');
 
-      // Dim non-heart tiles to 25% opacity
-      tiles.forEach((tile, index) => {
-        if (heartSet.has(index)) return;
-        const tileEl = document.querySelector(`.bingo-tile[data-tile-id="${tile.id}"]`);
-        if (!tileEl) return;
-        tileEl.style.transition = 'opacity 0.4s ease';
-        tileEl.style.opacity = '0.25';
-      });
-
-      // Also dim the freespot
-      const freeEl = document.querySelector('.bingo-tile.free-spot');
-      if (freeEl && !heartSet.has(12)) {
-        freeEl.style.transition = 'opacity 0.4s ease';
-        freeEl.style.opacity = '0.25';
-      }
-
-      // Force all heart pattern tiles to complete state visually, then add pink glow
-      HEART_PATTERN.forEach((tileIndex, i) => {
+      // Mark heart tiles with data attribute
+      HEART_PATTERN.forEach(tileIndex => {
         const tile = tiles[tileIndex];
         const tileEl = document.querySelector(`.bingo-tile[data-tile-id="${tile.id}"]`);
-        if (!tileEl) return;
-        // Ensure tile displays as complete (not pending-win which hides content)
-        tileEl.className = tileEl.className.replace(/state-[\w-]+/g, '').replace(/\s+/g, ' ').trim();
-        tileEl.classList.add('state-complete');
-        setTimeout(() => {
-          tileEl.classList.add('state-heart-glow');
-        }, i * 80);
+        if (tileEl) tileEl.dataset.heart = 'true';
       });
+      // Also mark freespot if it's in the pattern
+      const freeEl = document.querySelector('.bingo-tile.free-spot');
+      if (freeEl) freeEl.dataset.heart = 'true';
+
+      // Toggle grid class — CSS handles all the visual changes
+      grid.classList.add('heart-reveal');
 
       // Spawn hearts from all heart pattern tiles with stagger
       setTimeout(() => {
@@ -3235,24 +3234,13 @@
         showAchievementToast('🏆', 'Heart of a Champion', 'You completed the secret heart pattern');
       }, 2200);
 
-      // Revert after 3.5 seconds: remove glow + restore opacity
+      // Revert after 10 seconds
       setTimeout(() => {
         heartAchievementActive = false;
-
-        document.querySelectorAll('.state-heart-glow').forEach(el => {
-          el.classList.remove('state-heart-glow');
+        grid.classList.remove('heart-reveal');
+        document.querySelectorAll('.bingo-tile[data-heart]').forEach(el => {
+          delete el.dataset.heart;
         });
-        tiles.forEach((tile, index) => {
-          if (heartSet.has(index)) return;
-          const tileEl = document.querySelector(`.bingo-tile[data-tile-id="${tile.id}"]`);
-          if (!tileEl) return;
-          tileEl.style.transition = 'opacity 0.4s ease';
-          tileEl.style.opacity = '';
-        });
-        if (freeEl && !heartSet.has(12)) {
-          freeEl.style.transition = 'opacity 0.4s ease';
-          freeEl.style.opacity = '';
-        }
       }, 10000);
     }
   </script>
