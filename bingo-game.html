@@ -2046,7 +2046,10 @@
     };
 
     // Local Figma headshot assets
-    const LOCAL_HEADSHOTS = {};
+    const LOCAL_HEADSHOTS = {
+      4429795: '_assets/puka.png',
+      4362887: '_assets/kyren.png'
+    };
 
     const SPECIAL_ASSETS = {
       badBunny: '_assets/Bad_Bunny.png',
@@ -2257,6 +2260,7 @@
 
     function getPlayerHeadshotUrl(playerId) {
       if (!playerId) return null;
+      if (LOCAL_HEADSHOTS[playerId]) return LOCAL_HEADSHOTS[playerId];
       if (typeof playerId === 'number') {
         return `https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/${playerId}.png&w=96&h=70&cb=1`;
       }
