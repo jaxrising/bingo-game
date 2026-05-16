@@ -3182,6 +3182,17 @@
     function triggerHeartAchievement() {
       heartAchievementTriggered = true;
 
+      const heartSet = new Set(HEART_PATTERN);
+
+      // Dim non-heart tiles to 25% opacity
+      tiles.forEach((tile, index) => {
+        if (heartSet.has(index)) return;
+        const tileEl = document.querySelector(`.bingo-tile[data-tile-id="${tile.id}"]`);
+        if (!tileEl) return;
+        tileEl.style.transition = 'opacity 0.4s ease';
+        tileEl.style.opacity = '0.25';
+      });
+
       // Add pink glow to all heart pattern tiles with stagger
       HEART_PATTERN.forEach((tileIndex, i) => {
         const tileEl = document.querySelector(`.bingo-tile[data-tile-id="${tiles[tileIndex].id}"]`);
@@ -3205,12 +3216,18 @@
         showAchievementToast('🏆', 'Heart of a Champion', 'You completed the secret heart pattern');
       }, 2200);
 
-      // Fade out pink glow after 5 seconds
+      // Revert after 3.5 seconds: remove glow + restore opacity
       setTimeout(() => {
         document.querySelectorAll('.state-heart-glow').forEach(el => {
           el.classList.remove('state-heart-glow');
         });
-      }, 5000);
+        tiles.forEach((tile, index) => {
+          if (heartSet.has(index)) return;
+          const tileEl = document.querySelector(`.bingo-tile[data-tile-id="${tile.id}"]`);
+          if (!tileEl) return;
+          tileEl.style.opacity = '';
+        });
+      }, 3500);
     }
   </script>
 </body>
