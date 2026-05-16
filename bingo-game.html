@@ -3180,7 +3180,10 @@
 
     function checkHeartPattern() {
       if (heartAchievementTriggered) return false;
-      return HEART_PATTERN.every(i => tiles[i].state === 'complete');
+      return HEART_PATTERN.every(i => {
+        const s = tiles[i].state;
+        return s === 'complete' || s === 'pending-win';
+      });
     }
 
     function triggerHeartAchievement() {
@@ -3205,10 +3208,14 @@
         freeEl.style.opacity = '0.25';
       }
 
-      // Add pink glow to all heart pattern tiles with stagger
+      // Force all heart pattern tiles to complete state visually, then add pink glow
       HEART_PATTERN.forEach((tileIndex, i) => {
-        const tileEl = document.querySelector(`.bingo-tile[data-tile-id="${tiles[tileIndex].id}"]`);
+        const tile = tiles[tileIndex];
+        const tileEl = document.querySelector(`.bingo-tile[data-tile-id="${tile.id}"]`);
         if (!tileEl) return;
+        // Ensure tile displays as complete (not pending-win which hides content)
+        tileEl.className = tileEl.className.replace(/state-[\w-]+/g, '').replace(/\s+/g, ' ').trim();
+        tileEl.classList.add('state-complete');
         setTimeout(() => {
           tileEl.classList.add('state-heart-glow');
         }, i * 80);
