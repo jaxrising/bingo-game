@@ -49,7 +49,7 @@
       flex-shrink: 0;
       width: 393px;
       height: 852px;
-      background: #101113;
+      background: #051D2B;
       border-radius: 20px;
       box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
       overflow: hidden;
@@ -297,7 +297,7 @@
     :root {
       /* ESPN Design System - Color Tokens */
       --color-black: #000;
-      --color-grey-100: #101113;
+      --color-grey-100: #051D2B;
       --color-grey-95: #151617;
       --color-grey-90: #1D1E1F;
       --color-grey-85: #252627;
@@ -422,28 +422,25 @@
     /* Top Header */
     .top-header {
       width: 393px;
-      height: 136px;
-      background: var(--secondary-blue);
-      position: relative;
+      background: #233342;
       box-shadow: 0px 2px 8px 0px rgba(18, 18, 19, 0.24);
       flex-shrink: 0;
     }
 
     .status-bar {
       height: 44px;
-      background: var(--secondary-blue);
+      background: #233342;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 16px;
-      position: relative;
     }
 
     .status-time {
       font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
       font-size: 17px;
       font-weight: 600;
-      color: var(--text-primary);
+      color: #ffffff;
       line-height: 22px;
       letter-spacing: -0.408px;
     }
@@ -456,76 +453,58 @@
 
     .header-content {
       height: 48px;
-      background: var(--secondary-blue);
+      background: #233342;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 8px 16px;
-      position: relative;
+      padding: 0 8px;
     }
 
-    .header-logo {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 4px 16px;
-      background: linear-gradient(100deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%);
-      border-radius: 4px;
-      transform: translate(-50%, -50%) skewX(-8deg);
-    }
-
-    .header-logo-text {
-      font-family: 'ESPN Ignite Display', 'Impact', 'Arial Black', sans-serif;
-      font-size: 21px;
-      font-style: italic;
-      font-weight: 900;
-      color: var(--text-primary);
-      text-align: center;
-      white-space: nowrap;
-      line-height: 24px;
-      transform: skewX(8deg);
-      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-    }
-
+    /* Back button: matches Figma Back Arrow component (32px height) */
     .back-button {
-      width: 24px;
-      height: 24px;
+      width: 32px;
+      height: 32px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       transition: opacity 0.2s;
+      flex-shrink: 0;
     }
 
-    .back-button:hover {
-      opacity: 0.7;
-    }
+    .back-button:hover { opacity: 0.7; }
 
     .back-button svg {
-      width: 20px;
-      height: 20px;
+      width: 14px;
+      height: 14px;
     }
 
+    /* Logo: matches Figma 200×24px centered */
+    .header-logo {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Info button: matches Figma Info component (20×20px) */
     .info-button {
-      width: 20px;
-      height: 20px;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
-      opacity: 0.7;
+      opacity: 0.85;
       transition: opacity 0.2s;
+      flex-shrink: 0;
     }
 
-    .info-button:hover {
-      opacity: 1;
-    }
+    .info-button:hover { opacity: 1; }
 
     .info-button svg {
-      width: 100%;
-      height: 100%;
-      fill: var(--text-primary);
+      width: 20px;
+      height: 20px;
     }
 
     .nav-tabs {
@@ -560,13 +539,13 @@
       left: 0;
       right: 0;
       height: 4px;
-      background: var(--action-secondary);
+      background: #32BCAD;
     }
 
     /* Entry Card Section */
     .entry-card {
       width: 393px;
-      background: var(--bg-card);
+      background: #233342;
       padding: 12px 16px;
       border-radius: 8px;
       box-shadow: 0px 3px 12px 0px rgba(18, 18, 19, 0.24);
@@ -654,7 +633,7 @@
     /* Game Strip */
     .game-strip {
       width: 393px;
-      background: var(--bg-card);
+      background: #233342;
       padding: 8px 12px;
       display: flex;
       align-items: center;
@@ -673,18 +652,20 @@
       top: 0;
       width: 152px;
       height: 76px;
-      opacity: 0.3;
       pointer-events: none;
+      z-index: 0;
     }
 
     .game-strip::before {
       left: 0;
-      background: radial-gradient(ellipse at center, rgba(0, 102, 255, 0.2) 0%, transparent 70%);
+      /* Glow cropped into top-left corner */
+      background: radial-gradient(ellipse at 0% 0%, rgba(0, 53, 148, 0.9) 0%, rgba(0, 53, 148, 0.4) 45%, transparent 75%);
     }
 
     .game-strip::after {
       right: 0;
-      background: radial-gradient(ellipse at center, rgba(0, 102, 255, 0.2) 0%, transparent 70%);
+      /* Glow cropped into top-right corner */
+      background: radial-gradient(ellipse at 100% 0%, rgba(167, 25, 48, 0.9) 0%, rgba(167, 25, 48, 0.4) 45%, transparent 75%);
     }
 
     .team-section {
@@ -693,6 +674,8 @@
       align-items: center;
       gap: 8px;
       flex: 0 0 auto;
+      position: relative;
+      z-index: 1;
     }
 
     .team-logo-container {
@@ -708,12 +691,11 @@
       width: 48px;
       height: 48px;
       object-fit: contain;
-      border-radius: 8px;
-      background: var(--bg-card);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 24px;
+      background: transparent;
     }
 
     .team-logo-container.has-possession::before {
@@ -753,6 +735,7 @@
       flex: 1;
       max-width: 86px;
       position: relative;
+      z-index: 1;
       padding: 10px 0;
     }
 
@@ -816,8 +799,27 @@
       width: 393px;
       margin: 0;
       flex-shrink: 0;
-      background: var(--bg-canvas);
+      background: #051D2B;
       overflow: visible;
+      position: relative;
+    }
+
+    /* bg_pattern.png at 8% opacity behind grid — matches Figma node 560-87987 */
+    .bingo-container::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url('_assets/bg_pattern.png');
+      background-repeat: repeat;
+      background-size: auto;
+      opacity: 1;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .bingo-grid {
+      position: relative;
+      z-index: 1;
     }
 
     .bingo-grid {
@@ -845,7 +847,7 @@
       cursor: pointer;
       transition: border-color 0.3s ease, background 0.3s ease;
       --progress: 0;
-      border: 3px solid transparent;
+      border: 2px solid transparent;
       overflow: hidden;
       box-sizing: border-box;
       opacity: 1;
@@ -867,21 +869,24 @@
     }
 
     .bingo-tile.state-in-progress {
+      --progress-color: #FF8C00;
+      --progress-shadow: rgba(255, 140, 0, 0.3);
       border-color: transparent;
-      background: 
+      background:
         linear-gradient(#1d1e1f, #1d1e1f) padding-box,
         conic-gradient(
           from 0deg at 50% 50%,
-          #FF8C00 0deg,
-          #FF8C00 calc(var(--progress) * 3.6deg),
+          var(--progress-color) 0deg,
+          var(--progress-color) calc(var(--progress) * 3.6deg),
           rgba(100, 100, 100, 0.3) calc(var(--progress) * 3.6deg),
           rgba(100, 100, 100, 0.3) 360deg
         ) border-box;
-      box-shadow: 0 0 calc(var(--progress) * 0.1px) rgba(255, 140, 0, 0.3);
+      box-shadow: 0 0 calc(var(--progress) * 0.1px) var(--progress-shadow);
+      transition: --progress-color 0.8s ease, box-shadow 0.8s ease;
     }
 
     .bingo-tile.state-pending {
-      border: 3px solid transparent !important;  /* Same as in-progress - keeps size consistent */
+      border: 2px solid transparent !important;  /* Same as in-progress - keeps size consistent */
       position: relative;
       z-index: 0;
       overflow: visible !important;
@@ -896,19 +901,19 @@
     .bingo-tile.state-pending::after {
       content: '';
       position: absolute;
-      inset: -3px;
+      inset: -2px;
       /* Match tile's 4px radius + slight adjustment for visual alignment */
       border-radius: 6px;
-      padding: 3px;
+      padding: 2px;
       
       /* Shimmer gradient */
       background: linear-gradient(
         90deg,
-        #41BA42 0%,
+        #3A3B3C 0%,
         #FFFFFF 20%,
-        #41BA42 40%,
-        rgba(65, 186, 66, 0.3) 60%,
-        #41BA42 80%,
+        #3A3B3C 40%,
+        rgba(58, 59, 60, 0.3) 60%,
+        #3A3B3C 80%,
         #FFFFFF 100%
       );
       background-size: 200% 200%;
@@ -935,9 +940,872 @@
       }
     }
 
-    .bingo-tile.state-complete {
-      border-color: var(--success);
+    .bingo-tile.state-pending-win {
+      border: 2px solid #ffffff;
+      box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
       background: linear-gradient(#1d1e1f, #1d1e1f);
+      cursor: pointer;
+      animation: pendingWinPulse 1.5s ease-in-out infinite;
+    }
+
+    .bingo-tile.state-pending-win .tile-content .tile-stat-value,
+    .bingo-tile.state-pending-win .tile-content .tile-stat-label {
+      opacity: 0;
+    }
+
+    .bingo-tile.state-pending-win > .claim-btn {
+      display: flex;
+    }
+
+    .claim-btn {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 16px;
+      background: #3772DF;
+      border-radius: 100px;
+      border: none;
+      font-family: inherit;
+      font-size: 10px;
+      font-weight: 700;
+      color: #ffffff;
+      cursor: pointer;
+      padding: 0;
+      position: absolute;
+      bottom: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+    }
+
+    @keyframes pendingWinPulse {
+      0%, 100% { box-shadow: 0 0 6px rgba(255, 255, 255, 0.8); }
+      50% { box-shadow: 0 0 14px rgba(255, 255, 255, 0.9), 0 0 24px rgba(255, 255, 255, 0.4); }
+    }
+
+    /* On-field pulse: subtle brightness throb when player is actively accumulating stats */
+    .bingo-tile.on-field {
+      animation: onFieldPulse 1.2s ease-in-out;
+    }
+    @keyframes onFieldPulse {
+      0%   { filter: brightness(1); }
+      40%  { filter: brightness(1.25) saturate(1.3); }
+      100% { filter: brightness(1); }
+    }
+
+    /* Heart shape achievement glow — driven by grid-level class */
+    .bingo-grid.heart-reveal .bingo-tile {
+      opacity: 0.25 !important;
+      transition: opacity 0.4s ease;
+    }
+    .bingo-grid.heart-reveal .bingo-tile[data-heart="true"] {
+      opacity: 1 !important;
+      border: 2px solid #eb34a4 !important;
+      box-shadow: 0 0 6px #eb36a5;
+      animation: heartGlowPulse 1.5s ease-in-out infinite !important;
+    }
+    .bingo-grid.heart-reveal .bingo-tile[data-heart="true"].state-pending-win .tile-content .tile-stat-value,
+    .bingo-grid.heart-reveal .bingo-tile[data-heart="true"].state-pending-win .tile-content .tile-stat-label {
+      opacity: 1 !important;
+    }
+    .bingo-grid.heart-reveal .bingo-tile[data-heart="true"].state-pending-win > .claim-btn {
+      display: none !important;
+    }
+    .bingo-grid.heart-reveal .bingo-tile[data-heart="true"].state-pending-win {
+      animation: heartGlowPulse 1.5s ease-in-out infinite !important;
+      border: 2px solid #eb34a4 !important;
+      cursor: default;
+    }
+
+    @keyframes heartGlowPulse {
+      0%, 100% { box-shadow: 0 0 6px #eb36a5; }
+      50% { box-shadow: 0 0 14px #eb36a5, 0 0 24px rgba(235, 52, 164, 0.4); }
+    }
+
+    /* Heart burst animation */
+    .heart-particle {
+      position: absolute;
+      pointer-events: none;
+      z-index: 100;
+      font-size: var(--heart-size, 20px);
+      animation: heartBurst var(--heart-duration, 800ms) ease-out forwards;
+      opacity: 0;
+    }
+
+    @keyframes heartBurst {
+      0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(0) rotate(var(--heart-rotation, 0deg));
+      }
+      30% {
+        opacity: 1;
+        transform: translate(
+          calc(var(--heart-x, 0px) * 0.4),
+          calc(var(--heart-y, 0px) * 0.4)
+        ) scale(1.2) rotate(var(--heart-rotation, 0deg));
+      }
+      100% {
+        opacity: 0;
+        transform: translate(var(--heart-x, 0px), var(--heart-y, 0px)) scale(0.6) rotate(var(--heart-rotation, 0deg));
+      }
+    }
+
+    /* Achievement toast */
+    .achievement-toast {
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%) translateY(120px);
+      background: #1d1e1f;
+      border: 1.5px solid #eb34a4;
+      border-radius: 14px;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 8px 32px rgba(235, 52, 164, 0.3), 0 2px 8px rgba(0,0,0,0.4);
+      z-index: 9999;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      min-width: 280px;
+    }
+
+    .achievement-toast.active {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .achievement-toast-icon {
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+
+    .achievement-toast-content {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .achievement-toast-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .achievement-toast-subtitle {
+      font-size: 12px;
+      font-weight: 400;
+      color: #a1a2a3;
+    }
+
+    /* ===== WALKTHROUGH OVERLAY ===== */
+    /* ===== WALKTHROUGH OVERLAY ===== */
+    .wt-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 500;
+      display: none;
+      border-radius: 20px;
+      pointer-events: none;
+    }
+    .wt-overlay.active {
+      display: block;
+      pointer-events: all;
+    }
+    /* Full dark used on intro/outro steps that have no specific tile to spotlight */
+    .wt-overlay.full-dark {
+      background: rgba(0, 0, 0, 0.82);
+    }
+
+    /*
+      Spotlight cutout: a transparent box positioned exactly over the highlighted tile.
+      Its box-shadow spreads ~2000px in every direction, creating darkness everywhere
+      EXCEPT the tile area — which shows through completely unobscured.
+    */
+    .wt-spotlight-cutout {
+      position: absolute;
+      border-radius: 8px;
+      box-shadow: 0 0 0 2000px rgba(0, 0, 0, 0.82);
+      z-index: 501;
+      pointer-events: none;
+      transition: top 0.32s ease, left 0.32s ease, width 0.32s ease, height 0.32s ease;
+    }
+
+    /* ---- Tooltip card ---- */
+    .wt-tooltip {
+      position: absolute;
+      background: #111214;
+      border-radius: 18px;
+      padding: 18px 18px 16px;
+      width: 285px;
+      z-index: 503;
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7), 0 2px 8px rgba(0,0,0,0.4);
+      pointer-events: all;
+    }
+
+    /* Arrow pointing UP toward tile (tooltip is below tile) */
+    .wt-tooltip.arrow-up::before {
+      content: '';
+      position: absolute;
+      top: -12px;
+      left: var(--arrow-offset, 24px);
+      width: 0; height: 0;
+      border: 12px solid transparent;
+      border-top: 0;
+      border-bottom-color: #111214;
+    }
+
+    /* Arrow pointing DOWN toward tile (tooltip is above tile) */
+    .wt-tooltip.arrow-down::before {
+      content: '';
+      position: absolute;
+      bottom: -12px;
+      left: var(--arrow-offset, 24px);
+      width: 0; height: 0;
+      border: 12px solid transparent;
+      border-bottom: 0;
+      border-top-color: #111214;
+    }
+
+    /* ---- Dot progress (pill style) ---- */
+    .wt-dots {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .wt-dot {
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.2);
+      transition: width 0.3s ease, background 0.3s ease;
+      width: 8px;
+    }
+    .wt-dot.active {
+      width: 22px;
+      background: #ffffff;
+    }
+
+    /* ---- Text ---- */
+    .wt-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+    .wt-body {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.55);
+      line-height: 1.6;
+    }
+
+    /* ---- Footer row: skip + nav arrow ---- */
+    .wt-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 16px;
+    }
+    .wt-skip {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.3);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      letter-spacing: 0.2px;
+    }
+    .wt-btn {
+      width: 38px;
+      height: 38px;
+      background: #ffffff;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: transform 0.12s ease, opacity 0.15s;
+    }
+    .wt-btn:hover { opacity: 0.88; }
+    .wt-btn:active { transform: scale(0.93); }
+    .wt-btn svg { pointer-events: none; }
+
+    /* Tap-to-claim hint (replaces nav button on claim step) */
+    .wt-tap-hint {
+      font-size: 12px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.5);
+      text-align: right;
+      animation: wtTapPulse 1.3s ease-in-out infinite;
+    }
+    @keyframes wtTapPulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    /* ===== TUTORIAL SHEET ===== */
+    .tutorial-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .tutorial-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .tutorial-sheet {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #1a1b1c;
+      border-radius: 20px 20px 0 0;
+      padding: 20px 20px 32px;
+      transform: translateY(100%);
+      transition: transform 0.35s cubic-bezier(0.34, 1.2, 0.64, 1);
+      z-index: 201;
+      max-height: 85%;
+      overflow-y: auto;
+    }
+    .tutorial-sheet.active {
+      transform: translateY(0);
+    }
+    .tutorial-sheet-handle {
+      width: 36px;
+      height: 4px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 2px;
+      margin: 0 auto 18px;
+    }
+    .tutorial-sheet h3 {
+      font-size: 16px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 4px;
+      text-align: center;
+    }
+    .tutorial-sheet .tutorial-subtitle {
+      font-size: 12px;
+      color: rgba(255,255,255,0.45);
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .tutorial-state-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .tutorial-state-row:last-child { border-bottom: none; }
+    .tutorial-swatch {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      flex-shrink: 0;
+      border: 2px solid transparent;
+    }
+    .tutorial-swatch.swatch-normal  { background: #1d1e1f; border-color: rgba(255,255,255,0.12); }
+    .tutorial-swatch.swatch-yellow  { background: #1d1e1f; border-color: #F5C518; }
+    .tutorial-swatch.swatch-orange  { background: #1d1e1f; border-color: #FF8C00; }
+    .tutorial-swatch.swatch-shimmer { background: linear-gradient(90deg, #3A3B3C, #fff, #3A3B3C); border-color: transparent; }
+    .tutorial-swatch.swatch-green   { background: #1d1e1f; border-color: #41BA42; box-shadow: 0 0 6px rgba(65,186,66,0.5); }
+    .tutorial-swatch.swatch-pol     { background: linear-gradient(135deg, #eb34a4, #ff6b8a); border-color: transparent; font-size: 14px; display: flex; align-items: center; justify-content: center; }
+    .tutorial-state-info { flex: 1; }
+    .tutorial-state-name { font-size: 13px; font-weight: 700; color: #fff; }
+    .tutorial-state-desc { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 2px; line-height: 1.4; }
+    .tutorial-pol-section {
+      margin-top: 18px;
+      background: rgba(235, 52, 164, 0.08);
+      border: 1px solid rgba(235, 52, 164, 0.25);
+      border-radius: 12px;
+      padding: 14px;
+    }
+    .tutorial-pol-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .tutorial-pol-header span { font-size: 18px; }
+    .tutorial-pol-header strong { font-size: 13px; font-weight: 800; color: #fff; }
+    .tutorial-pol-desc { font-size: 11px; color: rgba(255,255,255,0.55); line-height: 1.5; }
+    .tutorial-close-btn {
+      width: 100%;
+      margin-top: 20px;
+      padding: 12px;
+      background: rgba(255,255,255,0.08);
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    /* Free spot — not interactive */
+    .bingo-tile.free-spot { cursor: default; }
+
+    /* ===== DEAD TILE STATE ===== */
+    .bingo-tile.state-dead {
+      border-color: rgba(255,255,255,0.08) !important;
+      opacity: 0.55;
+      filter: grayscale(0.7);
+      cursor: pointer;
+    }
+    .bingo-tile.state-dead .dead-tile-overlay {
+      display: flex;
+    }
+    .dead-tile-overlay {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 3px;
+      z-index: 5;
+      border-radius: 4px;
+    }
+    .dead-tile-x {
+      font-size: 18px;
+      color: rgba(255,255,255,0.7);
+      line-height: 1;
+    }
+    .dead-tile-label {
+      font-size: 8px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* ===== REDRAWS — entry card stat slot ===== */
+    /* Visible pre-game; hidden once simulation starts */
+    #redraw-stat-divider.hidden,
+    #redraw-stat-item.hidden { display: none; }
+
+    #redraw-stat-item .stat-value {
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ===== POWER OF LOVE TOKEN UI ===== */
+    /* ===== POWER OF LOVE — entry card stat slot ===== */
+    #pol-stat-divider,
+    #pol-stat-item { display: none; }
+
+    #pol-stat-divider.visible { display: block; }
+
+    #pol-stat-item.visible {
+      display: flex;
+      animation: polStatReveal 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes polStatReveal {
+      0%   { opacity: 0; transform: scale(0.6); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    #pol-stat-item .stat-value {
+      font-size: 15px;
+      line-height: 24px;
+    }
+
+    #pol-stat-item.pol-used .stat-value {
+      opacity: 0.35;
+    }
+
+    #pol-stat-item.pol-used .stat-label {
+      color: rgba(255,255,255,0.25);
+    }
+
+    /* ===== POWER OF LOVE — heart icon on tiles ===== */
+    .pol-heart-btn {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: 18px;
+      height: 18px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 11;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      border-radius: 50%;
+      transition: transform 0.15s ease;
+    }
+    .pol-heart-btn:hover { transform: scale(1.2); }
+    .pol-heart-btn:active { transform: scale(0.9); }
+    .pol-heart-btn svg { width: 11px; height: 11px; pointer-events: none; }
+
+    /* Show stroked heart on all unclaimed tiles when PoL is active */
+    #bingo-grid.pol-active .bingo-tile:not(.state-complete):not(.free-spot) .pol-heart-btn {
+      display: flex;
+    }
+
+    /* Claimed-with-love tile: pink filled circle (overrides normal checkmark) */
+    .bingo-tile.pol-claimed .tile-checkmark {
+      display: none !important;
+    }
+    .bingo-tile.pol-claimed .pol-heart-btn {
+      display: flex !important;
+      background: linear-gradient(135deg, #eb34a4, #c2185b);
+      box-shadow: 0 2px 8px rgba(235,52,164,0.5);
+      animation: checkmarkPop 0.5s ease-out;
+      cursor: default;
+    }
+    .bingo-tile.pol-claimed .pol-heart-btn svg {
+      width: 9px;
+      height: 9px;
+    }
+    .bingo-tile.pol-claimed .pol-heart-btn:hover { transform: none; }
+
+    /* ===== POWER OF LOVE — confirmation modal ===== */
+    .pol-confirm-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.72);
+      z-index: 310;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      border-radius: 20px;
+    }
+    .pol-confirm-overlay.active { display: flex; }
+    .pol-confirm-card {
+      background: #18191a;
+      border-radius: 20px;
+      padding: 24px 20px 20px;
+      width: 260px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.8);
+    }
+    .pol-confirm-emoji { font-size: 36px; line-height: 1; }
+    .pol-confirm-title {
+      font-size: 17px;
+      font-weight: 900;
+      color: #fff;
+      text-align: center;
+      letter-spacing: -0.3px;
+    }
+    .pol-confirm-body {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      line-height: 1.6;
+      max-width: 210px;
+    }
+    .pol-confirm-yes {
+      margin-top: 6px;
+      width: 100%;
+      padding: 13px 0;
+      background: linear-gradient(135deg, #eb34a4, #c2185b);
+      border: none;
+      border-radius: 100px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(235,52,164,0.45);
+      transition: opacity 0.15s;
+    }
+    .pol-confirm-yes:hover { opacity: 0.88; }
+    .pol-confirm-no {
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px 0;
+    }
+
+    /* ===== REDRAW — tile icon button (pre-game only) ===== */
+    .redraw-tile-btn {
+      position: absolute; top: 4px; right: 4px;
+      width: 18px; height: 18px;
+      display: none;
+      align-items: center; justify-content: center;
+      z-index: 11; cursor: pointer;
+      background: rgba(255,255,255,0.13);
+      border: none; padding: 2px; border-radius: 50%;
+      transition: background 0.15s, transform 0.15s;
+    }
+    .redraw-tile-btn svg { width: 11px; height: 11px; }
+    .redraw-tile-btn:active { transform: scale(0.88) rotate(-30deg); }
+
+    /* Show icon on all non-freespot tiles when pre-game */
+    #bingo-grid.pregame-active .bingo-tile:not(.free-spot) .redraw-tile-btn { display: flex; }
+
+    /* ===== REDRAW — tile confirmation modal ===== */
+    .redraw-confirm-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.72);
+      z-index: 310;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      border-radius: 20px;
+    }
+    .redraw-confirm-overlay.active { display: flex; }
+    .redraw-confirm-card {
+      background: #18191a;
+      border-radius: 20px;
+      padding: 24px 20px 20px;
+      width: 260px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.8);
+    }
+    .redraw-confirm-icon { font-size: 32px; line-height: 1; }
+    .redraw-confirm-title {
+      font-size: 17px;
+      font-weight: 900;
+      color: #fff;
+      text-align: center;
+      letter-spacing: -0.3px;
+    }
+    .redraw-confirm-body {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      line-height: 1.6;
+      max-width: 210px;
+    }
+    .redraw-confirm-go {
+      margin-top: 6px;
+      width: 100%;
+      padding: 13px 0;
+      background: rgba(255,255,255,0.12);
+      border: 1.5px solid rgba(255,255,255,0.22);
+      border-radius: 100px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .redraw-confirm-go:hover { opacity: 0.82; }
+    .redraw-confirm-cancel {
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px 0;
+      transition: color 0.15s;
+    }
+    .redraw-confirm-cancel:hover { color: rgba(255,255,255,0.6); }
+
+    /* ===== REDRAW — detail sheet CTA ===== */
+    .redraw-sheet-btn {
+      display: none;
+      width: calc(100% - 32px);
+      margin: 0 16px 8px;
+      padding: 13px 16px;
+      background: rgba(255,255,255,0.08);
+      border: 1.5px solid rgba(255,255,255,0.18);
+      border-radius: 12px;
+      color: rgba(255,255,255,0.75);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.15s, border-color 0.15s;
+      text-align: center;
+    }
+    .redraw-sheet-btn:hover { opacity: 0.88; border-color: rgba(255,255,255,0.30); }
+    .redraw-sheet-btn:active { transform: scale(0.97); }
+    .redraw-sheet-btn.exhausted { opacity: 0.35; cursor: not-allowed; pointer-events: none; }
+
+    .redraw-sheet-confirm {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      padding: 14px 16px 16px;
+      animation: slideUpFade 0.2s ease-out;
+    }
+    .redraw-sheet-confirm.active { display: flex; }
+    .redraw-sheet-confirm-text {
+      font-size: 13px;
+      color: rgba(255,255,255,0.82);
+      text-align: center;
+      line-height: 1.5;
+    }
+    .redraw-sheet-confirm-text strong {
+      display: block;
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .redraw-sheet-confirm-btns {
+      display: flex;
+      gap: 8px;
+    }
+    .redraw-confirm-yes {
+      flex: 1;
+      padding: 11px 0;
+      background: rgba(255,255,255,0.12);
+      border: 1.5px solid rgba(255,255,255,0.28);
+      border-radius: 10px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .redraw-confirm-yes:hover { opacity: 0.85; }
+    .redraw-confirm-no {
+      padding: 11px 18px;
+      background: rgba(255,255,255,0.06);
+      border: none;
+      border-radius: 10px;
+      color: rgba(255,255,255,0.55);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .redraw-confirm-no:hover { opacity: 0.75; }
+
+    /* ===== POWER OF LOVE — detail sheet CTA ===== */
+    .pol-sheet-btn {
+      display: none;
+      width: calc(100% - 32px);
+      margin: 4px 16px 12px;
+      padding: 14px 0;
+      background: linear-gradient(135deg, #eb34a4, #c2185b);
+      border: none;
+      border-radius: 100px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(235,52,164,0.4);
+      transition: opacity 0.15s, transform 0.15s;
+      text-align: center;
+    }
+    .pol-sheet-btn:hover { opacity: 0.88; }
+    .pol-sheet-btn:active { transform: scale(0.97); }
+
+    /* Inline confirm panel inside detail sheet */
+    .pol-sheet-confirm {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      margin: 4px 16px 12px;
+      padding: 14px 16px;
+      background: rgba(235,52,164,0.08);
+      border: 1px solid rgba(235,52,164,0.22);
+      border-radius: 16px;
+      animation: polConfirmIn 0.2s ease-out;
+    }
+    @keyframes polConfirmIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .pol-sheet-confirm.active { display: flex; }
+    .pol-sheet-confirm-text {
+      font-size: 13px;
+      color: rgba(255,255,255,0.82);
+      text-align: center;
+      line-height: 1.5;
+    }
+    .pol-sheet-confirm-text span {
+      display: block;
+      font-size: 11px;
+      color: rgba(255,255,255,0.4);
+      margin-top: 2px;
+    }
+    .pol-sheet-confirm-btns {
+      display: flex;
+      gap: 8px;
+    }
+    .pol-sheet-confirm-yes {
+      flex: 1;
+      padding: 11px 0;
+      background: linear-gradient(135deg, #eb34a4, #c2185b);
+      border: none;
+      border-radius: 100px;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 3px 12px rgba(235,52,164,0.4);
+    }
+    .pol-sheet-confirm-no {
+      padding: 11px 18px;
+      background: rgba(255,255,255,0.08);
+      border: none;
+      border-radius: 100px;
+      color: rgba(255,255,255,0.55);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* ===== YOU LOSE — simplified (no revive) ===== */
+    .you-lose-modal {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.88);
+      z-index: 300;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      border-radius: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .you-lose-modal.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .you-lose-emoji { font-size: 44px; }
+    .you-lose-title { font-size: 22px; font-weight: 900; color: #fff; letter-spacing: -0.5px; }
+    .you-lose-sub { font-size: 13px; color: rgba(255,255,255,0.5); text-align: center; max-width: 220px; line-height: 1.5; }
+    .you-lose-dismiss {
+      margin-top: 4px;
+      padding: 10px 28px;
+      background: rgba(255,255,255,0.1);
+      border: none;
+      border-radius: 100px;
+      color: rgba(255,255,255,0.6);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .bingo-tile.state-complete {
+      border-color: #41BA42;
+    }
+
+    /* Override tile bg to solid green — Figma: #0D730E — keeps logo/gradient/text visible */
+    .bingo-tile.state-complete .tile-header-bg {
+      background: #0D730E !important;
+    }
+
+    /* Remove semi-transparent overlay that was covering content at z-index:5 */
+    .bingo-tile.state-complete::before {
+      content: none;
     }
 
     .bingo-tile.free-spot {
@@ -949,7 +1817,7 @@
 
     .bingo-tile.free-spot.state-complete {
       border-color: var(--success);
-      background: linear-gradient(#1d1e1f, #1d1e1f);
+      background: #0D730E;
     }
 
     .bingo-tile.state-tapped {
@@ -960,52 +1828,66 @@
     .bingo-tile.coin-flip-tile .tile-header-bg {
       background: #333333 !important;
     }
-    
+
     .bingo-tile.coin-flip-tile .tile-content {
-      background: #1a1a1a;
+      background: transparent;
+    }
+
+    /* Completed coin/prop tiles must also go green (overrides coin-flip-tile rule above) */
+    .bingo-tile.coin-flip-tile.state-complete .tile-header-bg {
+      background: #0D730E !important;
     }
 
     /* Tile Content */
     .tile-header {
-      width: calc(100% + 6px);
-      height: 45px;
-      position: relative;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      inset: 0;
       overflow: hidden;
       flex-shrink: 0;
-      margin: -3px -3px 0 -3px;
-      border-radius: 4px 4px 0 0;
+      margin: 0;
+      border-radius: 4px;
       z-index: 1;
     }
 
     /* Keep tile content positioned but let shimmer render on top of border area */
-    .bingo-tile.state-pending .tile-header,
-    .bingo-tile.state-pending .tile-content {
-      position: relative;
+    .bingo-tile.state-pending .tile-header {
+      position: absolute;
       z-index: 1;
+    }
+    .bingo-tile.state-pending .tile-content {
+      position: absolute;
+      z-index: 4;
     }
 
     .tile-header-bg {
       position: absolute;
       inset: 0;
       background: var(--bucs-primary);
-      border-radius: 4px 4px 0 0;
+      border-radius: 4px;
     }
 
     .tile-header-gradient {
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%);
+      /* Figma: two layered Fade rectangles —
+         Layer 1 (full 90px): rgba(38,39,40,0.08) 0% → rgba(38,39,40,1) 86%
+         Layer 2 (77px tall = 85.5% of tile): rgba(38,39,40,0.08) 77% → rgba(38,39,40,1) 88%
+         Combined: mostly transparent through headshot, sharp ramp to opaque at bottom */
+      /* Transparent through the headshot, fade only in bottom text zone */
+      background: linear-gradient(180deg, transparent 55%, rgba(38,39,40,1) 88%);
       pointer-events: none;
-      z-index: 0;
+      z-index: 3;
     }
 
     .tile-team-logo-bg-img {
       position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: 75px;
-      height: 75px;
+      left: -11px;
+      top: -5px;
+      transform: none;
+      width: 91px;
+      height: 92px;
       object-fit: contain;
       opacity: 0.08;
       pointer-events: none;
@@ -1027,9 +1909,10 @@
       z-index: 1;
     }
 
+    /* Team/other tiles: base positioning */
     .tile-image {
       position: absolute;
-      bottom: 0;
+      bottom: 4px;
       left: 50%;
       transform: translateX(-50%);
       width: 100%;
@@ -1039,12 +1922,56 @@
       justify-content: center;
       pointer-events: none;
       z-index: 2;
+      overflow: visible;
+    }
+
+    /* Player tiles: bleed headshot fills tile */
+    .tile-image--player {
+      top: -1px;
+      bottom: auto;
+      left: -20px;
+      transform: none;
+      width: 108px;
+      height: 78px;
       overflow: hidden;
     }
 
-    .tile-headshot {
+    /* Emoji/icon tiles: centered in upper header area, above text gradient */
+    .tile-image--icon {
+      top: 10%;
+      bottom: auto;
+      height: 50%;
       width: 100%;
-      height: 42px;
+      align-items: center;
+      justify-content: center;
+    }
+    .tile-image--icon .coin-icon {
+      font-size: 28px;
+      line-height: 1;
+      opacity: 0.9;
+    }
+
+    /* Team tiles: logo in upper area — Figma: x:9.3, y:7, 50×50 within 69×90 */
+    .tile-image--team {
+      top: 8%;
+      bottom: auto;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 73%;
+      height: 56%;
+      align-items: center;
+      justify-content: center;
+      overflow: visible;
+    }
+    .tile-image--team img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .tile-headshot {
+      width: 108px;
+      height: 78px;
       object-fit: cover;
       object-position: top center;
     }
@@ -1063,55 +1990,70 @@
     }
 
     .tile-content {
-      flex: 1;
+      flex: none;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 2px;
-      padding: 4px 4px;
-      width: 100%;
+      align-items: flex-start;
+      justify-content: flex-end;
+      gap: 0;
+      padding: 0 2px 3px;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 30px;
       min-height: 0;
-      background: #1d1e1f;
-      border-radius: 0 0 4px 4px;
+      background: transparent;
+      border-radius: 0;
+      z-index: 4;
     }
 
     .tile-name {
-      font: var(--type-caption-1);
-      color: var(--color-white);
-      text-align: center;
+      font-size: 10px;
+      font-weight: 500;
+      line-height: 1.2;
+      color: rgba(255, 255, 255, 0.72);
+      text-align: left;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
       width: 100%;
     }
 
+    .tile-stat-row {
+      display: block;
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
     .tile-stat-value {
-      font: var(--type-title-3);
+      font-size: 10px;
+      font-weight: 900;
       color: var(--color-white);
-      text-align: center;
-      display: flex;
-      gap: 2px;
-      align-items: center;
-      justify-content: center;
+      display: inline;
     }
 
     .tile-stat-label {
-      font: var(--type-caption-2);
-      color: var(--color-grey-40);
-      text-align: center;
+      font-size: 10px;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.72);
+      text-align: left;
       white-space: nowrap;
+      display: inline;
     }
 
     /* Tile State Indicators */
     .tile-checkmark {
       position: absolute;
-      top: 4px;
-      right: 4px;
-      width: 18px;
-      height: 18px;
+      top: 2px;
+      right: 2px;
+      width: 16px;
+      height: 16px;
       background: var(--success);
       border-radius: 50%;
+      box-shadow: 0px 1px 4px 0px rgba(18, 18, 19, 0.24);
       display: none;
       align-items: center;
       justify-content: center;
@@ -1203,21 +2145,11 @@
 
     /* Winning States */
     .bingo-grid.has-winner .bingo-tile {
-      opacity: 0.10;
       transition: opacity 0.4s ease;
     }
 
     .bingo-grid.has-winner .bingo-tile.winning-tile {
       opacity: 1;
-      box-shadow: 
-        0 0 20px rgba(65, 186, 66, 0.8),
-        0 0 40px rgba(65, 186, 66, 0.6),
-        inset 0 0 15px rgba(65, 186, 66, 0.2);
-      border: 2px solid #41BA42 !important;
-      background: #1d1e1f !important;
-      z-index: 10;
-      animation: winningPulse 1.5s ease-in-out infinite;
-      transform: none !important;
     }
 
     @keyframes winningPulse {
@@ -1436,7 +2368,7 @@
       right: 0;
       width: 100%;
       max-width: 393px;
-      background: #101113;
+      background: #233342;
       border-radius: 20px 20px 0 0;
       z-index: 1001;
       transform: translateY(100%);
@@ -1455,29 +2387,45 @@
       overflow: hidden;
     }
 
+    /* Team logo watermark behind glow — Figma: sits in upper headshot area */
+    .detail-sheet-team-logo-bg {
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 190px;
+      height: 190px;
+      object-fit: contain;
+      opacity: 0.13;
+      z-index: 0;
+      pointer-events: none;
+    }
+
     .detail-sheet-glow {
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
+      /* Figma: Glow Center (Player Card) 393×168 — center at y:-20% (cropped at top) */
       height: 168px;
-      opacity: 0.6;
+      z-index: 1;
     }
 
+    /* Glow: center above container so it bleeds past top edge and is cropped — Figma spec */
     .detail-sheet-glow.team-lar {
-      background: radial-gradient(ellipse at center, #003594 0%, transparent 70%);
+      background: radial-gradient(circle at 50% -20%, rgba(0, 53, 148, 0.95) 0%, rgba(0, 53, 148, 0.55) 35%, rgba(0, 53, 148, 0.2) 60%, transparent 80%);
     }
 
     .detail-sheet-glow.team-tb {
-      background: radial-gradient(ellipse at center, #A71930 0%, transparent 70%);
+      background: radial-gradient(circle at 50% -20%, rgba(167, 25, 48, 0.95) 0%, rgba(167, 25, 48, 0.55) 35%, rgba(167, 25, 48, 0.2) 60%, transparent 80%);
     }
 
     .detail-sheet-glow.team-ht {
-      background: radial-gradient(ellipse at center, #E92228 0%, transparent 70%);
+      background: radial-gradient(circle at 50% -20%, rgba(233, 34, 40, 0.95) 0%, rgba(233, 34, 40, 0.55) 35%, rgba(233, 34, 40, 0.2) 60%, transparent 80%);
     }
 
     .detail-sheet-glow.team-nfl {
-      background: radial-gradient(ellipse at center, #666666 0%, transparent 70%);
+      background: radial-gradient(circle at 50% -20%, rgba(100, 100, 100, 0.95) 0%, rgba(100, 100, 100, 0.55) 35%, rgba(100, 100, 100, 0.2) 60%, transparent 80%);
     }
 
     .detail-sheet-headshot {
@@ -1488,6 +2436,7 @@
       height: 152px;
       object-fit: contain;
       object-position: right bottom;
+      z-index: 2;
     }
 
     .detail-sheet-gradient {
@@ -1496,7 +2445,7 @@
       left: 0;
       right: 0;
       height: 48px;
-      background: linear-gradient(to bottom, transparent, #101113);
+      background: linear-gradient(to bottom, transparent, #233342);
     }
 
     .detail-sheet-close {
@@ -1523,6 +2472,7 @@
       top: 70px;
       left: 16px;
       right: 16px;
+      z-index: 1;
     }
 
     .detail-sheet-name {
@@ -1670,13 +2620,26 @@
       <h2>Game Simulator</h2>
 
       <div class="game-flow-card">
-        <p>Click Start Game to simulate the bingo experience. Tap a bingo tile to see more details and track your progress. Good luck!</p>
+        <p>Hit <strong>Start Game</strong> to kick off the simulation. As props hit, tiles will glow and show a <strong>CLAIM</strong> button — tap it to lock in your win. Complete a row for Bingo, or claim the secret heart pattern for a hidden achievement.</p>
       </div>
 
       <button class="start-btn" id="simulate-btn">Start Game</button>
-      <button class="restart-btn" id="restart-btn" disabled>Restart Game</button>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button class="restart-btn" id="restart-btn" disabled style="flex:1;">Restart Game</button>
+        <button id="howtoplay-btn" title="How to Play" style="flex-shrink:0;width:42px;height:42px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:10px;color:rgba(255,255,255,0.6);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;">?</button>
+      </div>
 
       <!-- Volume Control -->
+      <div class="volume-control">
+        <div class="volume-icon" title="Game Speed" style="display:flex;align-items:center;justify-content:center;font-size:20px;">
+          🕐
+        </div>
+        <div class="volume-slider-wrapper">
+          <input type="range" class="volume-slider" id="speed-slider" min="10" max="200" value="20">
+          <span class="volume-percentage" id="speed-percentage">0.2x</span>
+        </div>
+      </div>
+
       <div class="volume-control">
         <div class="volume-icon" id="volume-icon" title="Click to mute/unmute">
           <svg id="volume-icon-high" viewBox="0 0 24 24">
@@ -1724,17 +2687,20 @@
           </div>
           <div class="header-content">
             <div class="back-button">
-              <svg viewBox="0 0 24 24" fill="none">
-                <path d="M15 6L9 12L15 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <!-- Figma: Back Arrow component, chevron left -->
+              <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 2L4 7L9 12" stroke="white" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
             <div class="header-logo">
-              <span class="header-logo-text"><span class="superbowl">SUPERBOWL </span><span class="bingo">BINGO</span></span>
+              <img src="_assets/Bingo_logo.png" alt="Super Bowl LXI Bingo" style="width: 200px; height: 24px; object-fit: contain;">
             </div>
             <div class="info-button">
-              <svg viewBox="0 0 20 20" fill="white">
-                <circle cx="10" cy="10" r="9" fill="white"/>
-                <text x="10" y="14" text-anchor="middle" font-size="12" font-weight="600" font-family="serif" font-style="italic" fill="#0077C8">i</text>
+              <!-- Figma: Info component (20×20px) -->
+              <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="10" cy="10" r="9" stroke="white" stroke-width="1.5"/>
+                <rect x="9.25" y="9" width="1.5" height="5.5" rx="0.75" fill="white"/>
+                <circle cx="10" cy="6.5" r="1" fill="white"/>
               </svg>
             </div>
           </div>
@@ -1759,7 +2725,7 @@
             </div>
             <div class="stats-row">
               <div class="stat-item">
-                <div class="stat-value" id="tiles-hit">1/24</div>
+                <div class="stat-value" id="tiles-hit">0/24</div>
                 <div class="stat-label">TILES</div>
               </div>
               <div class="stat-divider"></div>
@@ -1772,6 +2738,16 @@
                 <div class="stat-value" id="rank">--</div>
                 <div class="stat-label">RANK</div>
               </div>
+              <div class="stat-divider" id="redraw-stat-divider"></div>
+              <div class="stat-item" id="redraw-stat-item">
+                <div class="stat-value" id="redraw-stat-value">3</div>
+                <div class="stat-label">REDRAWS</div>
+              </div>
+              <div class="stat-divider" id="pol-stat-divider"></div>
+              <div class="stat-item" id="pol-stat-item">
+                <div class="stat-value" id="pol-stat-value">💝</div>
+                <div class="stat-label">POWER OF LOVE</div>
+              </div>
             </div>
           </div>
         </div>
@@ -1780,7 +2756,7 @@
         <div class="game-strip">
           <div class="team-section">
             <div class="team-logo-container has-possession">
-              <img src="https://a.espncdn.com/i/teamlogos/nfl/500/lar.png" alt="LAR" class="team-logo" id="away-logo">
+              <img src="https://a.espncdn.com/i/teamlogos/nfl/500-dark/lar.png" alt="LAR" class="team-logo" id="away-logo">
             </div>
             <div class="team-info">
               <span class="team-abbreviation" id="away-abbr">LAR</span>
@@ -1800,7 +2776,7 @@
           </div>
           <div class="team-section">
             <div class="team-logo-container has-possession right">
-              <img src="https://a.espncdn.com/i/teamlogos/nfl/500/tb.png" alt="TB" class="team-logo" id="home-logo">
+              <img src="https://a.espncdn.com/i/teamlogos/nfl/500-dark/tb.png" alt="TB" class="team-logo" id="home-logo">
             </div>
             <div class="team-info">
               <span class="team-abbreviation" id="home-abbr">TB</span>
@@ -1852,12 +2828,118 @@
           </div>
         </div>
 
+        <!-- Walkthrough Overlay -->
+        <div id="wt-overlay" class="wt-overlay">
+          <div id="wt-spotlight-cutout" class="wt-spotlight-cutout" style="display:none;"></div>
+          <div id="wt-tooltip" class="wt-tooltip">
+            <div class="wt-dots" id="wt-dots"></div>
+            <div class="wt-title" id="wt-title"></div>
+            <div class="wt-body" id="wt-body"></div>
+            <div class="wt-footer">
+              <button class="wt-skip" id="wt-skip">Skip</button>
+              <button class="wt-btn" id="wt-btn">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M3 8h10M9 4l4 4-4 4" stroke="#111214" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <span class="wt-tap-hint" id="wt-tap-hint" style="display:none">Tap tile ↑</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tutorial Sheet Overlay -->
+        <div class="tutorial-overlay" id="tutorial-overlay"></div>
+        <div class="tutorial-sheet" id="tutorial-sheet">
+          <div class="tutorial-sheet-handle"></div>
+          <h3>How to Play</h3>
+          <p class="tutorial-subtitle">Tap any tile to see live stats &amp; progress</p>
+
+          <div class="tutorial-state-row">
+            <div class="tutorial-swatch swatch-normal"></div>
+            <div class="tutorial-state-info">
+              <div class="tutorial-state-name">Not Started</div>
+              <div class="tutorial-state-desc">Game hasn't given this player a chance yet.</div>
+            </div>
+          </div>
+          <div class="tutorial-state-row">
+            <div class="tutorial-swatch swatch-yellow"></div>
+            <div class="tutorial-state-info">
+              <div class="tutorial-state-name">Early Progress</div>
+              <div class="tutorial-state-desc">Under 33% — your player is warming up.</div>
+            </div>
+          </div>
+          <div class="tutorial-state-row">
+            <div class="tutorial-swatch swatch-orange"></div>
+            <div class="tutorial-state-info">
+              <div class="tutorial-state-name">In Progress</div>
+              <div class="tutorial-state-desc">Over 33% — looking good, keep watching.</div>
+            </div>
+          </div>
+          <div class="tutorial-state-row">
+            <div class="tutorial-swatch swatch-shimmer"></div>
+            <div class="tutorial-state-info">
+              <div class="tutorial-state-name">Almost There</div>
+              <div class="tutorial-state-desc">Stat hit — waiting on official confirmation.</div>
+            </div>
+          </div>
+          <div class="tutorial-state-row">
+            <div class="tutorial-swatch swatch-green">✓</div>
+            <div class="tutorial-state-info">
+              <div class="tutorial-state-name">Confirmed ✓</div>
+              <div class="tutorial-state-desc">Tap to claim the tile &amp; lock in your square.</div>
+            </div>
+          </div>
+
+          <div class="tutorial-pol-section">
+            <div class="tutorial-pol-header">
+              <span>💝</span>
+              <strong>Power of Love Lifeline</strong>
+            </div>
+            <div class="tutorial-pol-desc">
+              Earn a 💝 token by confirming 3 tiles in a row. If a player goes out before you complete their tile, spend your token to revive it — a free square is yours.
+            </div>
+          </div>
+
+          <button class="tutorial-close-btn" id="tutorial-close-btn">Got it</button>
+        </div>
+
+        <!-- You Lose Modal -->
+        <div class="you-lose-modal" id="you-lose-modal">
+          <div class="you-lose-emoji">💔</div>
+          <div class="you-lose-title">Player Out</div>
+          <div class="you-lose-sub" id="you-lose-sub">This player left the game before completing their stat.</div>
+          <button class="you-lose-dismiss" id="you-lose-dismiss">Got it</button>
+        </div>
+
+        <!-- Redraw Tile — confirmation modal -->
+        <div class="redraw-confirm-overlay" id="redraw-tile-overlay">
+          <div class="redraw-confirm-card">
+            <div class="redraw-confirm-icon">↺</div>
+            <div class="redraw-confirm-title">Redraw Tile?</div>
+            <div class="redraw-confirm-body" id="redraw-tile-body">Are you sure you want to redraw this tile? You'll have 2 redraws remaining.</div>
+            <button class="redraw-confirm-go" id="redraw-tile-confirm">Redraw</button>
+            <button class="redraw-confirm-cancel" id="redraw-tile-cancel">Cancel</button>
+          </div>
+        </div>
+
+        <!-- Power of Love — confirmation modal -->
+        <div class="pol-confirm-overlay" id="pol-confirm-overlay">
+          <div class="pol-confirm-card">
+            <div class="pol-confirm-emoji">💝</div>
+            <div class="pol-confirm-title">Use your Love Token?</div>
+            <div class="pol-confirm-body">This claims the tile instantly — but you only get one. Choose wisely.</div>
+            <button class="pol-confirm-yes" id="pol-confirm-yes">Claim it 💝</button>
+            <button class="pol-confirm-no" id="pol-confirm-no">Not yet</button>
+          </div>
+        </div>
+
         <!-- Detail Sheet Overlay -->
         <div class="detail-sheet-overlay" id="detail-sheet-overlay"></div>
         
         <!-- Detail Sheet -->
         <div class="detail-sheet" id="detail-sheet">
           <div class="detail-sheet-header">
+            <img class="detail-sheet-team-logo-bg" id="detail-sheet-team-logo-bg" src="" alt="">
             <div class="detail-sheet-glow" id="detail-sheet-glow"></div>
             <img class="detail-sheet-headshot" id="detail-sheet-headshot" src="" alt="">
             <div class="detail-sheet-gradient"></div>
@@ -1884,6 +2966,28 @@
           <div class="detail-sheet-indicator">
             <div class="detail-sheet-indicator-bar"></div>
           </div>
+          <button class="redraw-sheet-btn" id="redraw-sheet-btn">↺&nbsp; Redraw Tile</button>
+          <div class="redraw-sheet-confirm" id="redraw-sheet-confirm">
+            <div class="redraw-sheet-confirm-text">
+              <strong>Redraw Tile?</strong>
+              Are you sure you want to redraw this tile? <span id="redraw-remaining-text">You have 3 redraws left this game.</span>
+            </div>
+            <div class="redraw-sheet-confirm-btns">
+              <button class="redraw-confirm-yes" id="redraw-confirm-yes">Confirm</button>
+              <button class="redraw-confirm-no" id="redraw-confirm-no">Cancel</button>
+            </div>
+          </div>
+          <button class="pol-sheet-btn" id="pol-sheet-btn">💝&nbsp; Claim tile with love token</button>
+          <div class="pol-sheet-confirm" id="pol-sheet-confirm">
+            <div class="pol-sheet-confirm-text">
+              Use your love token on this tile?
+              <span>You only get one — choose wisely.</span>
+            </div>
+            <div class="pol-sheet-confirm-btns">
+              <button class="pol-sheet-confirm-yes" id="pol-sheet-confirm-yes">Claim it 💝</button>
+              <button class="pol-sheet-confirm-no" id="pol-sheet-confirm-no">Not yet</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1895,26 +2999,15 @@
     // ESPN CDN URL helpers
     const ESPN_CDN = {
       playerHeadshot: (playerId) => `https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/${playerId}.png&w=96&h=70&cb=1`,
-      teamLogo: (team) => `https://a.espncdn.com/i/teamlogos/nfl/500/${team.toLowerCase()}.png`
+      teamLogo: (team) => `https://a.espncdn.com/i/teamlogos/nfl/500-dark/${team.toLowerCase()}.png`
     };
 
-    // Local Figma headshot assets
-    const LOCAL_HEADSHOTS = {
-      12483: 'assets/1cbd6f1e8f94bda4b89229f401e9ac19e554f3c8.png',
-      3052587: 'assets/7ba737ec1214e3d170d68d686e9b4ad2a2fdcb30.png',
-      4362887: 'assets/4e85ccefb759e866838263a9128e2f4d680da9fa.png',
-      4429795: 'assets/e51be7ea776155731957bde0dfeefc9b45818190.png',
-      4685306: 'assets/203695398027bf3a17743f96e252de5f65ac5e36.png',
-      4361438: 'assets/3dc88dcee16ea61d2e03d9b7a0a9f7680a88a459.png',
-      'colby-parkinson': 'assets/880b87ad2c3f5650c3704eb48c3a606a1c6cb93c.png',
-      'emeka-egbuka': 'assets/f4ef25ceca5cd2833d612e9cba80f09e856a02e4.png',
-      'tykee-smith': 'assets/8e3c7129019e78d206fd86f39f9ec75c167c8001.png',
-      'nate-landman': 'assets/fe40ee8f309bd00be6f5f09a9d9ee7e515ffcba9.png'
-    };
+    // Local headshot assets (intentionally empty — files not available; ESPN CDN used instead)
+    const LOCAL_HEADSHOTS = {};
 
     const SPECIAL_ASSETS = {
-      badBunny: 'assets/05622e3c35ec2edaaf130be0d4446291cffc4417.png',
-      freeSquareSponsor: 'assets/283f5e356f90fbd4c6c6e93bc1232b1f866048d4.png'
+      badBunny: '_assets/Bad_Bunny.png',
+      freeSquareSponsor: '_assets/FreeSquare_Sponsor.png'
     };
 
     // Fixed team configuration
@@ -1923,51 +3016,153 @@
       home: { abbr: 'TB', name: 'Tampa Bay Buccaneers', color: '#D50A0A' }
     };
 
-    // Bingo tiles
-    var sampleTiles = [
-      { id: '1', type: 'player', name: 'M. Stafford', fullName: 'MATTHEW STAFFORD', team: 'LAR', position: 'QB', number: '9', stat: 'Pass Yds', target: 250, current: 0, state: 'normal', playerId: 12483 },
-      { id: '2', type: 'player', name: 'B. Mayfield', fullName: 'BAKER MAYFIELD', team: 'TB', position: 'QB', number: '6', stat: 'Pass TDs', target: 2, current: 0, state: 'normal', playerId: 3052587 },
-      { id: '3', type: 'team', name: 'LAR', fullName: 'LOS ANGELES RAMS', team: 'LAR', stat: 'Total Pts', target: 24, current: 0, state: 'normal' },
-      { id: '4', type: 'team', name: 'TB', fullName: 'TAMPA BAY BUCCANEERS', team: 'TB', stat: 'Total Pts', target: 27, current: 0, state: 'normal' },
-      { id: '5', type: 'halftime', name: 'Bad Bunny', fullName: 'BAD BUNNY', team: 'HT', stat: '2+ Songs', target: 2, current: 0, state: 'normal', customIcon: 'badbunny' },
-      { id: '6', type: 'team', name: 'TB', fullName: 'TAMPA BAY BUCCANEERS', team: 'TB', stat: '1st Half Pts', target: 14, current: 0, state: 'normal' },
-      { id: '7', type: 'player', name: 'K. Williams', fullName: 'KYREN WILLIAMS', team: 'LAR', position: 'RB', number: '23', stat: 'Rush Yds', target: 75, current: 0, state: 'normal', playerId: 4362887 },
-      { id: '8', type: 'player', name: 'E. Egbuka', fullName: 'EMEKA EGBUKA', team: 'TB', position: 'WR', number: '5', stat: 'Rec Yds', target: 80, current: 0, state: 'normal', playerId: 'emeka-egbuka' },
-      { id: '9', type: 'player', name: 'P. Nacua', fullName: 'PUKA NACUA', team: 'LAR', position: 'WR', number: '17', stat: 'Receptions', target: 6, current: 0, state: 'normal', playerId: 4429795 },
-      { id: '10', type: 'team', name: 'LAR', fullName: 'LOS ANGELES RAMS', team: 'LAR', stat: '1st Half Pts', target: 10, current: 0, state: 'normal' },
-      { id: '11', type: 'player', name: 'N. Landman', fullName: 'NATE LANDMAN', team: 'LAR', position: 'LB', number: '46', stat: 'Tackles', target: 6, current: 0, state: 'normal', playerId: 'nate-landman' },
-      { id: '12', type: 'team', name: 'TB', fullName: 'TAMPA BAY BUCCANEERS', team: 'TB', stat: 'Total TDs', target: 3, current: 0, state: 'normal' },
-      { id: '13', type: 'freespot', name: 'Free Square', fullName: 'FREE SQUARE', team: 'HT', stat: 'MICHELOB ULTRA', target: 0, current: 0, state: 'complete', customIcon: 'freespot' },
-      { id: '14', type: 'player', name: 'B. Irving', fullName: 'BUCKY IRVING', team: 'TB', position: 'RB', number: '7', stat: 'Rush Yds', target: 60, current: 0, state: 'normal', playerId: 4685306 },
-      { id: '15', type: 'team', name: 'TB', fullName: 'TAMPA BAY BUCCANEERS', team: 'TB', stat: 'Rushing Yds', target: 100, current: 0, state: 'normal' },
-      { id: '16', type: 'player', name: 'C. Otton', fullName: 'CADE OTTON', team: 'TB', position: 'TE', number: '88', stat: 'Receptions', target: 4, current: 0, state: 'normal', playerId: 4361438 },
-      { id: '17', type: 'player', name: 'C. Parkinson', fullName: 'COLBY PARKINSON', team: 'LAR', position: 'TE', number: '84', stat: 'Rec Yds', target: 40, current: 0, state: 'normal', playerId: 'colby-parkinson' },
-      { id: '18', type: 'prop', name: 'Coin Flip', fullName: 'COIN FLIP', team: 'NFL', stat: 'Heads', target: 0, current: 0, state: 'normal', customIcon: 'coin' },
-      { id: '19', type: 'team', name: 'LAR', fullName: 'LOS ANGELES RAMS', team: 'LAR', stat: 'Passing Yds', target: 275, current: 0, state: 'normal' },
-      { id: '20', type: 'prop', name: 'First TD', fullName: 'FIRST TOUCHDOWN', team: 'LAR', stat: 'Pass TD', target: 0, current: 0, state: 'normal', customIcon: 'firsttd' },
-      { id: '21', type: 'team', name: 'TB', fullName: 'TAMPA BAY BUCCANEERS', team: 'TB', stat: 'Passing Yds', target: 285, current: 0, state: 'normal' },
-      { id: '22', type: 'player', name: 'M. Stafford', fullName: 'MATTHEW STAFFORD', team: 'LAR', position: 'QB', number: '9', stat: 'Pass TDs', target: 2, current: 0, state: 'normal', playerId: 12483 },
-      { id: '23', type: 'player', name: 'T. Smith', fullName: 'TYKEE SMITH', team: 'TB', position: 'DB', number: '24', stat: 'Tackles', target: 4, current: 0, state: 'normal', playerId: 'tykee-smith' },
-      { id: '24', type: 'halftime', name: 'Bad Bunny', fullName: 'BAD BUNNY', team: 'HT', stat: 'Guest Artist', target: 1, current: 0, state: 'normal', customIcon: 'badbunny' },
-      { id: '25', type: 'team', name: 'TB', fullName: 'TAMPA BAY BUCCANEERS', team: 'TB', stat: 'Sacks', target: 2, current: 0, state: 'normal' }
+    // ===== TILE POOL — 59 tiles, 24 randomly dealt each game =====
+    const TILE_POOL = [
+      // MATTHEW STAFFORD (LAR QB) — 4 variants
+      { id:'p1a', type:'player', name:'M. Stafford', fullName:'MATTHEW STAFFORD', team:'LAR', position:'QB', number:'9', stat:'Pass Yds',    target:250, playerId:12483 },
+      { id:'p1b', type:'player', name:'M. Stafford', fullName:'MATTHEW STAFFORD', team:'LAR', position:'QB', number:'9', stat:'Pass TDs',    target:2,   playerId:12483 },
+      { id:'p1c', type:'player', name:'M. Stafford', fullName:'MATTHEW STAFFORD', team:'LAR', position:'QB', number:'9', stat:'Completions', target:22,  playerId:12483 },
+      { id:'p1d', type:'player', name:'M. Stafford', fullName:'MATTHEW STAFFORD', team:'LAR', position:'QB', number:'9', stat:'Pass Att',    target:35,  playerId:12483 },
+
+      // BAKER MAYFIELD (TB QB) — 4 variants
+      { id:'p2a', type:'player', name:'B. Mayfield', fullName:'BAKER MAYFIELD', team:'TB', position:'QB', number:'6', stat:'Pass Yds',      target:250, playerId:3052587 },
+      { id:'p2b', type:'player', name:'B. Mayfield', fullName:'BAKER MAYFIELD', team:'TB', position:'QB', number:'6', stat:'Pass TDs',      target:2,   playerId:3052587 },
+      { id:'p2c', type:'player', name:'B. Mayfield', fullName:'BAKER MAYFIELD', team:'TB', position:'QB', number:'6', stat:'Completions',   target:20,  playerId:3052587 },
+      { id:'p2d', type:'player', name:'B. Mayfield', fullName:'BAKER MAYFIELD', team:'TB', position:'QB', number:'6', stat:'Interceptions', target:1,   playerId:3052587 },
+
+      // KYREN WILLIAMS (LAR RB) — 3 variants
+      { id:'p3a', type:'player', name:'K. Williams', fullName:'KYREN WILLIAMS', team:'LAR', position:'RB', number:'23', stat:'Rush Yds',   target:75, playerId:4430737 },
+      { id:'p3b', type:'player', name:'K. Williams', fullName:'KYREN WILLIAMS', team:'LAR', position:'RB', number:'23', stat:'Rush TDs',   target:1,  playerId:4430737 },
+      { id:'p3c', type:'player', name:'K. Williams', fullName:'KYREN WILLIAMS', team:'LAR', position:'RB', number:'23', stat:'Receptions', target:4,  playerId:4430737 },
+
+      // BUCKY IRVING (TB RB) — 3 variants
+      { id:'p4a', type:'player', name:'B. Irving', fullName:'BUCKY IRVING', team:'TB', position:'RB', number:'7', stat:'Rush Yds',   target:60, playerId:4596448 },
+      { id:'p4b', type:'player', name:'B. Irving', fullName:'BUCKY IRVING', team:'TB', position:'RB', number:'7', stat:'Rush TDs',   target:1,  playerId:4596448 },
+      { id:'p4c', type:'player', name:'B. Irving', fullName:'BUCKY IRVING', team:'TB', position:'RB', number:'7', stat:'Receptions', target:3,  playerId:4596448 },
+
+      // PUKA NACUA (LAR WR) — 3 variants
+      { id:'p5a', type:'player', name:'P. Nacua', fullName:'PUKA NACUA', team:'LAR', position:'WR', number:'12', stat:'Rec Yds',    target:80, playerId:4426515 },
+      { id:'p5b', type:'player', name:'P. Nacua', fullName:'PUKA NACUA', team:'LAR', position:'WR', number:'12', stat:'Receptions', target:6,  playerId:4426515 },
+      { id:'p5c', type:'player', name:'P. Nacua', fullName:'PUKA NACUA', team:'LAR', position:'WR', number:'12', stat:'Rec TDs',    target:1,  playerId:4426515 },
+
+      // EMEKA EGBUKA (TB WR) — 3 variants
+      { id:'p6a', type:'player', name:'E. Egbuka', fullName:'EMEKA EGBUKA', team:'TB', position:'WR', number:'2', stat:'Rec Yds',    target:80, playerId:4567750 },
+      { id:'p6b', type:'player', name:'E. Egbuka', fullName:'EMEKA EGBUKA', team:'TB', position:'WR', number:'2', stat:'Receptions', target:5,  playerId:4567750 },
+      { id:'p6c', type:'player', name:'E. Egbuka', fullName:'EMEKA EGBUKA', team:'TB', position:'WR', number:'2', stat:'Rec TDs',    target:1,  playerId:4567750 },
+
+      // JARED VERSE (LAR DE) — 2 variants
+      { id:'p7a', type:'player', name:'J. Verse', fullName:'JARED VERSE', team:'LAR', position:'DE', number:'55', stat:'Sacks',   target:1, playerId:4578085 },
+      { id:'p7b', type:'player', name:'J. Verse', fullName:'JARED VERSE', team:'LAR', position:'DE', number:'55', stat:'Tackles', target:5, playerId:4578085 },
+
+      // KOBIE TURNER (LAR DT) — 2 variants
+      { id:'p8a', type:'player', name:'K. Turner', fullName:'KOBIE TURNER', team:'LAR', position:'DT', number:'91', stat:'Tackles', target:4, playerId:4250621 },
+      { id:'p8b', type:'player', name:'K. Turner', fullName:'KOBIE TURNER', team:'LAR', position:'DT', number:'91', stat:'Sacks',   target:1, playerId:4250621 },
+
+      // YAYA DIABY (TB OLB) — 2 variants
+      { id:'p8c', type:'player', name:'Y. Diaby', fullName:'YAYA DIABY', team:'TB', position:'OLB', number:'38', stat:'Sacks',   target:1, playerId:4686334 },
+      { id:'p8d', type:'player', name:'Y. Diaby', fullName:'YAYA DIABY', team:'TB', position:'OLB', number:'38', stat:'Tackles', target:4, playerId:4686334 },
+
+      // HARRISON MEVIS (LAR K) — 1 variant
+      { id:'p8e', type:'player', name:'H. Mevis', fullName:'HARRISON MEVIS', team:'LAR', position:'K', number:'92', stat:'Field Goals', target:3, playerId:4574716 },
+
+      // CHASE McLAUGHLIN (TB K) — 1 variant
+      { id:'p8f', type:'player', name:'C. McLaughlin', fullName:'CHASE McLAUGHLIN', team:'TB', position:'K', number:'10', stat:'Field Goals', target:3, playerId:3150744 },
+
+      // CADE OTTON (TB TE) — 2 variants
+      { id:'p9a', type:'player', name:'C. Otton', fullName:'CADE OTTON', team:'TB', position:'TE', number:'88', stat:'Receptions', target:4, playerId:4243331 },
+      { id:'p9b', type:'player', name:'C. Otton', fullName:'CADE OTTON', team:'TB', position:'TE', number:'88', stat:'Rec Yds',    target:45, playerId:4243331 },
+
+      // COLBY PARKINSON (LAR TE) — 2 variants
+      { id:'p10a', type:'player', name:'C. Parkinson', fullName:'COLBY PARKINSON', team:'LAR', position:'TE', number:'84', stat:'Rec Yds',    target:40, playerId:4242557 },
+      { id:'p10b', type:'player', name:'C. Parkinson', fullName:'COLBY PARKINSON', team:'LAR', position:'TE', number:'84', stat:'Receptions', target:3,  playerId:4242557 },
+
+      // DEFENSE
+      { id:'p11a', type:'player', name:'N. Landman', fullName:'NATE LANDMAN', team:'LAR', position:'LB', number:'46', stat:'Tackles', target:6, playerId:4243181 },
+      { id:'p11b', type:'player', name:'N. Landman', fullName:'NATE LANDMAN', team:'LAR', position:'LB', number:'46', stat:'Sacks',   target:1, playerId:4243181 },
+      { id:'p12a', type:'player', name:'T. Smith', fullName:'TYKEE SMITH', team:'TB', position:'DB', number:'24', stat:'Tackles',      target:4, playerId:4428522 },
+      { id:'p12b', type:'player', name:'T. Smith', fullName:'TYKEE SMITH', team:'TB', position:'DB', number:'24', stat:'Interceptions', target:1, playerId:4428522 },
+
+      // LAR TEAM TILES — 7 variants
+      { id:'t1',  type:'team', name:'LAR', fullName:'LOS ANGELES RAMS', team:'LAR', stat:'Total Pts',   target:24  },
+      { id:'t2',  type:'team', name:'LAR', fullName:'LOS ANGELES RAMS', team:'LAR', stat:'1st Half Pts', target:10  },
+      { id:'t3',  type:'team', name:'LAR', fullName:'LOS ANGELES RAMS', team:'LAR', stat:'Passing Yds',  target:275 },
+      { id:'t4',  type:'team', name:'LAR', fullName:'LOS ANGELES RAMS', team:'LAR', stat:'Rushing Yds',  target:100 },
+      { id:'t5',  type:'team', name:'LAR', fullName:'LOS ANGELES RAMS', team:'LAR', stat:'Total TDs',    target:3   },
+      { id:'t6',  type:'team', name:'LAR', fullName:'LOS ANGELES RAMS', team:'LAR', stat:'Total Sacks',  target:2   },
+      { id:'t7',  type:'team', name:'LAR', fullName:'LOS ANGELES RAMS', team:'LAR', stat:'First Downs',  target:18  },
+
+      // TB TEAM TILES — 7 variants
+      { id:'t8',  type:'team', name:'TB', fullName:'TAMPA BAY BUCCANEERS', team:'TB', stat:'Total Pts',   target:27  },
+      { id:'t9',  type:'team', name:'TB', fullName:'TAMPA BAY BUCCANEERS', team:'TB', stat:'1st Half Pts', target:14  },
+      { id:'t10', type:'team', name:'TB', fullName:'TAMPA BAY BUCCANEERS', team:'TB', stat:'Passing Yds',  target:285 },
+      { id:'t11', type:'team', name:'TB', fullName:'TAMPA BAY BUCCANEERS', team:'TB', stat:'Rushing Yds',  target:100 },
+      { id:'t12', type:'team', name:'TB', fullName:'TAMPA BAY BUCCANEERS', team:'TB', stat:'Total TDs',    target:3   },
+      { id:'t13', type:'team', name:'TB', fullName:'TAMPA BAY BUCCANEERS', team:'TB', stat:'Sacks',        target:2   },
+      { id:'t14', type:'team', name:'TB', fullName:'TAMPA BAY BUCCANEERS', team:'TB', stat:'First Downs',  target:18  },
+
+      // PROPS — 6 variants
+      { id:'prop1', type:'prop', name:'Coin Flip',  fullName:'COIN FLIP',         team:'NFL', stat:'Heads',   target:0, customIcon:'coin'    },
+      { id:'prop2', type:'prop', name:'First TD',   fullName:'FIRST TD — RAMS',   team:'LAR', stat:'Pass TD', target:0, customIcon:'firsttd' },
+      { id:'prop3', type:'prop', name:'First TD',   fullName:'FIRST TD — BUCS',   team:'TB',  stat:'Rush TD', target:0, customIcon:'firsttd' },
+      { id:'prop4', type:'prop', name:'Overtime',   fullName:'OVERTIME',          team:'NFL', stat:'Yes',     target:0, customIcon:'coin'    },
+      { id:'prop5', type:'prop', name:'Safety',     fullName:'SAFETY SCORED',     team:'NFL', stat:'Yes',     target:0, customIcon:'coin'    },
+      { id:'prop6', type:'prop', name:'Onside Kick',fullName:'ONSIDE KICK',       team:'NFL', stat:'Attempted',target:0, customIcon:'coin'   },
+
+      // HALFTIME — 3 variants
+      { id:'ht1', type:'halftime', name:'Bad Bunny', fullName:'BAD BUNNY', team:'HT', stat:'2+ Songs',       target:2, customIcon:'badbunny' },
+      { id:'ht2', type:'halftime', name:'Bad Bunny', fullName:'BAD BUNNY', team:'HT', stat:'Guest Artist',   target:1, customIcon:'badbunny' },
+      { id:'ht3', type:'halftime', name:'Bad Bunny', fullName:'BAD BUNNY', team:'HT', stat:'Costume Change', target:1, customIcon:'badbunny' }
     ];
+
+    // The fixed freespot always sits at index 12 (center)
+    const FREESPOT = { id:'fs', type:'freespot', name:'Free Square', fullName:'FREE SQUARE', team:'HT', stat:'MICHELOB ULTRA', target:0, current:0, state:'normal', customIcon:'freespot' };
+
+    // Deal a fresh 24-tile card from the pool (max 2 tiles per player, balanced mix)
+    // Returns a 25-element array with the freespot locked at index 12.
+    function dealCard() {
+      // Shuffle the pool
+      const pool = TILE_POOL.map(t => ({ ...t, current:0, confirmed:false, dead:false, state:'normal' }));
+      for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+      }
+      // Pick 24 tiles respecting max-2-per-player
+      const selected = [];
+      const playerCount = {};
+      for (const tile of pool) {
+        if (selected.length >= 24) break;
+        const key = tile.playerId;
+        if (key) {
+          if ((playerCount[key] || 0) >= 2) continue;
+          playerCount[key] = (playerCount[key] || 0) + 1;
+        }
+        selected.push(tile);
+      }
+      // Safety: pad if pool was somehow short (shouldn't happen with 56 tiles)
+      while (selected.length < 24) {
+        selected.push({ ...TILE_POOL[selected.length % TILE_POOL.length], current:0, confirmed:false, dead:false, state:'normal' });
+      }
+      // Insert freespot at center (index 12)
+      selected.splice(12, 0, { ...FREESPOT });
+      return selected;
+    }
 
     const PENDING_THRESHOLD = 5;
     let currentSheetTile = null;
-    const tiles = [...sampleTiles];
+    const tiles = dealCard();
     let gridInitialized = false;
 
     // ===== SOUND EFFECTS =====
     const sounds = {
-      tileComplete: new Audio('sounds/title-complete.mp3'),
-      tilePending: new Audio('sounds/title-pending.mp3'),
-      bingoLine: new Audio('sounds/bingo-line.mp3'),
-      bingoWin: new Audio('sounds/bingo-win.mp3'),
-      confetti: new Audio('sounds/confetti.mp3'),
-      resetGame: new Audio('sounds/reset-game.mp3'),
-      cardIn: new Audio('sounds/card-in.mp3'),
-      cardOut: new Audio('sounds/card-out.mp3'),
-      gameStart: new Audio('sounds/game-start.mp3')
+      tileComplete: new Audio('_assets/Positive Gain.mp3'),
+      tilePending: new Audio('_assets/Progress Gain.mp3'),
+      bingoLine: new Audio('_assets/Bingo Win.mp3'),
+      bingoWin: new Audio('_assets/Bingo Win.mp3'),
+      confetti: new Audio('_assets/Bingo Win.mp3'),
+      resetGame: new Audio('_assets/Bingo Loss.mp3'),
+      cardIn: new Audio('_assets/Card In.mp3'),
+      cardOut: new Audio('_assets/Card Out.mp3'),
+      gameStart: new Audio('_assets/Positive Gain.mp3')
     };
 
     // Volume control system
@@ -2074,11 +3269,13 @@
 
     // Helper functions
     function calculateTileState(tile) {
-      if (tile.type === 'freespot') return 'complete';
+      if (tile.type === 'freespot') return tile.state; // preserve 'normal' until explicitly claimed
+      if (tile.confirmed) return 'complete';
+      if (tile.dead) return 'dead';           // player out, tile killed
       if (tile.target <= 0) return tile.state;
       if (tile.current < tile.target) return 'in-progress';
       if (tile.current >= tile.target && tile.current < tile.target + PENDING_THRESHOLD) return 'pending';
-      if (tile.current >= tile.target + PENDING_THRESHOLD) return 'complete';
+      if (tile.current >= tile.target + PENDING_THRESHOLD) return 'pending-win';
       return 'normal';
     }
 
@@ -2086,16 +3283,18 @@
       const oldState = tile.state;
       const newState = calculateTileState(tile);
       tile.state = newState;
-      
+
       // Play sounds on state transitions
       if (oldState !== newState) {
         if (newState === 'pending' && oldState !== 'pending') {
+          playSound('tilePending');
+        } else if (newState === 'pending-win' && oldState !== 'pending-win') {
           playSound('tilePending');
         } else if (newState === 'complete' && oldState !== 'complete') {
           playSound('tileComplete');
         }
       }
-      
+
       return tile;
     }
 
@@ -2113,22 +3312,45 @@
 
     function getTeamLogoUrl(team) {
       if (!team || team === 'NFL') return 'https://a.espncdn.com/i/teamlogos/nfl/500/nfl.png';
-      return `https://a.espncdn.com/i/teamlogos/nfl/500/${team.toLowerCase()}.png`;
+      return `https://a.espncdn.com/i/teamlogos/nfl/500-dark/${team.toLowerCase()}.png`;
     }
 
     function getPlayerHeadshotUrl(playerId) {
       if (!playerId) return null;
       if (LOCAL_HEADSHOTS[playerId]) return LOCAL_HEADSHOTS[playerId];
+      if (typeof playerId === 'number') {
+        // Use direct CDN path (more reliable than combiner for static assets)
+        return `https://a.espncdn.com/i/headshots/nfl/players/full/${playerId}.png`;
+      }
       return null;
+    }
+
+    // Called by onerror on headshot imgs — swaps to team-color initials fallback
+    function handleHeadshotError(imgEl, tile) {
+      const parent = imgEl.parentElement;
+      if (!parent) return;
+      imgEl.remove();
+      const color = getTeamColor(tile.team, tile);
+      const initials = (tile.name || '?').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+      const fallback = document.createElement('div');
+      fallback.className = 'headshot-fallback';
+      fallback.style.cssText = `
+        position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+        background: linear-gradient(160deg, ${color}44 0%, ${color}22 100%);
+        font-size:18px; font-weight:900; color:rgba(255,255,255,0.7); letter-spacing:1px;
+      `;
+      fallback.textContent = initials;
+      parent.appendChild(fallback);
     }
 
     function getTileBackground(tile) {
       if (tile.customIcon === 'badbunny' || tile.type === 'halftime') {
         return `<div class="tile-emoji-bg">🇵🇷</div>`;
       } else if (tile.customIcon === 'coin') {
+        // All coin props — 🪙 watermark
         return `<div class="tile-emoji-bg">🪙</div>`;
       } else if (tile.customIcon === 'firsttd') {
-        return `<img src="${getTeamLogoUrl(tile.team)}" alt="${tile.team}" class="tile-team-logo-bg-img">`;
+        return `<img src="${getTeamLogoUrl(tile.team)}" alt="${tile.team}" class="tile-team-logo-bg-img" onerror="this.style.display='none'">`;
       } else {
         return `<img src="${getTeamLogoUrl(tile.team)}" alt="${tile.team}" class="tile-team-logo-bg-img" onerror="this.style.opacity='0.08'">`;
       }
@@ -2136,31 +3358,48 @@
 
     function getTileImage(tile) {
       if (tile.type === 'player' && tile.playerId) {
-        return `<img src="${getPlayerHeadshotUrl(tile.playerId)}" alt="${tile.name}" class="tile-headshot" onerror="this.style.display='none'">`;
+        return { cls: 'tile-image--player', html: `<img src="${getPlayerHeadshotUrl(tile.playerId)}" alt="${tile.name}" class="tile-headshot" onerror="handleHeadshotError(this, ${JSON.stringify({name: tile.name, team: tile.team})})">` };
       } else if (tile.type === 'team') {
-        return `<img src="${getTeamLogoUrl(tile.team)}" alt="${tile.team}" class="tile-team-logo-img">`;
+        // Figma: logo at x:9.3, y:7, 50×50 within 69×90 tile — use tile-image--team
+        return { cls: 'tile-image--team', html: `<img src="${getTeamLogoUrl(tile.team)}" alt="${tile.team}" onerror="this.style.display='none'">` };
       } else if (tile.customIcon === 'badbunny' || tile.type === 'halftime') {
-        return `<img src="${SPECIAL_ASSETS.badBunny}" alt="Bad Bunny" class="tile-headshot" style="object-position: center 20%;">`;
+        return { cls: 'tile-image--player', html: `<img src="${SPECIAL_ASSETS.badBunny}" alt="Bad Bunny" class="tile-headshot" style="object-position: center 20%;">` };
       } else if (tile.customIcon === 'coin') {
-        return `<div class="custom-icon coin-icon">🪙</div>`;
+        // Coin Flip, Safety, OT, Onside Kick — coin, positioned high in header above gradient
+        return { cls: 'tile-image--icon', html: `<div class="custom-icon coin-icon">🪙</div>` };
       } else if (tile.customIcon === 'firsttd') {
-        return `<img src="${getTeamLogoUrl(tile.team)}" alt="${tile.team}" class="tile-team-logo-img">`;
+        return { cls: 'tile-image--team', html: `<img src="${getTeamLogoUrl(tile.team)}" alt="${tile.team}" onerror="this.style.display='none'">` };
       }
-      return `<img src="${getTeamLogoUrl(tile.team)}" alt="${tile.team}" class="tile-team-logo-img">`;
+      return { cls: 'tile-image--team', html: `<img src="${getTeamLogoUrl(tile.team)}" alt="${tile.team}" onerror="this.style.display='none'">` };
     }
 
     // Detail Sheet Functions
+    let currentSheetTileIndex = -1;
+
     function showDetailSheet(tileId) {
-      const tile = tiles.find(t => t.id === tileId);
+      const tileIndex = tiles.findIndex(t => t.id === tileId);
+      const tile = tileIndex >= 0 ? tiles[tileIndex] : null;
       if (!tile) return;
 
       playSound('cardIn'); // Play card slide-in sound
       currentSheetTile = tile;
+      currentSheetTileIndex = tileIndex;
+
+      // Show/hide Redraw CTA (pre-game only)
+      updateRedrawBtn(tile);
+
+      // Show/hide PoL CTA
+      const polBtn = document.getElementById('pol-sheet-btn');
+      if (polBtn) {
+        polBtn.style.display = (polUnlocked && !polUsed && tile.state !== 'complete' && tile.type !== 'freespot')
+          ? 'block' : 'none';
+      }
       
       const overlay = document.getElementById('detail-sheet-overlay');
       const sheet = document.getElementById('detail-sheet');
       const glow = document.getElementById('detail-sheet-glow');
       const headshot = document.getElementById('detail-sheet-headshot');
+      const teamLogoBg = document.getElementById('detail-sheet-team-logo-bg');
       const name = document.getElementById('detail-sheet-name');
       const teamLogo = document.getElementById('detail-sheet-team-logo');
       const position = document.getElementById('detail-sheet-position');
@@ -2170,7 +3409,7 @@
 
       glow.className = 'detail-sheet-glow';
       glow.style.background = '';
-      
+
       if (tile.customIcon === 'badbunny' || tile.type === 'halftime') {
         glow.classList.add('team-ht');
       } else if (tile.customIcon === 'coin' || (tile.type === 'prop' && tile.team === 'NFL')) {
@@ -2181,12 +3420,22 @@
         glow.classList.add('team-tb');
       }
 
-      if (tile.type === 'player' && tile.playerId) {
-        if (LOCAL_HEADSHOTS[tile.playerId]) {
-          headshot.src = LOCAL_HEADSHOTS[tile.playerId];
+      // Team logo bg watermark — show for player and team tiles, hide for others
+      if (teamLogoBg) {
+        if (tile.team && tile.team !== 'NFL' && tile.customIcon !== 'coin') {
+          teamLogoBg.src = getTeamLogoUrl(tile.team);
+          teamLogoBg.style.display = 'block';
         } else {
-          headshot.src = `https://a.espncdn.com/i/headshots/nfl/players/full/${tile.playerId}.png`;
+          teamLogoBg.style.display = 'none';
         }
+      }
+
+      if (tile.type === 'player' && tile.playerId) {
+        headshot.src = `https://a.espncdn.com/i/headshots/nfl/players/full/${tile.playerId}.png`;
+        headshot.onerror = () => {
+          headshot.onerror = null;
+          headshot.style.display = 'none';
+        };
         headshot.style.display = 'block';
         headshot.alt = tile.name;
       } else if (tile.type === 'team') {
@@ -2239,14 +3488,14 @@
         const progress = Math.min((tile.current / tile.target) * 100, 100);
         progressFill.style.width = `${progress}%`;
         progressFill.className = 'detail-sheet-progress-fill';
-        if (tile.state === 'complete') progressFill.classList.add('complete');
+        if (tile.state === 'complete' || tile.state === 'pending-win') progressFill.classList.add('complete');
         if (tile.state === 'pending') progressFill.classList.add('pending');
       } else {
         statLabel.textContent = tile.stat || 'Complete to win';
         statValue.textContent = tile.state === 'complete' ? '✓' : '—';
         progressFill.style.width = tile.state === 'complete' ? '100%' : '0%';
         progressFill.className = 'detail-sheet-progress-fill';
-        if (tile.state === 'complete') progressFill.classList.add('complete');
+        if (tile.state === 'complete' || tile.state === 'pending-win') progressFill.classList.add('complete');
         if (tile.state === 'pending') progressFill.classList.add('pending');
       }
 
@@ -2255,10 +3504,15 @@
     }
 
     function closeDetailSheet() {
-      playSound('cardOut'); // Play card slide-out sound
+      playSound('cardOut');
       document.getElementById('detail-sheet-overlay').classList.remove('active');
       document.getElementById('detail-sheet').classList.remove('active');
+      // Reset inline confirm panels so they're clean next open
+      document.getElementById('pol-sheet-confirm').classList.remove('active');
+      document.getElementById('redraw-sheet-confirm').classList.remove('active');
+      document.getElementById('redraw-sheet-btn').style.display = 'none';
       currentSheetTile = null;
+      currentSheetTileIndex = -1;
     }
 
     // Grid rendering
@@ -2267,15 +3521,62 @@
     function updateTileInPlace(index) {
       const tile = tiles[index];
       const tileEl = document.querySelector(`.bingo-tile[data-tile-id="${tile.id}"]`);
-      if (!tileEl || tile.type === 'freespot') return;
-      
-      tileEl.className = tileEl.className.replace(/state-\w+/g, '').replace(/\s+/g, ' ').trim();
+      if (!tileEl) return;
+
+      // Freespot: update class and re-render to unclaimed state on reset
+      if (tile.type === 'freespot') {
+        tileEl.className = `bingo-tile free-spot state-${tile.state}`;
+        if (tile.state === 'normal') {
+          const fsTeamColor = getTeamColor('TB');
+          const fsHeadshotUrl = getPlayerHeadshotUrl(3052587);
+          tileEl.innerHTML = `
+            <div class="tile-header">
+              <div class="tile-header-bg" style="background:${fsTeamColor};"></div>
+              <div class="tile-header-gradient"></div>
+              <img src="${getTeamLogoUrl('TB')}" class="tile-team-logo-bg-img" onerror="this.style.opacity='0.08'">
+              <div class="tile-image tile-image--player">
+                <img src="${fsHeadshotUrl}" class="tile-headshot"
+                  onerror="handleHeadshotError(this,${JSON.stringify({name:'B. Mayfield',team:'TB'})})">
+              </div>
+            </div>
+            <div class="tile-content">
+              <div class="tile-name">B. Mayfield</div>
+              <div class="tile-stat-row"><span class="tile-stat-label" style="font-size:8px;text-transform:uppercase;letter-spacing:0.5px;">Free Square</span></div>
+            </div>
+          `;
+        }
+        return;
+      }
+
+      tileEl.className = tileEl.className.replace(/state-[\w-]+/g, '').replace(/\s+/g, ' ').trim();
       tileEl.classList.add(`state-${tile.state}`);
-      
+      if (tile.polClaimed) tileEl.classList.add('pol-claimed');
+
       if (tile.target > 0) {
         const targetProgress = Math.min((tile.current / tile.target) * 100, 100);
         tileEl.style.setProperty('--progress', targetProgress);
         displayedProgress[tile.id] = targetProgress;
+
+        // 3-step progress color ramp: Yellow → Orange → (shimmer handles near-complete)
+        if (tile.state === 'in-progress') {
+          if (targetProgress < 33) {
+            tileEl.style.setProperty('--progress-color', '#F5C518');   // Yellow — just started
+            tileEl.style.setProperty('--progress-shadow', 'rgba(245, 197, 24, 0.3)');
+          } else {
+            tileEl.style.setProperty('--progress-color', '#FF8C00');   // Orange — mid progress
+            tileEl.style.setProperty('--progress-shadow', 'rgba(255, 140, 0, 0.3)');
+          }
+        }
+      }
+
+      // On-field pulse: trigger when a tile is actively receiving a stat update
+      if (tile.state === 'dead') return;   // dead tiles need no further updates
+      if (tile.state === 'in-progress' && simulationRunning) {
+        tileEl.classList.remove('on-field');          // reset to restart animation
+        void tileEl.offsetWidth;                      // force reflow
+        tileEl.classList.add('on-field');
+        clearTimeout(tileEl._onFieldTimer);
+        tileEl._onFieldTimer = setTimeout(() => tileEl.classList.remove('on-field'), 1300);
       }
     }
 
@@ -2292,7 +3593,8 @@
         const tileEl = document.createElement('div');
         const animationClass = withAnimation && !gridInitialized ? 'animate-entry' : '';
         const coinFlipClass = tile.customIcon === 'coin' ? 'coin-flip-tile' : '';
-        tileEl.className = `bingo-tile ${animationClass} state-${tile.state} ${tile.type === 'freespot' ? 'free-spot' : ''} ${coinFlipClass}`.trim();
+        const polClaimedClass = tile.polClaimed ? 'pol-claimed' : '';
+        tileEl.className = `bingo-tile ${animationClass} state-${tile.state} ${tile.type === 'freespot' ? 'free-spot' : ''} ${coinFlipClass} ${polClaimedClass}`.trim();
         tileEl.dataset.tileId = tile.id;
 
         const progress = tile.target > 0 ? Math.min((tile.current / tile.target) * 100, 100) : 100;
@@ -2301,35 +3603,73 @@
         if (tile.target > 0) tileEl.style.setProperty('--progress', progress);
 
         if (tile.type === 'freespot') {
-          tileEl.innerHTML = `
-            <div class="tile-content" style="height: 100%; justify-content: center; align-items: center; background: linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 100%); gap: 4px; padding: 8px;">
-              <div style="font-size: 11px; font-weight: 700; color: #ffffff; text-align: center; line-height: 1.2; margin-bottom: 4px;">Free<br>Square</div>
-              <img src="${SPECIAL_ASSETS.freeSquareSponsor}" alt="Michelob Ultra" style="width: 100%; max-width: 58px; height: auto; object-fit: contain;">
-            </div>
-            <div class="tile-checkmark" style="display: flex;">
-              <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-            </div>
-          `;
+          if (tile.state === 'complete') {
+            // Claimed — show Free Square / Michelob Ultra sponsor design
+            tileEl.innerHTML = `
+              <div class="tile-content" style="position: absolute; inset: 0; height: auto; bottom: auto; justify-content: center; align-items: center; background: transparent; gap: 4px; padding: 8px;">
+                <div style="font-size: 11px; font-weight: 700; color: #ffffff; text-align: center; line-height: 1.2; margin-bottom: 4px;">Free<br>Square</div>
+                <img src="${SPECIAL_ASSETS.freeSquareSponsor}" alt="Michelob Ultra" style="width: 100%; max-width: 58px; height: auto; object-fit: contain;">
+              </div>
+              <div class="tile-checkmark" style="display: flex;">
+                <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              </div>
+            `;
+          } else {
+            // Unclaimed — show Baker Mayfield (walkthrough demo player)
+            const fsTeamColor = getTeamColor('TB');
+            const fsHeadshotUrl = getPlayerHeadshotUrl(3052587);
+            tileEl.innerHTML = `
+              <div class="tile-header">
+                <div class="tile-header-bg" style="background:${fsTeamColor};"></div>
+                <div class="tile-header-gradient"></div>
+                <img src="${getTeamLogoUrl('TB')}" class="tile-team-logo-bg-img" onerror="this.style.opacity='0.08'">
+                <div class="tile-image tile-image--player">
+                  <img src="${fsHeadshotUrl}" class="tile-headshot"
+                    onerror="handleHeadshotError(this,${JSON.stringify({name:'B. Mayfield',team:'TB'})})">
+                </div>
+              </div>
+              <div class="tile-content">
+                <div class="tile-name">B. Mayfield</div>
+                <div class="tile-stat-row"><span class="tile-stat-label" style="font-size:8px;text-transform:uppercase;letter-spacing:0.5px;">Free Square</span></div>
+              </div>
+            `;
+          }
+          // No interactive handler pre-game; auto-claimed when game starts
         } else {
           const tileBackgroundHtml = getTileBackground(tile);
-          const tileImageHtml = getTileImage(tile);
+          const tileImageObj = getTileImage(tile);
           const statLabel = tile.stat ? tile.stat.replace(/\n/g, '<br>') : '';
           const statValue = tile.target > 0 ? tile.target : '';
-          
+
           tileEl.innerHTML = `
             <div class="tile-header">
               <div class="tile-header-bg" style="background: ${teamColor};"></div>
               <div class="tile-header-gradient"></div>
               ${tileBackgroundHtml}
-              <div class="tile-image">${tileImageHtml}</div>
+              <div class="tile-image ${tileImageObj.cls}">${tileImageObj.html}</div>
             </div>
             <div class="tile-content">
               <div class="tile-name">${tile.name}</div>
-              ${statValue ? `<div class="tile-stat-value">${statValue}</div>` : ''}
-              ${statLabel ? `<div class="tile-stat-label">${statLabel}</div>` : ''}
+              ${(statValue || statLabel) ? `<div class="tile-stat-row"><span class="tile-stat-value">${statValue}</span>${statLabel ? `<span class="tile-stat-label"> ${statLabel}</span>` : ''}</div>` : ''}
             </div>
+            <div class="claim-btn">CLAIM</div>
             <div class="tile-checkmark">
               <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            </div>
+            <button class="pol-heart-btn" data-tile-index="${index}" aria-label="Claim with love token">
+              <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+            </button>
+            <button class="redraw-tile-btn" data-tile-index="${index}" aria-label="Redraw tile">
+              <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="1 4 1 10 7 10"/>
+                <path d="M3.51 15a9 9 0 1 0 .49-4.98"/>
+              </svg>
+            </button>
+            <div class="dead-tile-overlay">
+              <div class="dead-tile-x">✕</div>
+              <div class="dead-tile-label">Player Out</div>
             </div>
             <svg class="shimmer-border" viewBox="0 0 75 96" preserveAspectRatio="none">
               <defs>
@@ -2346,7 +3686,66 @@
         }
 
         if (tile.type !== 'freespot') {
-          tileEl.addEventListener('click', () => showDetailSheet(tile.id));
+          // Redraw icon — intercept before tile click fires (pre-game only)
+          const redrawBtn = tileEl.querySelector('.redraw-tile-btn');
+          if (redrawBtn) {
+            redrawBtn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              if (canReroll()) showRedrawTileModal(index);
+            });
+          }
+
+          // PoL heart button — intercept before tile click fires
+          const heartBtn = tileEl.querySelector('.pol-heart-btn');
+          if (heartBtn) {
+            heartBtn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              if (polUnlocked && !polUsed && tile.state !== 'complete') {
+                polPendingTileIndex = index;
+                showPolConfirmModal();
+              }
+            });
+          }
+
+          tileEl.addEventListener('click', (e) => {
+            if (walkthroughActive && !WALKTHROUGH_STEPS[walkthroughStep].tapTile) {
+              // During walkthrough, non-claim taps do nothing (tooltip handles it)
+              e.stopPropagation();
+              return;
+            }
+            if (tile.state === 'dead') {
+              e.stopPropagation();
+              showYouLoseModal(index);
+            } else if (tile.state === 'pending-win') {
+              e.stopPropagation();
+              confirmCount++;
+              tile.confirmed = true;
+              updateTileState(tile);
+              if (shouldSpawnHearts()) {
+                spawnHearts(tileEl);
+              }
+              updateTileInPlace(index);
+              updateStats();
+              // Advance walkthrough if we're on the claim step
+              if (walkthroughActive && WALKTHROUGH_STEPS[walkthroughStep].tapTile) {
+                setTimeout(nextWalkthroughStep, 600);
+                return;
+              }
+              if (checkHeartPattern()) {
+                triggerHeartAchievement();
+              }
+              if (!bingoTriggered) {
+                const winningPattern = detectBingo();
+                if (winningPattern) {
+                  bingoTriggered = true;
+                  drawWinningLine(winningPattern);
+                  setTimeout(() => showBingoCelebration(), 800);
+                }
+              }
+            } else {
+              showDetailSheet(tile.id);
+            }
+          });
         }
 
         grid.appendChild(tileEl);
@@ -2364,6 +3763,7 @@
 
     // ===== SIMULATION SYSTEM =====
     let simulationRunning = false;
+    let bingoTriggered = false;
     let simulationInterval = null;
     let gameScores = { away: 0, home: 0 };
     let gameQuarter = 1;
@@ -2385,6 +3785,29 @@
     ];
 
     function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+
+    // Claim the center free tile — flip from Baker Mayfield to Free Square / Michelob Ultra
+    function claimFreeTile() {
+      const fs = tiles[12];
+      if (!fs || fs.type !== 'freespot' || fs.state === 'complete') return;
+      fs.state     = 'complete';
+      fs.confirmed = true;
+      // Re-render just this tile element
+      const fsEl = document.querySelector('[data-tile-id="fs"]');
+      if (fsEl) {
+        fsEl.className = 'bingo-tile free-spot state-complete';
+        fsEl.innerHTML = `
+          <div class="tile-content" style="height: 100%; justify-content: center; align-items: center; background: transparent; gap: 4px; padding: 8px;">
+            <div style="font-size: 11px; font-weight: 700; color: #ffffff; text-align: center; line-height: 1.2; margin-bottom: 4px;">Free<br>Square</div>
+            <img src="${SPECIAL_ASSETS.freeSquareSponsor}" alt="Michelob Ultra" style="width: 100%; max-width: 58px; height: auto; object-fit: contain;">
+          </div>
+          <div class="tile-checkmark" style="display: flex;">
+            <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+          </div>
+        `;
+      }
+      updateStats();
+    }
 
     function detectBingo() {
       const winningPatterns = [];
@@ -2681,6 +4104,8 @@
       tiles.forEach((tile) => {
         if (tile.type === 'freespot') return;
         tile.current = 0;
+        tile.confirmed = false;
+        tile.dead = false;
         tile.state = 'normal';
         updateTileState(tile);
       });
@@ -2706,31 +4131,52 @@
         simulationInterval = null;
       }
       simulationRunning = false;
-      
-      tiles.forEach((tile) => {
-        if (tile.type === 'freespot') return;
-        tile.current = 0;
-        tile.state = 'normal';
-      });
-      
+
+      // Deal a brand-new card — different tiles every game
+      tiles.splice(0, tiles.length, ...dealCard());
+      rerollsRemaining = 3;
+      document.getElementById('redraw-stat-value').textContent = '3';
+      document.getElementById('redraw-stat-item').classList.remove('hidden');
+      document.getElementById('redraw-stat-divider').classList.remove('hidden');
+      document.getElementById('bingo-grid').classList.add('pregame-active');
+
+      // Reset PoL state
+      polUnlocked = false;
+      polUsed     = false;
+      polPendingTileIndex = null;
+      powerOfLoveTriggered = false;
+      closeYouLoseModal();
+      closePolConfirmModal();
+      document.getElementById('bingo-grid').classList.remove('pol-active');
+      const polStatItem = document.getElementById('pol-stat-item');
+      const polStatDiv  = document.getElementById('pol-stat-divider');
+      polStatItem.classList.remove('visible', 'pol-used');
+      polStatDiv.classList.remove('visible');
+      polStatItem.style.display = 'none';
+      polStatDiv.style.display  = 'none';
+      document.getElementById('pol-stat-value').textContent = '💝';
+      document.getElementById('pol-sheet-btn').style.display = 'none';
+
       gameScores = { away: 0, home: 0 };
       gameQuarter = 1;
       gameClock = 900;
-      
+
       document.getElementById('away-score').textContent = '0';
       document.getElementById('home-score').textContent = '0';
       document.getElementById('game-clock').textContent = '15:00';
       document.getElementById('game-period').textContent = '1st';
       
       // Reset entry card to default values
-      document.getElementById('tiles-hit').textContent = '1/24';
+      document.getElementById('tiles-hit').textContent = '0/24';
       document.getElementById('hit-time').textContent = '--';
       document.getElementById('rank').textContent = '--';
       
       document.querySelectorAll('.winning-tile').forEach(el => el.classList.remove('winning-tile'));
+      document.querySelectorAll('.bingo-tile[data-heart]').forEach(el => delete el.dataset.heart);
       document.getElementById('bingo-grid').classList.remove('has-winner');
+      document.getElementById('bingo-grid').classList.remove('heart-reveal');
       hideBingoCelebration();
-      
+
       const allTiles = document.querySelectorAll('.bingo-tile');
       allTiles.forEach(tile => {
         tile.classList.remove('animate-flip');
@@ -2739,41 +4185,89 @@
       });
       
       setTimeout(() => {
+        // dealCard() already randomized — just shuffle positions for extra variety
+        shuffleTilesArray();
         updateAllTilesInPlace();
         setTimeout(() => allTiles.forEach(tile => tile.classList.remove('animate-flip')), 800);
       }, 50);
-      
+
       // Reset button states
       document.getElementById('simulate-btn').textContent = 'Start Game';
       document.getElementById('simulate-btn').classList.remove('active');
       document.getElementById('restart-btn').disabled = true;
     }
 
+    function getSpeedMultiplier() {
+      const slider = document.getElementById('speed-slider');
+      return slider ? slider.value / 100 : 1;
+    }
+
+    // Shuffle non-freespot tiles in-place (called during the flip animation on reset)
+    function shuffleTilesArray() {
+      const nonFreeIndices = tiles.map((_, i) => i).filter(i => tiles[i].type !== 'freespot');
+      const nonFreeTiles = nonFreeIndices.map(i => tiles[i]);
+      for (let i = nonFreeTiles.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [nonFreeTiles[i], nonFreeTiles[j]] = [nonFreeTiles[j], nonFreeTiles[i]];
+      }
+      nonFreeIndices.forEach((gridIdx, i) => { tiles[gridIdx] = nonFreeTiles[i]; });
+    }
+
     function simulateGame(options = {}) {
-      const { duration = 45000, updateInterval = 300, winRate = 0.7 } = options;
+      const speedMult = getSpeedMultiplier();
+      const baseInterval = 300;
+      const scaledInterval = Math.round(baseInterval / speedMult);
+      // At slowest setting (0.1x) → 300s (5 min). At 1x → 30s. At 2x → 15s.
+      const scaledDuration = Math.round(30000 / speedMult);
+      const { duration = scaledDuration, updateInterval = scaledInterval, winRate = 0.7 } = options;
 
       if (simulationRunning) return;
-      
+
+      simulationCount++;
+      heartAchievementTriggered = false;
+      bingoTriggered = false;
+      confirmCount = 0;
+      heartsCollected = 0;
       resetTileValues();
       simulationRunning = true;
+
+      // Ensure the center free tile is claimed before the game ticks
+      claimFreeTile();
+
+      // Hide pre-game redraws stat and tile icons
+      document.getElementById('redraw-stat-item').classList.add('hidden');
+      document.getElementById('redraw-stat-divider').classList.add('hidden');
+      document.getElementById('bingo-grid').classList.remove('pregame-active');
       
       const totalUpdates = duration / updateInterval;
       let updateCount = 0;
       
-      const willWin = winRate >= 1.0 || Math.random() < winRate;
-      let targetPattern = null;
-      if (willWin) {
-        targetPattern = BINGO_PATTERNS[Math.floor(Math.random() * BINGO_PATTERNS.length)];
-      }
-      
+      const willWin = true;
+      let targetPattern = BINGO_PATTERNS[Math.floor(Math.random() * BINGO_PATTERNS.length)];
+
       const priorityTiles = new Set();
       const priorityTileSchedule = {};
-      if (willWin && targetPattern) {
-        targetPattern.indices.forEach((tileIndex, i) => {
+
+      // Coin flip hits very early (it happens at the start of a real game)
+      const coinFlipIndex = tiles.findIndex(t => t.customIcon === 'coin');
+      if (coinFlipIndex >= 0) {
+        priorityTiles.add(coinFlipIndex);
+        priorityTileSchedule[coinFlipIndex] = 0.05;
+      }
+
+      // Always prioritize heart pattern tiles + a bingo line
+      HEART_PATTERN.forEach((tileIndex, i) => {
+        if (tiles[tileIndex].type === 'freespot') return;
+        if (tileIndex === coinFlipIndex) return;
+        priorityTiles.add(tileIndex);
+        priorityTileSchedule[tileIndex] = 0.25 + (i * 0.05);
+      });
+      targetPattern.indices.forEach((tileIndex, i) => {
+        if (!priorityTiles.has(tileIndex)) {
           priorityTiles.add(tileIndex);
           priorityTileSchedule[tileIndex] = 0.5 + (i * 0.1);
-        });
-      }
+        }
+      });
       
       simulationInterval = setInterval(() => {
         updateCount++;
@@ -2808,15 +4302,15 @@
           const isPriorityTile = priorityTiles.has(index);
           
           if (tile.target <= 0) {
-            if (tile.state !== 'complete') {
+            if (tile.state !== 'complete' && tile.state !== 'pending-win') {
               if (isPriorityTile && willWin) {
                 const scheduleTime = priorityTileSchedule[index] || 0.8;
                 if (progress >= scheduleTime) {
-                  tile.state = 'complete';
+                  tile.state = 'pending-win';
                   updateTileInPlace(index);
                 }
               } else if (Math.random() < 0.02) {
-                tile.state = 'complete';
+                tile.state = 'pending-win';
                 updateTileInPlace(index);
               }
             }
@@ -2836,6 +4330,7 @@
               updateTileInPlace(index);
             }
           } else {
+            if (tile.state === 'dead') return;   // already dead, skip
             if (Math.random() < 0.10) {
               const remainingProgress = tile.target - tile.current;
               const increment = Math.random() * (remainingProgress * 0.12) + 0.5;
@@ -2843,26 +4338,40 @@
               updateTileState(tile);
               updateTileInPlace(index);
             }
+            // Small chance to kill an in-progress tile mid-game (player injured/benched)
+            // Only after 30% game progress, only tiles that have started but aren't close yet
+            if (
+              progress > 0.3 && progress < 0.8 &&
+              tile.state === 'in-progress' &&
+              tile.target > 0 && tile.current > 0 &&
+              (tile.current / tile.target) < 0.6 &&
+              Math.random() < 0.0015
+            ) {
+              tile.dead = true;
+              tile.state = 'dead';
+              updateTileInPlace(index);
+            }
           }
         });
-        
+
         updateStats();
-        
-        const winningPattern = detectBingo();
-        if (winningPattern) {
-          clearInterval(simulationInterval);
-          simulationInterval = null;
-          simulationRunning = false;
-          drawWinningLine(winningPattern);
-          setTimeout(() => showBingoCelebration(), 800);
-          return;
-        }
         
         if (updateCount >= totalUpdates) {
           clearInterval(simulationInterval);
           simulationInterval = null;
           simulationRunning = false;
           document.getElementById('game-period').textContent = 'FINAL';
+          // After 3 seconds deal a fresh card and flip it in
+          setTimeout(() => {
+            const allTiles = document.querySelectorAll('.bingo-tile');
+            allTiles.forEach(tile => { tile.classList.remove('animate-flip'); void tile.offsetWidth; tile.classList.add('animate-flip'); });
+            setTimeout(() => {
+              tiles.splice(0, tiles.length, ...dealCard());
+              shuffleTilesArray(); // extra position shuffle on top of random deal
+              updateAllTilesInPlace();
+              setTimeout(() => allTiles.forEach(tile => tile.classList.remove('animate-flip')), 800);
+            }, 50);
+          }, 3000);
         }
         
       }, updateInterval);
@@ -2871,6 +4380,7 @@
     // Initialize
     tiles.forEach(updateTileState);
     renderGrid(true);
+    document.getElementById('bingo-grid').classList.add('pregame-active');
 
     // Event listeners
     document.getElementById('detail-sheet-overlay').addEventListener('click', closeDetailSheet);
@@ -2884,17 +4394,27 @@
     // Simulator controls
     document.getElementById('simulate-btn').addEventListener('click', function() {
       if (!simulationRunning) {
-        playSound('gameStart'); // Play game start sound
-        simulateGame({ duration: 45000, winRate: 1.0 });
-        this.textContent = 'Simulating...';
-        this.classList.add('active');
-        document.getElementById('restart-btn').disabled = false;
+        if (!walkthroughSeen) {
+          startWalkthrough();
+        } else {
+          playSound('gameStart');
+          simulateGame({ winRate: 1.0 });
+          this.textContent = 'Simulating...';
+          this.classList.add('active');
+          document.getElementById('restart-btn').disabled = false;
+        }
       }
     });
 
     document.getElementById('restart-btn').addEventListener('click', function() {
       playSound('resetGame'); // Play reset sound
       resetGame();
+    });
+
+    // Speed control
+    document.getElementById('speed-slider').addEventListener('input', function() {
+      const val = this.value / 100;
+      document.getElementById('speed-percentage').textContent = val <= 1 ? `${val.toFixed(1)}x` : `${val.toFixed(1)}x`;
     });
 
     // Volume control event listeners
@@ -2917,6 +4437,704 @@
       hideBingoCelebration,
       isSimulating: () => simulationRunning
     };
+
+    // ===== VALENTINE'S DAY HEARTS + ACHIEVEMENT =====
+    let confirmCount = 0;
+    let heartsCollected = 0;
+    let powerOfLoveTriggered = false;
+    const HEARTS = ['❤️', '💗', '💖', '💝', '💕'];
+
+    function shouldSpawnHearts() {
+      return confirmCount > 0 && confirmCount % 3 === 0;
+    }
+
+    function spawnHearts(tileEl) {
+      const rect = tileEl.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const count = 7;
+
+      for (let i = 0; i < count; i++) {
+        const heart = document.createElement('span');
+        heart.className = 'heart-particle';
+        heart.textContent = HEARTS[Math.floor(Math.random() * HEARTS.length)];
+
+        const angle = -30 + (Math.random() * 180 - 90); // upward arc
+        const distance = 60 + Math.random() * 70;
+        const rad = angle * (Math.PI / 180);
+        const x = Math.cos(rad) * distance;
+        const y = -Math.abs(Math.sin(rad) * distance) - 20;
+        const size = 16 + Math.random() * 14;
+        const duration = 600 + Math.random() * 400;
+        const rotation = -30 + Math.random() * 60;
+
+        heart.style.cssText = `
+          position: fixed;
+          left: ${centerX}px;
+          top: ${centerY}px;
+          --heart-x: ${x}px;
+          --heart-y: ${y}px;
+          --heart-size: ${size}px;
+          --heart-duration: ${duration}ms;
+          --heart-rotation: ${rotation}deg;
+        `;
+
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), duration + 50);
+      }
+
+      heartsCollected++;
+      if (heartsCollected === 3 && !powerOfLoveTriggered) {
+        powerOfLoveTriggered = true;
+        setTimeout(() => unlockPowerOfLove(), 600);
+      }
+    }
+
+    function showAchievementToast(icon, title, subtitle) {
+      let toast = document.getElementById('achievement-toast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'achievement-toast';
+        toast.className = 'achievement-toast';
+        document.body.appendChild(toast);
+      }
+      toast.innerHTML = `
+        <span class="achievement-toast-icon">${icon}</span>
+        <div class="achievement-toast-content">
+          <span class="achievement-toast-title">${title}</span>
+          <span class="achievement-toast-subtitle">${subtitle}</span>
+        </div>
+      `;
+      toast.classList.remove('active');
+      requestAnimationFrame(() => {
+        toast.classList.add('active');
+      });
+      setTimeout(() => {
+        toast.classList.remove('active');
+      }, 4000);
+    }
+
+    // ===== INTERACTIVE WALKTHROUGH =====
+    let walkthroughSeen      = false;
+    let walkthroughActive    = false;
+    let walkthroughStep      = 0;
+    let walkthroughAnimating = false;
+
+    // Demo player shown on the center free tile throughout the walkthrough
+    const WT_DEMO = {
+      name: 'B. Mayfield', fullName: 'BAKER MAYFIELD',
+      team: 'TB', position: 'QB', number: '6',
+      stat: 'Pass Yds', target: 250, playerId: 3052587
+    };
+
+    // All 7 steps stay on the center free tile — only the tile state & stats change
+    const WALKTHROUGH_STEPS = [
+      {
+        tileState: 'normal', progress: 0, current: 0,
+        title: 'Welcome to Big Game Bingo 🏈',
+        body: "Prop tiles come alive as the game unfolds. Let's walk through every stage — tap the arrow to begin.",
+        btnText: "Let's Go →"
+      },
+      {
+        tileState: 'normal', progress: 0, current: 0,
+        title: 'Not Yet Active',
+        body: '0 yards. Your player hasn\'t touched the ball — tile stays dark until stats start moving.',
+        btnText: 'Got it →'
+      },
+      {
+        tileState: 'in-progress', progress: 18, current: 45,
+        progressColor: '#F5C518',
+        title: 'Early Progress ⬡ Yellow',
+        body: '45 of 250 yards in. Under 33% of the target — the conic border glows yellow as your player warms up.',
+        btnText: 'Next →'
+      },
+      {
+        tileState: 'in-progress', progress: 65, current: 162,
+        progressColor: '#FF8C00',
+        title: 'Building Momentum 🔶 Orange',
+        body: '162 yards and climbing — past one-third of the target, the border turns orange.',
+        btnText: 'Keep going →'
+      },
+      {
+        tileState: 'pending', progress: 100, current: 252,
+        title: 'Almost There ✨ Shimmer',
+        body: '252 yards — target hit! Shimmer border means we\'re waiting on official stat confirmation.',
+        btnText: 'So close →'
+      },
+      {
+        tileState: 'pending-win', progress: 100, current: 260,
+        title: 'Tap to Claim! 🟢',
+        body: 'Lock in your square before anyone else does.',
+        tapTile: true
+      },
+      {
+        tileState: 'complete', progress: 100, current: 260,
+        title: 'Build Your Card 🃏',
+        body: "Tap any tile to swap it out — you get 3 redraws before the game locks in. Watch your Redraws count in the entry card. When your card looks right, tap Start Game to kick things off!",
+        btnText: "Set Up My Card →",
+        isFinal: true
+      }
+    ];
+
+    /* ---- Demo tile: rendered inside wt-overlay over the center freespot ---- */
+
+    function createDemoTile() {
+      const phoneEl    = document.querySelector('.phone-mockup');
+      const freespotEl = document.querySelectorAll('.bingo-tile')[12];
+      if (!freespotEl || !phoneEl) return null;
+
+      const pr  = phoneEl.getBoundingClientRect();
+      const tr  = freespotEl.getBoundingClientRect();
+      const top = tr.top  - pr.top;
+      const left= tr.left - pr.left;
+      const w   = tr.width;
+      const h   = tr.height;
+
+      const el = document.createElement('div');
+      el.id = 'wt-demo-tile';
+      el.className = 'bingo-tile state-normal';
+      el.style.cssText = `position:absolute;top:${top}px;left:${left}px;width:${w}px;height:${h}px;z-index:503;pointer-events:all;cursor:default;`;
+      el.style.setProperty('--progress', '0');
+      el.style.setProperty('--progress-color', '#F5C518');
+      // Store for tooltip positioning
+      el.dataset.top  = top;
+      el.dataset.left = left;
+      el.dataset.w    = w;
+      el.dataset.h    = h;
+
+      const teamColor   = getTeamColor(WT_DEMO.team);
+      const headshotUrl = getPlayerHeadshotUrl(WT_DEMO.playerId);
+      el.innerHTML = `
+        <div class="tile-header">
+          <div class="tile-header-bg" style="background:${teamColor};"></div>
+          <div class="tile-header-gradient"></div>
+          <img src="${getTeamLogoUrl(WT_DEMO.team)}" class="tile-team-logo-bg-img" onerror="this.style.opacity='0.08'">
+          <div class="tile-image tile-image--player">
+            <img src="${headshotUrl}" class="tile-headshot"
+              onerror="handleHeadshotError(this,${JSON.stringify({name:WT_DEMO.name,team:WT_DEMO.team})})">
+          </div>
+        </div>
+        <div class="tile-content">
+          <div class="tile-name">${WT_DEMO.name}</div>
+          <div class="tile-stat-row"><span class="tile-stat-value" id="wt-stat-value">0</span><span class="tile-stat-label"> ${WT_DEMO.stat}</span></div>
+        </div>
+        <div class="claim-btn" id="wt-claim-btn" style="display:none;">CLAIM</div>
+        <div class="tile-checkmark" id="wt-checkmark" style="display:none;">
+          <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+        </div>
+      `;
+
+      el.addEventListener('click', () => {
+        if (!walkthroughActive || walkthroughAnimating) return;
+        if (!WALKTHROUGH_STEPS[walkthroughStep]?.tapTile) return;
+        // User claimed — flip to complete
+        el.className = 'bingo-tile state-complete';
+        document.getElementById('wt-claim-btn').style.display  = 'none';
+        document.getElementById('wt-checkmark').style.display  = 'flex';
+        setTimeout(nextWalkthroughStep, 650);
+      });
+
+      document.getElementById('wt-overlay').appendChild(el);
+      return el;
+    }
+
+    function setDemoState(state, progress, current, color) {
+      const el = document.getElementById('wt-demo-tile');
+      if (!el) return;
+      el.className = `bingo-tile state-${state}`;
+      el.style.setProperty('--progress', progress);
+      if (color) {
+        el.style.setProperty('--progress-color', color);
+        el.style.setProperty('--progress-shadow',
+          color === '#F5C518' ? 'rgba(245,197,24,0.4)' : 'rgba(255,140,0,0.4)');
+      }
+      const sv = document.getElementById('wt-stat-value');
+      if (sv) sv.textContent = current;
+      const cb = document.getElementById('wt-claim-btn');
+      if (cb) cb.style.display = state === 'pending-win' ? 'flex' : 'none';
+      const ck = document.getElementById('wt-checkmark');
+      if (ck) ck.style.display = state === 'complete'    ? 'flex' : 'none';
+    }
+
+    // Animated progress fill — drives the conic border and stat counter
+    function animateDemoProgress(fromProg, fromCurr, toProg, toCurr, finalState, finalColor, duration, onDone) {
+      walkthroughAnimating = true;
+      const el = document.getElementById('wt-demo-tile');
+      if (!el) { walkthroughAnimating = false; onDone?.(); return; }
+
+      el.className = 'bingo-tile state-in-progress'; // hold in-progress during animation
+      const t0 = performance.now();
+
+      function tick(now) {
+        if (!walkthroughActive) { walkthroughAnimating = false; return; }
+        const t      = Math.min((now - t0) / duration, 1);
+        const eased  = easeOutCubic(t);
+        const prog   = fromProg + (toProg - fromProg) * eased;
+        const curr   = Math.round(fromCurr + (toCurr - fromCurr) * eased);
+        const color  = prog < 33 ? '#F5C518' : '#FF8C00';
+        const shadow = prog < 33 ? 'rgba(245,197,24,0.4)' : 'rgba(255,140,0,0.4)';
+
+        el.style.setProperty('--progress',        prog);
+        el.style.setProperty('--progress-color',  color);
+        el.style.setProperty('--progress-shadow', shadow);
+        const sv = document.getElementById('wt-stat-value');
+        if (sv) sv.textContent = curr;
+
+        if (t < 1) { requestAnimationFrame(tick); }
+        else {
+          setDemoState(finalState, toProg, toCurr, finalColor);
+          walkthroughAnimating = false;
+          onDone?.();
+        }
+      }
+      requestAnimationFrame(tick);
+    }
+
+    /* ---- Tooltip positioning (always relative to demo tile) ---- */
+    function positionTooltip() {
+      const tooltip = document.getElementById('wt-tooltip');
+      const phoneEl = document.querySelector('.phone-mockup');
+      const el      = document.getElementById('wt-demo-tile');
+      if (!tooltip || !phoneEl || !el) return;
+
+      tooltip.className = 'wt-tooltip';
+      tooltip.style.transform = '';
+      tooltip.style.bottom = 'auto';
+
+      const TOOLTIP_W = 285, PAD = 10;
+      const tileTop   = parseFloat(el.dataset.top);
+      const tileLeft  = parseFloat(el.dataset.left);
+      const tileW     = parseFloat(el.dataset.w);
+      const tileH     = parseFloat(el.dataset.h);
+      const centerX   = tileLeft + tileW / 2;
+
+      const tooltipLeft = Math.max(PAD, Math.min(centerX - TOOLTIP_W / 2, phoneEl.offsetWidth - TOOLTIP_W - PAD));
+      const arrowOffset = Math.max(16, Math.min(centerX - tooltipLeft - 12, TOOLTIP_W - 40));
+      tooltip.style.setProperty('--arrow-offset', `${arrowOffset}px`);
+      tooltip.style.left = `${tooltipLeft}px`;
+
+      if (phoneEl.offsetHeight - (tileTop + tileH) >= 170) {
+        tooltip.style.top = `${tileTop + tileH + 14}px`;
+        tooltip.classList.add('arrow-up');
+      } else {
+        tooltip.style.top = `${tileTop - 14}px`;
+        tooltip.style.transform = 'translateY(-100%)';
+        tooltip.classList.add('arrow-down');
+      }
+    }
+
+    /* ---- Core walkthrough flow ---- */
+
+    function startWalkthrough() {
+      walkthroughActive    = true;
+      walkthroughStep      = 0;
+      walkthroughAnimating = false;
+
+      const overlay = document.getElementById('wt-overlay');
+      overlay.classList.add('active', 'full-dark');
+      document.getElementById('wt-spotlight-cutout').style.display = 'none';
+
+      createDemoTile();
+      positionTooltip();
+      renderWalkthroughStep(0);
+
+      document.getElementById('simulate-btn').textContent = 'Simulating...';
+      document.getElementById('simulate-btn').classList.add('active');
+      document.getElementById('restart-btn').disabled = false;
+    }
+
+    function endWalkthrough(startGame) {
+      walkthroughActive    = false;
+      walkthroughSeen      = true;
+      walkthroughAnimating = false;
+
+      document.getElementById('wt-demo-tile')?.remove();
+      const overlay = document.getElementById('wt-overlay');
+      overlay.classList.remove('active', 'full-dark');
+
+      // Flip center tile to the Free Square / Michelob Ultra design
+      claimFreeTile();
+
+      if (startGame) {
+        playSound('gameStart');
+        simulateGame({ winRate: 1.0 });
+      } else {
+        document.getElementById('simulate-btn').textContent = 'Start Game';
+        document.getElementById('simulate-btn').classList.remove('active');
+        document.getElementById('restart-btn').disabled = true;
+      }
+    }
+
+    function renderWalkthroughStep(stepIndex) {
+      walkthroughStep = stepIndex;
+      const step = WALKTHROUGH_STEPS[stepIndex];
+
+      // Snap tile to this step's state (no animation — animation is in nextWalkthroughStep)
+      setDemoState(step.tileState, step.progress, step.current, step.progressColor || null);
+
+      // Dots
+      document.getElementById('wt-dots').innerHTML = WALKTHROUGH_STEPS.map((_, i) =>
+        `<div class="wt-dot ${i === stepIndex ? 'active' : ''}"></div>`
+      ).join('');
+
+      document.getElementById('wt-title').textContent = step.title;
+      document.getElementById('wt-body').textContent  = step.body;
+
+      const btn     = document.getElementById('wt-btn');
+      const tapHint = document.getElementById('wt-tap-hint');
+      if (step.tapTile) {
+        btn.style.display     = 'none';
+        tapHint.style.display = 'inline';
+      } else {
+        btn.style.display     = 'flex';
+        tapHint.style.display = 'none';
+      }
+    }
+
+    function nextWalkthroughStep() {
+      if (walkthroughAnimating) return;
+      const nextIdx = walkthroughStep + 1;
+      if (nextIdx >= WALKTHROUGH_STEPS.length) { endWalkthrough(true); return; }
+
+      const from = WALKTHROUGH_STEPS[walkthroughStep];
+      const to   = WALKTHROUGH_STEPS[nextIdx];
+
+      // Animate if progress increases (steps 1→2, 2→3, 3→4)
+      if (to.progress > from.progress) {
+        animateDemoProgress(
+          from.progress, from.current,
+          to.progress,   to.current,
+          to.tileState,  to.progressColor || null,
+          750,           // 750ms feels smooth but snappy
+          () => renderWalkthroughStep(nextIdx)
+        );
+      } else {
+        renderWalkthroughStep(nextIdx);
+      }
+    }
+
+    // Buttons
+    document.getElementById('wt-btn').addEventListener('click', () => {
+      if (walkthroughAnimating) return;
+      // Final step: drop to pre-game card setup — user hits Start Game themselves
+      WALKTHROUGH_STEPS[walkthroughStep]?.isFinal ? endWalkthrough(false) : nextWalkthroughStep();
+    });
+    document.getElementById('wt-skip').addEventListener('click', () => endWalkthrough(true));
+
+    document.getElementById('howtoplay-btn').addEventListener('click', () => {
+      if (simulationRunning) return;
+      walkthroughSeen = false;
+      resetGame();
+      setTimeout(startWalkthrough, 1200);
+    });
+
+    // ===== TUTORIAL SHEET =====
+    function showTutorialSheet() {
+      document.getElementById('tutorial-overlay').classList.add('active');
+      document.getElementById('tutorial-sheet').classList.add('active');
+    }
+    function closeTutorialSheet() {
+      document.getElementById('tutorial-overlay').classList.remove('active');
+      document.getElementById('tutorial-sheet').classList.remove('active');
+    }
+    document.getElementById('tutorial-overlay').addEventListener('click', closeTutorialSheet);
+    document.getElementById('tutorial-close-btn').addEventListener('click', closeTutorialSheet);
+
+    // ===== REROLL SYSTEM (pre-game tile redraw) =====
+    let rerollsRemaining = 3;
+    let redrawPendingTileIndex = null;
+
+    function showRedrawTileModal(tileIndex) {
+      if (!canReroll()) return;
+      redrawPendingTileIndex = tileIndex;
+      const remaining = rerollsRemaining - 1;
+      document.getElementById('redraw-tile-body').textContent =
+        remaining === 0
+          ? 'Are you sure? This is your last redraw.'
+          : `Are you sure you want to redraw this tile? You'll have ${remaining} redraw${remaining !== 1 ? 's' : ''} remaining.`;
+      document.getElementById('redraw-tile-overlay').classList.add('active');
+    }
+
+    function closeRedrawTileModal() {
+      document.getElementById('redraw-tile-overlay').classList.remove('active');
+      redrawPendingTileIndex = null;
+    }
+
+    document.getElementById('redraw-tile-confirm').addEventListener('click', () => {
+      const idx = redrawPendingTileIndex;
+      closeRedrawTileModal();
+      if (idx !== null) rerollTile(idx);
+    });
+    document.getElementById('redraw-tile-cancel').addEventListener('click', closeRedrawTileModal);
+    document.getElementById('redraw-tile-overlay').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) closeRedrawTileModal();
+    });
+
+    function canReroll() {
+      return !simulationRunning && !walkthroughActive && rerollsRemaining > 0;
+    }
+
+    function updateRedrawBtn(tile) {
+      const btn = document.getElementById('redraw-sheet-btn');
+      if (!btn) return;
+      if (!simulationRunning && !walkthroughActive && tile && tile.type !== 'freespot') {
+        btn.style.display = 'block';
+        btn.textContent = rerollsRemaining > 0
+          ? `↺  Redraw Tile (${rerollsRemaining} left)`
+          : '↺  No Redraws Left';
+        btn.classList.toggle('exhausted', rerollsRemaining === 0);
+      } else {
+        btn.style.display = 'none';
+      }
+    }
+
+    function rerollTile(tileIndex) {
+      if (!canReroll() || tileIndex < 0) return;
+      rerollsRemaining--;
+      // Keep entry card in sync
+      const redrawStatEl = document.getElementById('redraw-stat-value');
+      if (redrawStatEl) redrawStatEl.textContent = rerollsRemaining;
+
+      // Build sets of what's currently on the card
+      const currentIds    = new Set(tiles.map(t => t.id));
+      const playerCounts  = {};
+      tiles.forEach(t => {
+        if (t.playerId && t.type === 'player') {
+          playerCounts[t.playerId] = (playerCounts[t.playerId] || 0) + 1;
+        }
+      });
+
+      // Remove the outgoing tile from the constraint sets
+      const outgoing = tiles[tileIndex];
+      currentIds.delete(outgoing.id);
+      if (outgoing.playerId) playerCounts[outgoing.playerId] = Math.max(0, (playerCounts[outgoing.playerId] || 1) - 1);
+
+      // Shuffle pool and pick first valid replacement
+      const pool = TILE_POOL.map(t => ({ ...t }));
+      for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+      }
+
+      let replacement = null;
+      for (const candidate of pool) {
+        if (currentIds.has(candidate.id)) continue;
+        if (candidate.playerId && (playerCounts[candidate.playerId] || 0) >= 2) continue;
+        replacement = { ...candidate, current: 0, confirmed: false, dead: false, state: 'normal' };
+        break;
+      }
+      if (!replacement) return; // Shouldn't happen with 59-tile pool
+
+      // Flip the tile with a quick animation then re-render
+      const tileEl = document.querySelectorAll('.bingo-tile')[tileIndex];
+      if (tileEl) {
+        tileEl.classList.add('animate-flip');
+        setTimeout(() => {
+          tiles[tileIndex] = replacement;
+          renderGrid(false);
+        }, 120);
+      } else {
+        tiles[tileIndex] = replacement;
+        renderGrid(false);
+      }
+    }
+
+    // Redraw button handlers
+    document.getElementById('redraw-sheet-btn').addEventListener('click', () => {
+      if (!canReroll() || !currentSheetTile) return;
+      const afterRedraw = rerollsRemaining - 1;
+      document.getElementById('redraw-remaining-text').textContent =
+        afterRedraw === 0
+          ? "This is your last redraw."
+          : `You'll have ${afterRedraw} redraw${afterRedraw !== 1 ? 's' : ''} remaining.`;
+      document.getElementById('redraw-sheet-btn').style.display = 'none';
+      document.getElementById('redraw-sheet-confirm').classList.add('active');
+    });
+
+    document.getElementById('redraw-confirm-no').addEventListener('click', () => {
+      document.getElementById('redraw-sheet-confirm').classList.remove('active');
+      updateRedrawBtn(currentSheetTile);
+    });
+
+    document.getElementById('redraw-confirm-yes').addEventListener('click', () => {
+      if (currentSheetTileIndex < 0) return;
+      const idx = currentSheetTileIndex;
+      document.getElementById('redraw-sheet-confirm').classList.remove('active');
+      closeDetailSheet();
+      rerollTile(idx);
+    });
+
+    // ===== POWER OF LOVE (SECRET ACHIEVEMENT) =====
+    let polUnlocked = false;  // earned after 3 heart spawns
+    let polUsed     = false;  // single-use token
+    let polPendingTileIndex = null; // tile targeted by the confirm modal
+
+    function unlockPowerOfLove() {
+      polUnlocked = true;
+
+      // Reveal entry-card stat slot
+      document.getElementById('pol-stat-divider').classList.add('visible');
+      document.getElementById('pol-stat-item').classList.add('visible');
+
+      // Add pol-active to grid so heart buttons appear on unclaimed tiles
+      document.getElementById('bingo-grid').classList.add('pol-active');
+
+      // Cryptic toast — no spoiler
+      showAchievementToast('💝', 'A secret power has been unlocked…', 'Check your entry card');
+    }
+
+    function showPolConfirmModal() {
+      document.getElementById('pol-confirm-overlay').classList.add('active');
+    }
+
+    function closePolConfirmModal() {
+      document.getElementById('pol-confirm-overlay').classList.remove('active');
+      polPendingTileIndex = null;
+    }
+
+    function claimWithLoveToken(tileIndex) {
+      if (!polUnlocked || polUsed) return;
+      polUsed = true;
+
+      const tile = tiles[tileIndex];
+      tile.confirmed  = true;
+      tile.state      = 'complete';
+      tile.polClaimed = true;
+
+      // Remove pol-active so all other heart icons vanish
+      document.getElementById('bingo-grid').classList.remove('pol-active');
+
+      // Update entry-card slot to "used" state
+      document.getElementById('pol-stat-value').textContent = '💝';
+      document.getElementById('pol-stat-item').classList.add('pol-used');
+
+      // Re-render the claimed tile with pol-claimed class + filled heart
+      updateTileInPlace(tileIndex);
+
+      // Close detail sheet if it was for this tile
+      if (currentSheetTile && currentSheetTile.id === tile.id) {
+        closeDetailSheet();
+      }
+
+      updateStats();
+      closePolConfirmModal();
+
+      showAchievementToast('💝', 'Power of Love!', `${tile.name} claimed with your love token`);
+
+      // Check for bingo after claiming
+      if (!bingoTriggered) {
+        const winningPattern = detectBingo();
+        if (winningPattern) {
+          bingoTriggered = true;
+          drawWinningLine(winningPattern);
+          setTimeout(() => showBingoCelebration(), 800);
+        }
+      }
+    }
+
+    // Confirm modal buttons
+    document.getElementById('pol-confirm-yes').addEventListener('click', () => {
+      if (polPendingTileIndex !== null) claimWithLoveToken(polPendingTileIndex);
+    });
+    document.getElementById('pol-confirm-no').addEventListener('click', closePolConfirmModal);
+
+    // Detail sheet PoL CTA — swap to inline confirm panel
+    function showSheetConfirm() {
+      document.getElementById('pol-sheet-btn').style.display = 'none';
+      document.getElementById('pol-sheet-confirm').classList.add('active');
+    }
+    function hideSheetConfirm() {
+      document.getElementById('pol-sheet-confirm').classList.remove('active');
+      // Re-show the CTA only if token still available
+      if (polUnlocked && !polUsed) {
+        document.getElementById('pol-sheet-btn').style.display = 'block';
+      }
+    }
+
+    document.getElementById('pol-sheet-btn').addEventListener('click', () => {
+      if (polUnlocked && !polUsed && currentSheetTileIndex >= 0) {
+        polPendingTileIndex = currentSheetTileIndex;
+        showSheetConfirm();
+      }
+    });
+    document.getElementById('pol-sheet-confirm-yes').addEventListener('click', () => {
+      if (polPendingTileIndex !== null) claimWithLoveToken(polPendingTileIndex);
+    });
+    document.getElementById('pol-sheet-confirm-no').addEventListener('click', () => {
+      hideSheetConfirm();
+      polPendingTileIndex = null;
+    });
+
+    // You Lose modal (simplified — no revive)
+    function showYouLoseModal(tileIndex) {
+      const tile = tiles[tileIndex];
+      document.getElementById('you-lose-sub').textContent =
+        `${tile.fullName || tile.name} left the game before completing their stat.`;
+      document.getElementById('you-lose-modal').classList.add('active');
+    }
+
+    function closeYouLoseModal() {
+      document.getElementById('you-lose-modal').classList.remove('active');
+    }
+
+    document.getElementById('you-lose-dismiss').addEventListener('click', closeYouLoseModal);
+
+    // ===== HEART SHAPE ACHIEVEMENT =====
+    const HEART_PATTERN = [0, 1, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 17];
+    let heartAchievementTriggered = false;
+    let heartAchievementActive = false;
+    let simulationCount = 0;
+
+    function checkHeartPattern() {
+      if (heartAchievementTriggered) return false;
+      return HEART_PATTERN.every(i => {
+        const s = tiles[i].state;
+        return s === 'complete' || s === 'pending-win';
+      });
+    }
+
+    function triggerHeartAchievement() {
+      heartAchievementTriggered = true;
+      heartAchievementActive = true;
+
+      const grid = document.getElementById('bingo-grid');
+
+      // Mark heart tiles with data attribute
+      HEART_PATTERN.forEach(tileIndex => {
+        const tile = tiles[tileIndex];
+        const tileEl = document.querySelector(`.bingo-tile[data-tile-id="${tile.id}"]`);
+        if (tileEl) tileEl.dataset.heart = 'true';
+      });
+      // Also mark freespot if it's in the pattern
+      const freeEl = document.querySelector('.bingo-tile.free-spot');
+      if (freeEl) freeEl.dataset.heart = 'true';
+
+      // Toggle grid class — CSS handles all the visual changes
+      grid.classList.add('heart-reveal');
+
+      // Spawn hearts from all heart pattern tiles with stagger
+      setTimeout(() => {
+        HEART_PATTERN.forEach((tileIndex, i) => {
+          const tileEl = document.querySelector(`.bingo-tile[data-tile-id="${tiles[tileIndex].id}"]`);
+          if (!tileEl) return;
+          setTimeout(() => spawnHearts(tileEl), i * 100);
+        });
+      }, 400);
+
+      // Show achievement toast
+      setTimeout(() => {
+        showAchievementToast('🏆', 'Heart of a Champion', 'You completed the secret heart pattern');
+      }, 2200);
+
+      // Revert after 10 seconds
+      setTimeout(() => {
+        heartAchievementActive = false;
+        grid.classList.remove('heart-reveal');
+        document.querySelectorAll('.bingo-tile[data-heart]').forEach(el => {
+          delete el.dataset.heart;
+        });
+      }, 10000);
+    }
   </script>
 </body>
 </html>
