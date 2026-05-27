@@ -5021,6 +5021,11 @@
 
       showAchievementToast('💝', 'Power of Love!', `${tile.name} claimed with your love token`);
 
+      // Check for heart pattern achievement after claiming
+      if (checkHeartPattern()) {
+        triggerHeartAchievement();
+      }
+
       // Check for bingo after claiming
       if (!bingoTriggered) {
         const winningPattern = detectBingo();
