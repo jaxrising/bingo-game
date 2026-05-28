@@ -1215,6 +1215,11 @@
       padding: 0;
       letter-spacing: 0.2px;
     }
+    .wt-nav {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
     .wt-btn {
       width: 38px;
       height: 38px;
@@ -1231,6 +1236,13 @@
     .wt-btn:hover { opacity: 0.88; }
     .wt-btn:active { transform: scale(0.93); }
     .wt-btn svg { pointer-events: none; }
+    .wt-btn-back {
+      background: rgba(255,255,255,0.12);
+    }
+    .wt-btn-back:hover { opacity: 0.7; }
+    .wt-btn-back svg path { stroke: #ffffff; }
+    /* Hide back button on step 0 */
+    .wt-btn-back.hidden { visibility: hidden; }
 
     /* Tap-to-claim hint (replaces nav button on claim step) */
     .wt-tap-hint {
@@ -2918,13 +2930,20 @@
             <div class="wt-title" id="wt-title"></div>
             <div class="wt-body" id="wt-body"></div>
             <div class="wt-footer">
-              <button class="wt-skip" id="wt-skip">Skip</button>
-              <button class="wt-btn" id="wt-btn">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path d="M3 8h10M9 4l4 4-4 4" stroke="#111214" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </button>
-              <span class="wt-tap-hint" id="wt-tap-hint" style="display:none">Tap tile ↑</span>
+              <button class="wt-skip" id="wt-skip">Skip to setup</button>
+              <div class="wt-nav">
+                <button class="wt-btn wt-btn-back hidden" id="wt-back">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M13 8H3M7 12l-4-4 4-4" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+                <button class="wt-btn" id="wt-btn">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M3 8h10M9 4l4 4-4 4" stroke="#111214" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+                <span class="wt-tap-hint" id="wt-tap-hint" style="display:none">Tap tile ↑</span>
+              </div>
             </div>
           </div>
         </div>
@@ -3634,7 +3653,7 @@
       tileEl.classList.add(`state-${tile.state}`);
       if (tile.polClaimed) tileEl.classList.add('pol-claimed');
       // Heart badge: show on normally-confirmed tiles (not PoL-claimed)
-      tileEl.classList.toggle('pol-confirmed', tile.confirmed === true && !tile.polClaimed);
+      tileEl.classList.toggle('pol-confirmed', tile.polContributed === true);
 
       if (tile.target > 0) {
         const targetProgress = Math.min((tile.current / tile.target) * 100, 100);
@@ -3744,7 +3763,7 @@
               <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M8 13.5C7.7 13.3 1.5 9.2 1.5 5.5C1.5 3.6 3 2 4.9 2C6.1 2 7.2 2.7 7.8 3.7C8.4 2.7 9.5 2 10.7 2C12.6 2 14 3.6 14 5.5C14 9.2 8.3 13.3 8 13.5Z"
                       fill="#D21212" stroke="#FFFFFF" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
-                <polyline points="5.5,8 7,9.5 10.5,6.5" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <polyline points="5.5,6.5 7,8.5 10.5,5" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
             <button class="pol-heart-btn" data-tile-index="${index}" aria-label="Claim with love token">
@@ -3811,6 +3830,7 @@
               e.stopPropagation();
               confirmCount++;
               tile.confirmed = true;
+              tile.polContributed = true;
               updateTileState(tile);
               updatePolProgressTracker();
               if (shouldSpawnHearts()) {
@@ -4197,6 +4217,7 @@
         if (tile.type === 'freespot') return;
         tile.current = 0;
         tile.confirmed = false;
+        tile.polContributed = false;
         tile.dead = false;
         tile.state = 'normal';
         updateTileState(tile);
@@ -4888,6 +4909,7 @@
       document.getElementById('wt-body').textContent  = step.body;
 
       const btn     = document.getElementById('wt-btn');
+      const backBtn = document.getElementById('wt-back');
       const tapHint = document.getElementById('wt-tap-hint');
       if (step.tapTile) {
         btn.style.display     = 'none';
@@ -4896,6 +4918,8 @@
         btn.style.display     = 'flex';
         tapHint.style.display = 'none';
       }
+      // Show back button on all steps except the first
+      if (backBtn) backBtn.classList.toggle('hidden', stepIndex === 0);
     }
 
     function nextWalkthroughStep() {
@@ -4920,13 +4944,39 @@
       }
     }
 
+    function prevWalkthroughStep() {
+      if (walkthroughAnimating) return;
+      const prevIdx = walkthroughStep - 1;
+      if (prevIdx < 0) return;
+      // Snap back — no progress animation going backwards
+      renderWalkthroughStep(prevIdx);
+      setDemoState(
+        WALKTHROUGH_STEPS[prevIdx].tileState,
+        WALKTHROUGH_STEPS[prevIdx].progress,
+        WALKTHROUGH_STEPS[prevIdx].current,
+        WALKTHROUGH_STEPS[prevIdx].progressColor || null
+      );
+    }
+
     // Buttons
     document.getElementById('wt-btn').addEventListener('click', () => {
       if (walkthroughAnimating) return;
       // Final step: drop to pre-game card setup — user hits Start Game themselves
       WALKTHROUGH_STEPS[walkthroughStep]?.isFinal ? endWalkthrough(false) : nextWalkthroughStep();
     });
-    document.getElementById('wt-skip').addEventListener('click', () => endWalkthrough(true));
+    document.getElementById('wt-back').addEventListener('click', () => prevWalkthroughStep());
+    // Skip → jump to the final card-setup step so user learns about redraws
+    document.getElementById('wt-skip').addEventListener('click', () => {
+      if (walkthroughAnimating) return;
+      const lastIdx = WALKTHROUGH_STEPS.length - 1;
+      setDemoState(
+        WALKTHROUGH_STEPS[lastIdx].tileState,
+        WALKTHROUGH_STEPS[lastIdx].progress,
+        WALKTHROUGH_STEPS[lastIdx].current,
+        null
+      );
+      renderWalkthroughStep(lastIdx);
+    });
 
     document.getElementById('howtoplay-btn').addEventListener('click', () => {
       if (simulationRunning) return;
