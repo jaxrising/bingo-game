@@ -1425,6 +1425,46 @@
       color: rgba(255,255,255,0.25);
     }
 
+    /* ===== POWER OF LOVE — achievement progress tracker in entry card ===== */
+    .pol-progress-track {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      width: 100%;
+      padding-top: 10px;
+      border-top: 0.5px solid #3A3B3C;
+    }
+    .pol-progress-track.visible {
+      display: flex;
+    }
+    .pol-progress-hearts {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pol-progress-heart {
+      width: 23px;
+      height: 21px;
+      flex-shrink: 0;
+      transition: fill 0.35s ease, stroke 0.35s ease;
+    }
+    .pol-progress-heart.earned {
+      fill: #D21212;
+      stroke: #FFFFFF;
+    }
+    .pol-progress-label {
+      font-family: 'Benton Sans', -apple-system, sans-serif;
+      font-size: 10px;
+      font-weight: 400;
+      color: #A1A2A3;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      line-height: 12px;
+    }
+    .pol-progress-track.unlocked .pol-progress-label {
+      color: #41BA42;
+    }
+
     /* ===== POWER OF LOVE — heart icon on tiles ===== */
     .pol-heart-btn {
       position: absolute;
@@ -2750,6 +2790,22 @@
               </div>
             </div>
           </div>
+
+          <!-- PoL Achievement Progress Tracker -->
+          <div class="pol-progress-track" id="pol-progress-track">
+            <div class="pol-progress-hearts">
+              <svg class="pol-progress-heart" id="pol-heart-1" viewBox="0 0 24 24" fill="none" stroke="#6C6D6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+              <svg class="pol-progress-heart" id="pol-heart-2" viewBox="0 0 24 24" fill="none" stroke="#6C6D6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+              <svg class="pol-progress-heart" id="pol-heart-3" viewBox="0 0 24 24" fill="none" stroke="#6C6D6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+            </div>
+            <span class="pol-progress-label" id="pol-progress-label">Unlock a Bonus Tile</span>
+          </div>
         </div>
 
         <!-- Game Strip -->
@@ -3721,6 +3777,7 @@
               confirmCount++;
               tile.confirmed = true;
               updateTileState(tile);
+              updatePolProgressTracker();
               if (shouldSpawnHearts()) {
                 spawnHearts(tileEl);
               }
@@ -4157,6 +4214,12 @@
       document.getElementById('pol-stat-value').textContent = '💝';
       document.getElementById('pol-sheet-btn').style.display = 'none';
 
+      // Reset and hide PoL progress tracker
+      confirmCount = 0;
+      const polTrack = document.getElementById('pol-progress-track');
+      if (polTrack) { polTrack.classList.remove('visible', 'unlocked'); }
+      updatePolProgressTracker();
+
       gameScores = { away: 0, home: 0 };
       gameQuarter = 1;
       gameClock = 900;
@@ -4230,6 +4293,11 @@
       heartsCollected = 0;
       resetTileValues();
       simulationRunning = true;
+
+      // Show PoL progress tracker and reset it to 0 hearts
+      const polTrack = document.getElementById('pol-progress-track');
+      if (polTrack) polTrack.classList.add('visible');
+      updatePolProgressTracker();
 
       // Ensure the center free tile is claimed before the game ticks
       claimFreeTile();
@@ -4981,6 +5049,37 @@
 
       // Cryptic toast — no spoiler
       showAchievementToast('💝', 'A secret power has been unlocked…', 'Check your entry card');
+    }
+
+    // Update the 3-heart progress tracker in the entry card
+    function updatePolProgressTracker() {
+      const track   = document.getElementById('pol-progress-track');
+      const label   = document.getElementById('pol-progress-label');
+      if (!track) return;
+
+      const earned = Math.min(Math.floor(confirmCount / 3), 3);
+
+      for (let i = 1; i <= 3; i++) {
+        const heart = document.getElementById(`pol-heart-${i}`);
+        if (!heart) continue;
+        if (i <= earned) {
+          heart.setAttribute('fill', '#D21212');
+          heart.setAttribute('stroke', '#FFFFFF');
+          heart.classList.add('earned');
+        } else {
+          heart.setAttribute('fill', 'none');
+          heart.setAttribute('stroke', '#6C6D6F');
+          heart.classList.remove('earned');
+        }
+      }
+
+      if (earned >= 3) {
+        track.classList.add('unlocked');
+        if (label) label.textContent = 'Bonus Tile Unlocked!';
+      } else {
+        track.classList.remove('unlocked');
+        if (label) label.textContent = 'Unlock a Bonus Tile';
+      }
     }
 
     function showPolConfirmModal() {
