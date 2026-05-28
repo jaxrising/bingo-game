@@ -3828,14 +3828,18 @@
               showYouLoseModal(index);
             } else if (tile.state === 'pending-win') {
               e.stopPropagation();
-              confirmCount++;
               tile.confirmed = true;
-              tile.polContributed = true;
-              updateTileState(tile);
-              updatePolProgressTracker();
-              if (shouldSpawnHearts()) {
-                spawnHearts(tileEl);
+              // Only player/team stat tiles (target > 0) contribute to PoL achievement
+              // Prop/coin/halftime tiles (target <= 0) just confirm — green circle, no heart badge
+              if (tile.target > 0) {
+                confirmCount++;
+                tile.polContributed = true;
+                updatePolProgressTracker();
+                if (shouldSpawnHearts()) {
+                  spawnHearts(tileEl);
+                }
               }
+              updateTileState(tile);
               updateTileInPlace(index);
               updateStats();
               // Advance walkthrough if we're on the claim step
@@ -5129,9 +5133,8 @@
     function unlockPowerOfLove() {
       polUnlocked = true;
 
-      // Reveal entry-card stat slot
-      document.getElementById('pol-stat-divider').classList.add('visible');
-      document.getElementById('pol-stat-item').classList.add('visible');
+      // Heart tracker in the stats row already shows all 3 hearts filled —
+      // no need to show the legacy pol-stat-item; keep it hidden.
 
       // Add pol-active to grid so heart buttons appear on unclaimed tiles
       document.getElementById('bingo-grid').classList.add('pol-active');
