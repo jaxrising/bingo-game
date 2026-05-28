@@ -579,7 +579,7 @@
     .stats-row {
       display: flex;
       align-items: flex-start;
-      gap: 16px;
+      gap: 12px;
     }
 
     .stat-item {
@@ -1257,6 +1257,137 @@
       50% { opacity: 1; }
     }
 
+    /* ===== WALKTHROUGH: HEARTS STEP WIDGET ===== */
+    .wt-widget {
+      display: none;
+      margin-top: 14px;
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 12px;
+    }
+    .wt-widget.active { display: block; }
+    .wt-heart-widget {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .wt-heart-mini {
+      width: 28px;
+      height: 26px;
+      flex-shrink: 0;
+      transition: fill 0.35s ease, stroke 0.35s ease, transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .wt-heart-mini.lit {
+      fill: #D21212;
+      stroke: #FFFFFF;
+      transform: scale(1.15);
+    }
+    .wt-heart-widget-caption {
+      font-size: 10px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.35);
+      text-align: center;
+      margin-top: 8px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      transition: color 0.3s ease;
+    }
+    .wt-heart-widget-caption.unlocked {
+      color: #41BA42;
+      font-weight: 700;
+    }
+
+    /* ===== WALKTHROUGH: WELCOME HERO MODE (Step 0) ===== */
+    /* Tooltip inner wrapper — carries padding in welcome mode */
+    .wt-tooltip-inner { padding: 0; } /* outer .wt-tooltip already has padding in normal mode */
+
+    .wt-overlay.welcome .wt-tooltip {
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      top: auto !important;
+      bottom: 24px !important;
+      width: calc(100% - 32px) !important;
+      max-width: 310px !important;
+      padding: 0 !important;
+      overflow: hidden;
+    }
+    .wt-overlay.welcome .wt-tooltip::before { display: none !important; }
+    .wt-overlay.welcome .wt-tooltip-inner { padding: 16px 18px 16px; }
+    .wt-overlay.welcome .wt-title {
+      font-size: 19px;
+      font-weight: 900;
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+    .wt-overlay.welcome .wt-body {
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    /* Hero header — team logos flanking the wordmark */
+    .wt-hero-header {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 22px 18px 20px;
+      background: linear-gradient(135deg, rgba(0,53,148,0.95) 0%, rgba(14,16,22,1) 50%, rgba(167,25,48,0.95) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    /* Subtle field texture overlay */
+    .wt-hero-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        90deg,
+        transparent 0px, transparent 18px,
+        rgba(255,255,255,0.025) 18px, rgba(255,255,255,0.025) 19px
+      );
+      pointer-events: none;
+    }
+    .wt-overlay.welcome .wt-hero-header { display: flex; }
+
+    .wt-hero-logo {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
+      flex-shrink: 0;
+      position: relative; /* above ::before texture */
+    }
+    .wt-hero-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      position: relative;
+    }
+    .wt-hero-eyebrow {
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+    }
+    .wt-hero-wordmark {
+      font-size: 17px;
+      font-weight: 900;
+      color: #ffffff;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+
+    /* ===== WALKTHROUGH: SCRIM REVEAL MODE (Step 6 flip animation) ===== */
+    .wt-overlay { transition: background 0.4s ease; }
+    .wt-overlay.revealing { background: rgba(10, 10, 12, 0.45) !important; }
+    .wt-overlay.revealing .wt-tooltip {
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
     /* ===== TUTORIAL SHEET ===== */
     .tutorial-overlay {
       position: absolute;
@@ -1399,7 +1530,7 @@
     }
 
     /* ===== REDRAWS — entry card stat slot ===== */
-    /* Visible pre-game; hidden once simulation starts */
+    /* Shown pre-game and during game (persists as record of redraws used) */
     #redraw-stat-divider.hidden,
     #redraw-stat-item.hidden { display: none; }
 
@@ -1447,17 +1578,18 @@
     .pol-progress-track.visible {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 4px;          /* Match stat-item gap so label baselines align */
       flex-shrink: 0;
     }
     .pol-progress-hearts {
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
+      height: 24px;      /* Match stat-value line-height so labels sit on same baseline */
     }
     .pol-progress-heart {
-      width: 20px;
-      height: 18px;
+      width: 16px;
+      height: 14px;
       flex-shrink: 0;
       transition: fill 0.35s ease, stroke 0.35s ease;
     }
@@ -2840,7 +2972,7 @@
                     <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
                   </svg>
                 </div>
-                <span class="pol-progress-label" id="pol-progress-label">Unlock a Bonus Tile</span>
+                <span class="pol-progress-label" id="pol-progress-label">Bonus Tile</span>
               </div>
             </div>
           </div>
@@ -2926,23 +3058,50 @@
         <div id="wt-overlay" class="wt-overlay">
           <div id="wt-spotlight-cutout" class="wt-spotlight-cutout" style="display:none;"></div>
           <div id="wt-tooltip" class="wt-tooltip">
-            <div class="wt-dots" id="wt-dots"></div>
-            <div class="wt-title" id="wt-title"></div>
-            <div class="wt-body" id="wt-body"></div>
-            <div class="wt-footer">
-              <button class="wt-skip" id="wt-skip">Skip to setup</button>
-              <div class="wt-nav">
-                <button class="wt-btn wt-btn-back hidden" id="wt-back">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M13 8H3M7 12l-4-4 4-4" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- Hero header — team logos + wordmark, only visible on step 0 -->
+            <div class="wt-hero-header" id="wt-hero-header">
+              <img class="wt-hero-logo" id="wt-hero-logo-lar" src="" alt="LAR">
+              <div class="wt-hero-center">
+                <span class="wt-hero-eyebrow">Big Game</span>
+                <span class="wt-hero-wordmark">Bingo 🏈</span>
+              </div>
+              <img class="wt-hero-logo" id="wt-hero-logo-tb" src="" alt="TB">
+            </div>
+            <!-- Main content (inner wrapper handles padding in welcome mode) -->
+            <div class="wt-tooltip-inner">
+              <div class="wt-dots" id="wt-dots"></div>
+              <div class="wt-title" id="wt-title"></div>
+              <div class="wt-body" id="wt-body"></div>
+              <!-- Step-specific widget (hearts animation for PoL step) -->
+              <div class="wt-widget" id="wt-widget">
+                <div class="wt-heart-widget">
+                  <svg class="wt-heart-mini" id="wt-wh-1" viewBox="0 0 24 24" fill="none" stroke="#4A4B4D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
                   </svg>
-                </button>
-                <button class="wt-btn" id="wt-btn">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M3 8h10M9 4l4 4-4 4" stroke="#111214" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <svg class="wt-heart-mini" id="wt-wh-2" viewBox="0 0 24 24" fill="none" stroke="#4A4B4D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
                   </svg>
-                </button>
-                <span class="wt-tap-hint" id="wt-tap-hint" style="display:none">Tap tile ↑</span>
+                  <svg class="wt-heart-mini" id="wt-wh-3" viewBox="0 0 24 24" fill="none" stroke="#4A4B4D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                  </svg>
+                </div>
+                <div class="wt-heart-widget-caption" id="wt-heart-caption">3 confirms = 1 heart</div>
+              </div>
+              <div class="wt-footer">
+                <button class="wt-skip" id="wt-skip">Skip to setup</button>
+                <div class="wt-nav">
+                  <button class="wt-btn wt-btn-back hidden" id="wt-back">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path d="M13 8H3M7 12l-4-4 4-4" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </button>
+                  <button class="wt-btn" id="wt-btn">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path d="M3 8h10M9 4l4 4-4 4" stroke="#111214" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </button>
+                  <span class="wt-tap-hint" id="wt-tap-hint" style="display:none">Tap tile ↑</span>
+                </div>
               </div>
             </div>
           </div>
@@ -3833,11 +3992,13 @@
               // Prop/coin/halftime tiles (target <= 0) just confirm — green circle, no heart badge
               if (tile.target > 0) {
                 confirmCount++;
-                tile.polContributed = true;
-                updatePolProgressTracker();
+                // Heart badge only marks the tile that actually triggers a heart fill
+                // (every 3rd confirm). All other confirmed tiles keep the green circle.
                 if (shouldSpawnHearts()) {
+                  tile.polContributed = true;
                   spawnHearts(tileEl);
                 }
+                updatePolProgressTracker();
               }
               updateTileState(tile);
               updateTileInPlace(index);
@@ -4366,9 +4527,7 @@
       // Ensure the center free tile is claimed before the game ticks
       claimFreeTile();
 
-      // Hide pre-game redraws stat and tile icons
-      document.getElementById('redraw-stat-item').classList.add('hidden');
-      document.getElementById('redraw-stat-divider').classList.add('hidden');
+      // Remove pre-game edit icons from tiles, keep redraws stat visible
       document.getElementById('bingo-grid').classList.remove('pregame-active');
       
       const totalUpdates = duration / updateInterval;
@@ -4659,12 +4818,67 @@
       stat: 'Pass Yds', target: 250, playerId: 3052587
     };
 
-    // All 7 steps stay on the center free tile — only the tile state & stats change
+    // Heart widget animation — array of timers so all can be cancelled cleanly
+    let wtHeartTimers = [];
+
+    function startHeartWidgetAnimation() {
+      const widget  = document.getElementById('wt-widget');
+      const caption = document.getElementById('wt-heart-caption');
+      if (!widget) return;
+      widget.classList.add('active');
+
+      function resetHearts() {
+        for (let i = 1; i <= 3; i++) {
+          const h = document.getElementById(`wt-wh-${i}`);
+          if (h) { h.classList.remove('lit'); h.setAttribute('stroke', '#4A4B4D'); }
+        }
+        if (caption) { caption.textContent = '3 confirms = 1 heart'; caption.classList.remove('unlocked'); }
+      }
+
+      function fillHeart(n) {
+        const h = document.getElementById(`wt-wh-${n}`);
+        if (h) { h.classList.add('lit'); h.setAttribute('stroke', '#FFFFFF'); }
+      }
+
+      function schedule(fn, delay) {
+        const id = setTimeout(fn, delay);
+        wtHeartTimers.push(id);
+        return id;
+      }
+
+      function runCycle() {
+        resetHearts();
+        schedule(() => fillHeart(1), 500);
+        schedule(() => fillHeart(2), 1050);
+        schedule(() => {
+          fillHeart(3);
+          if (caption) { caption.textContent = 'Bonus Tile Unlocked!'; caption.classList.add('unlocked'); }
+        }, 1600);
+        schedule(runCycle, 3300); // loop
+      }
+      runCycle();
+    }
+
+    function stopHeartWidgetAnimation() {
+      wtHeartTimers.forEach(clearTimeout);
+      wtHeartTimers = [];
+      const widget = document.getElementById('wt-widget');
+      if (widget) widget.classList.remove('active');
+      for (let i = 1; i <= 3; i++) {
+        const h = document.getElementById(`wt-wh-${i}`);
+        if (h) { h.classList.remove('lit'); h.setAttribute('stroke', '#4A4B4D'); }
+      }
+      const caption = document.getElementById('wt-heart-caption');
+      if (caption) { caption.textContent = '3 confirms = 1 heart'; caption.classList.remove('unlocked'); }
+    }
+
+    // All 8 steps stay on the center free tile — only the tile state & stats change
     const WALKTHROUGH_STEPS = [
       {
         tileState: 'normal', progress: 0, current: 0,
-        title: 'Welcome to Big Game Bingo 🏈',
-        body: "Prop tiles come alive as the game unfolds. Let's walk through every stage — tap the arrow to begin.",
+        isWelcome: true,
+        title: 'Welcome to Big Game Bingo',
+        body: "Your card fills up in real time as the game unfolds. Let's walk through every stage — tap the arrow to begin.",
         btnText: "Let's Go →"
       },
       {
@@ -4701,8 +4915,15 @@
       },
       {
         tileState: 'complete', progress: 100, current: 260,
+        isHeartStep: true,
+        title: 'Earn Hearts, Unlock Bonus',
+        body: 'Confirm 3 tiles → earn a heart. Fill all 3 to unlock a mystery bonus square — watch your entry card.',
+        btnText: 'Got it →'
+      },
+      {
+        tileState: 'complete', progress: 100, current: 260,
         title: 'Build Your Card 🃏',
-        body: "Tap any tile to swap it out — you get 3 redraws before the game locks in. Watch your Redraws count in the entry card. When your card looks right, tap Start Game to kick things off!",
+        body: "That's a redraw — your whole card just shuffled into something new. You get 3 before the game locks in. Tap any tile you want to swap, then hit Start Game.",
         btnText: "Set Up My Card →",
         isFinal: true
       }
@@ -4822,7 +5043,16 @@
       requestAnimationFrame(tick);
     }
 
-    /* ---- Tooltip positioning (always relative to demo tile) ---- */
+    /* ---- Tooltip positioning: welcome hero mode (centered, no tile anchor) ---- */
+    function positionTooltipWelcome() {
+      const tooltip = document.getElementById('wt-tooltip');
+      if (!tooltip) return;
+      // Clear any inline styles set by positionTooltip() — CSS takes full control
+      tooltip.className = 'wt-tooltip';
+      tooltip.style.cssText = '';
+    }
+
+    /* ---- Tooltip positioning (anchored relative to demo tile) ---- */
     function positionTooltip() {
       const tooltip = document.getElementById('wt-tooltip');
       const phoneEl = document.querySelector('.phone-mockup');
@@ -4866,8 +5096,13 @@
       overlay.classList.add('active', 'full-dark');
       document.getElementById('wt-spotlight-cutout').style.display = 'none';
 
+      // Populate hero header logos (using existing logo URL helper)
+      const larLogo = document.getElementById('wt-hero-logo-lar');
+      const tbLogo  = document.getElementById('wt-hero-logo-tb');
+      if (larLogo) larLogo.src = getTeamLogoUrl('LAR');
+      if (tbLogo)  tbLogo.src  = getTeamLogoUrl('TB');
+
       createDemoTile();
-      positionTooltip();
       renderWalkthroughStep(0);
 
       document.getElementById('simulate-btn').textContent = 'Simulating...';
@@ -4880,6 +5115,7 @@
       walkthroughSeen      = true;
       walkthroughAnimating = false;
 
+      stopHeartWidgetAnimation();
       document.getElementById('wt-demo-tile')?.remove();
       const overlay = document.getElementById('wt-overlay');
       overlay.classList.remove('active', 'full-dark');
@@ -4899,7 +5135,29 @@
 
     function renderWalkthroughStep(stepIndex) {
       walkthroughStep = stepIndex;
-      const step = WALKTHROUGH_STEPS[stepIndex];
+      const step    = WALKTHROUGH_STEPS[stepIndex];
+      const overlay = document.getElementById('wt-overlay');
+      const demoTile = document.getElementById('wt-demo-tile');
+
+      // Always stop any running heart animation when changing steps
+      stopHeartWidgetAnimation();
+
+      if (step.isWelcome) {
+        // Welcome mode: hero card centered, demo tile hidden
+        overlay.classList.add('welcome');
+        if (demoTile) demoTile.style.visibility = 'hidden';
+        positionTooltipWelcome();
+      } else {
+        // Normal mode: tile-anchored tooltip, demo tile visible
+        overlay.classList.remove('welcome');
+        if (demoTile) demoTile.style.visibility = 'visible';
+        positionTooltip();
+      }
+
+      // Heart step: start the looping mini-widget animation
+      if (step.isHeartStep) {
+        startHeartWidgetAnimation();
+      }
 
       // Snap tile to this step's state (no animation — animation is in nextWalkthroughStep)
       setDemoState(step.tileState, step.progress, step.current, step.progressColor || null);
@@ -4926,10 +5184,59 @@
       if (backBtn) backBtn.classList.toggle('hidden', stepIndex === 0);
     }
 
+    /* ---- Final-step transition: scrim reveal → grid flip → new card → tooltip ---- */
+    function transitionToFinalStep() {
+      if (walkthroughAnimating) return;
+      walkthroughAnimating = true;
+
+      const overlay  = document.getElementById('wt-overlay');
+      const lastIdx  = WALKTHROUGH_STEPS.length - 1;
+      const gridTiles = document.querySelectorAll('#bingo-grid .bingo-tile');
+
+      // 1 — Fade to scrim so the grid beneath peeks through
+      overlay.classList.remove('welcome');
+      overlay.classList.add('revealing');
+
+      setTimeout(() => {
+        // 2 — Trigger flip animation on all grid tiles
+        gridTiles.forEach(t => {
+          t.classList.remove('animate-flip');
+          void t.offsetWidth; // reflow to reset animation
+          t.classList.add('animate-flip');
+        });
+
+        // 3 — Deal a fresh card mid-flip (tiles are face-down at this moment)
+        setTimeout(() => {
+          tiles.splice(0, tiles.length, ...dealCard());
+          shuffleTilesArray();
+          updateAllTilesInPlace();
+        }, 260);
+
+        // 4 — Restore full-dark overlay
+        setTimeout(() => {
+          overlay.classList.remove('revealing');
+        }, 720);
+
+        // 5 — Clean up flip class, render step 6 tooltip
+        setTimeout(() => {
+          gridTiles.forEach(t => t.classList.remove('animate-flip'));
+          walkthroughAnimating = false;
+          renderWalkthroughStep(lastIdx);
+        }, 950);
+
+      }, 180);
+    }
+
     function nextWalkthroughStep() {
       if (walkthroughAnimating) return;
       const nextIdx = walkthroughStep + 1;
       if (nextIdx >= WALKTHROUGH_STEPS.length) { endWalkthrough(true); return; }
+
+      // Special entrance for the final (redraws) step — live card flip
+      if (WALKTHROUGH_STEPS[nextIdx].isFinal) {
+        transitionToFinalStep();
+        return;
+      }
 
       const from = WALKTHROUGH_STEPS[walkthroughStep];
       const to   = WALKTHROUGH_STEPS[nextIdx];
@@ -4969,17 +5276,20 @@
       WALKTHROUGH_STEPS[walkthroughStep]?.isFinal ? endWalkthrough(false) : nextWalkthroughStep();
     });
     document.getElementById('wt-back').addEventListener('click', () => prevWalkthroughStep());
-    // Skip → jump to the final card-setup step so user learns about redraws
+    // Skip → jump to the final card-setup step with the live flip animation
     document.getElementById('wt-skip').addEventListener('click', () => {
       if (walkthroughAnimating) return;
       const lastIdx = WALKTHROUGH_STEPS.length - 1;
+      // If already on the final step, do nothing
+      if (walkthroughStep === lastIdx) return;
+      // Set demo tile to complete state for continuity, then run the flip sequence
       setDemoState(
         WALKTHROUGH_STEPS[lastIdx].tileState,
         WALKTHROUGH_STEPS[lastIdx].progress,
         WALKTHROUGH_STEPS[lastIdx].current,
         null
       );
-      renderWalkthroughStep(lastIdx);
+      transitionToFinalStep();
     });
 
     document.getElementById('howtoplay-btn').addEventListener('click', () => {
@@ -5167,10 +5477,10 @@
 
       if (earned >= 3) {
         track.classList.add('unlocked');
-        if (label) label.textContent = 'Bonus Tile Unlocked!';
+        if (label) label.textContent = 'Unlocked!';
       } else {
         track.classList.remove('unlocked');
-        if (label) label.textContent = 'Unlock a Bonus Tile';
+        if (label) label.textContent = 'Bonus Tile';
       }
     }
 
