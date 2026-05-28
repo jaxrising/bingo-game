@@ -2105,6 +2105,30 @@
       display: flex;
     }
 
+    /* On pol-confirmed tiles, swap the green circle for the heart badge */
+    .bingo-tile.pol-confirmed .tile-checkmark {
+      display: none !important;
+    }
+
+    /* PoL Confirmed Badge — red heart + white checkmark, top-right of tile */
+    .pol-confirmed-badge {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: 16px;
+      height: 16px;
+      z-index: 12;
+      pointer-events: none;
+      opacity: 0;
+      transform: scale(0);
+      transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      filter: drop-shadow(0px 1px 4px rgba(18,18,19,0.35));
+    }
+    .bingo-tile.pol-confirmed .pol-confirmed-badge {
+      opacity: 1;
+      transform: scale(1);
+    }
+
     @keyframes checkmarkPop {
       0% { transform: scale(0); }
       50% { transform: scale(1.2); }
@@ -3607,6 +3631,8 @@
       tileEl.className = tileEl.className.replace(/state-[\w-]+/g, '').replace(/\s+/g, ' ').trim();
       tileEl.classList.add(`state-${tile.state}`);
       if (tile.polClaimed) tileEl.classList.add('pol-claimed');
+      // Heart badge: show on normally-confirmed tiles (not PoL-claimed)
+      tileEl.classList.toggle('pol-confirmed', tile.confirmed === true && !tile.polClaimed);
 
       if (tile.target > 0) {
         const targetProgress = Math.min((tile.current / tile.target) * 100, 100);
@@ -3711,6 +3737,13 @@
             <div class="claim-btn">CLAIM</div>
             <div class="tile-checkmark">
               <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            </div>
+            <div class="pol-confirmed-badge">
+              <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 13.5C7.7 13.3 1.5 9.2 1.5 5.5C1.5 3.6 3 2 4.9 2C6.1 2 7.2 2.7 7.8 3.7C8.4 2.7 9.5 2 10.7 2C12.6 2 14 3.6 14 5.5C14 9.2 8.3 13.3 8 13.5Z"
+                      fill="#D21212" stroke="#FFFFFF" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+                <polyline points="5.5,8 7,9.5 10.5,6.5" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
             </div>
             <button class="pol-heart-btn" data-tile-index="${index}" aria-label="Claim with love token">
               <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
