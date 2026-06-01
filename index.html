@@ -4933,8 +4933,8 @@
       },
       {
         tileState: 'complete', progress: 100, current: 260,
-        title: 'Build Your Card 🃏',
-        body: "That's a redraw — your whole card just shuffled into something new. You get 3 before the game locks in. Tap any tile you want to swap, then hit Start Game.",
+        title: 'Redraw a Tile 🃏',
+        body: "Don't like a tile? You get 3 redraws before the game locks in. Tap any tile you want to swap, then tap to confirm.",
         btnText: "Set Up My Card →",
         isFinal: true
       }
@@ -4944,7 +4944,7 @@
 
     function createDemoTile() {
       const phoneEl    = document.querySelector('.phone-mockup');
-      const freespotEl = document.querySelectorAll('.bingo-tile')[12];
+      const freespotEl = document.querySelectorAll('.bingo-tile')[7];
       if (!freespotEl || !phoneEl) return null;
 
       const pr  = phoneEl.getBoundingClientRect();
