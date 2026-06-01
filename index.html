@@ -4932,7 +4932,8 @@
         btnText: 'Got it →'
       },
       {
-        tileState: 'complete', progress: 100, current: 260,
+        tileState: 'normal', progress: 0, current: 0,
+        showRedrawIcon: true,
         title: 'Redraw a Tile 🃏',
         body: "Don't like a tile? You get 3 redraws before the game locks in. Tap any tile you want to swap, then tap to confirm.",
         btnText: "Set Up My Card →",
@@ -4986,6 +4987,9 @@
         <div class="tile-checkmark" id="wt-checkmark" style="display:none;">
           <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
         </div>
+        <div id="wt-redraw-icon" style="display:none;position:absolute;top:4px;right:4px;width:18px;height:18px;background:rgba(0,0,0,0.45);border-radius:50%;align-items:center;justify-content:center;">
+          <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.98"/></svg>
+        </div>
       `;
 
       el.addEventListener('click', () => {
@@ -5002,7 +5006,7 @@
       return el;
     }
 
-    function setDemoState(state, progress, current, color) {
+    function setDemoState(state, progress, current, color, showRedrawIcon) {
       const el = document.getElementById('wt-demo-tile');
       if (!el) return;
       el.className = `bingo-tile state-${state}`;
@@ -5017,7 +5021,9 @@
       const cb = document.getElementById('wt-claim-btn');
       if (cb) cb.style.display = state === 'pending-win' ? 'flex' : 'none';
       const ck = document.getElementById('wt-checkmark');
-      if (ck) ck.style.display = state === 'complete'    ? 'flex' : 'none';
+      if (ck) ck.style.display = state === 'complete' ? 'flex' : 'none';
+      const ri = document.getElementById('wt-redraw-icon');
+      if (ri) ri.style.display = showRedrawIcon ? 'flex' : 'none';
     }
 
     // Animated progress fill — drives the conic border and stat counter
@@ -5175,7 +5181,7 @@
       }
 
       // Snap tile to this step's state (no animation — animation is in nextWalkthroughStep)
-      setDemoState(step.tileState, step.progress, step.current, step.progressColor || null);
+      setDemoState(step.tileState, step.progress, step.current, step.progressColor || null, step.showRedrawIcon || false);
 
       // Dots
       document.getElementById('wt-dots').innerHTML = WALKTHROUGH_STEPS.map((_, i) =>
