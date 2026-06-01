@@ -1325,6 +1325,17 @@
       line-height: 1.55;
     }
 
+    /* ---- Heart step: tooltip centered vertically, demo tile hidden ---- */
+    .wt-overlay.heart-step .wt-tooltip {
+      left: 50% !important;
+      top: 50% !important;
+      transform: translate(-50%, -50%) !important;
+      bottom: auto !important;
+      width: calc(100% - 32px) !important;
+      max-width: 310px !important;
+    }
+    .wt-overlay.heart-step .wt-tooltip::before { display: none !important; }
+
     /* Hero header — team logos flanking the wordmark */
     .wt-hero-header {
       display: none;
@@ -5145,18 +5156,22 @@
       if (step.isWelcome) {
         // Welcome mode: hero card centered, demo tile hidden
         overlay.classList.add('welcome');
+        overlay.classList.remove('heart-step');
         if (demoTile) demoTile.style.visibility = 'hidden';
         positionTooltipWelcome();
+      } else if (step.isHeartStep) {
+        // Heart step: centered modal, demo tile hidden, CSS takes positioning
+        overlay.classList.remove('welcome');
+        overlay.classList.add('heart-step');
+        if (demoTile) demoTile.style.visibility = 'hidden';
+        positionTooltipWelcome(); // clears inline styles so CSS centering takes over
+        startHeartWidgetAnimation();
       } else {
         // Normal mode: tile-anchored tooltip, demo tile visible
         overlay.classList.remove('welcome');
+        overlay.classList.remove('heart-step');
         if (demoTile) demoTile.style.visibility = 'visible';
         positionTooltip();
-      }
-
-      // Heart step: start the looping mini-widget animation
-      if (step.isHeartStep) {
-        startHeartWidgetAnimation();
       }
 
       // Snap tile to this step's state (no animation — animation is in nextWalkthroughStep)
