@@ -4847,6 +4847,7 @@
 
     // Heart widget animation — array of timers so all can be cancelled cleanly
     let wtHeartTimers = [];
+    let wtSpotlightTimer = null;
 
     function startHeartWidgetAnimation() {
       const widget  = document.getElementById('wt-widget');
@@ -4943,8 +4944,8 @@
       {
         tileState: 'complete', progress: 100, current: 260,
         isHeartStep: true,
-        title: 'Earn Hearts, Unlock Bonus',
-        body: 'Confirm 3 tiles → earn a heart. Fill all 3 to unlock a mystery bonus square — watch your entry card.',
+        title: 'The Power of Love 💝',
+        body: 'Every tile you claim could unlock a heart. Collect all 3 to earn a rare Valentine\'s Day achievement — keep an eye on your entry card.',
         btnText: 'Got it →'
       },
       {
@@ -5165,6 +5166,8 @@
     }
 
     function hideRedrawIconSpotlight(removePregame = true) {
+      // Cancel any pending spotlight timer so it can't fire after walkthrough ends
+      if (wtSpotlightTimer) { clearTimeout(wtSpotlightTimer); wtSpotlightTimer = null; }
       const ring    = document.getElementById('wt-redraw-ring');
       const cutout  = document.getElementById('wt-spotlight-cutout');
       const overlay = document.getElementById('wt-overlay');
@@ -5219,6 +5222,8 @@
         playSound('gameStart');
         simulateGame({ winRate: 1.0 });
       } else {
+        // Ensure redraw icons are visible in pre-game setup
+        document.getElementById('bingo-grid').classList.add('pregame-active');
         document.getElementById('simulate-btn').textContent = 'Start Game';
         document.getElementById('simulate-btn').classList.remove('active');
         document.getElementById('restart-btn').disabled = true;
@@ -5259,7 +5264,7 @@
         if (demoTile) demoTile.style.visibility = 'hidden';
         document.getElementById('bingo-grid').classList.add('pregame-active');
         // Small delay so the grid repaints with icons before we measure positions
-        setTimeout(() => showRedrawIconSpotlight(7), 60);
+        wtSpotlightTimer = setTimeout(() => showRedrawIconSpotlight(7), 60);
       } else {
         // Normal mode: tile-anchored tooltip, demo tile visible
         overlay.classList.remove('welcome');
