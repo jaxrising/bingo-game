@@ -5165,10 +5165,13 @@
     }
 
     function hideRedrawIconSpotlight() {
-      const ring   = document.getElementById('wt-redraw-ring');
-      const cutout = document.getElementById('wt-spotlight-cutout');
-      if (ring)   ring.style.display   = 'none';
-      if (cutout) cutout.style.display = 'none';
+      const ring    = document.getElementById('wt-redraw-ring');
+      const cutout  = document.getElementById('wt-spotlight-cutout');
+      const overlay = document.getElementById('wt-overlay');
+      if (ring)    ring.style.display   = 'none';
+      if (cutout)  cutout.style.display = 'none';
+      // Restore full-dark in case we're stepping back from the final step
+      if (overlay && overlay.classList.contains('active')) overlay.classList.add('full-dark');
       document.getElementById('bingo-grid').classList.remove('pregame-active');
     }
 
@@ -5248,8 +5251,10 @@
         startHeartWidgetAnimation();
       } else if (step.isFinal) {
         // Final step: spotlight a real tile's redraw icon, hide demo tile
+        // Drop full-dark so the cutout box-shadow is the only dimmer (avoids double-black)
         overlay.classList.remove('welcome');
         overlay.classList.remove('heart-step');
+        overlay.classList.remove('full-dark');
         if (demoTile) demoTile.style.visibility = 'hidden';
         document.getElementById('bingo-grid').classList.add('pregame-active');
         // Small delay so the grid repaints with icons before we measure positions
