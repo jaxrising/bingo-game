@@ -5164,7 +5164,7 @@
       }
     }
 
-    function hideRedrawIconSpotlight() {
+    function hideRedrawIconSpotlight(removePregame = true) {
       const ring    = document.getElementById('wt-redraw-ring');
       const cutout  = document.getElementById('wt-spotlight-cutout');
       const overlay = document.getElementById('wt-overlay');
@@ -5172,7 +5172,7 @@
       if (cutout)  cutout.style.display = 'none';
       // Restore full-dark in case we're stepping back from the final step
       if (overlay && overlay.classList.contains('active')) overlay.classList.add('full-dark');
-      document.getElementById('bingo-grid').classList.remove('pregame-active');
+      if (removePregame) document.getElementById('bingo-grid').classList.remove('pregame-active');
     }
 
     /* ---- Core walkthrough flow ---- */
@@ -5206,7 +5206,8 @@
       walkthroughAnimating = false;
 
       stopHeartWidgetAnimation();
-      hideRedrawIconSpotlight();
+      // Keep pregame-active when user exits to card setup; only remove it when starting the game
+      hideRedrawIconSpotlight(startGame);
       document.getElementById('wt-demo-tile')?.remove();
       const overlay = document.getElementById('wt-overlay');
       overlay.classList.remove('active', 'full-dark');
