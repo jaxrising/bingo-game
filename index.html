@@ -1130,6 +1130,21 @@
       transition: top 0.32s ease, left 0.32s ease, width 0.32s ease, height 0.32s ease;
     }
 
+    /* Pulsing ring around the redraw icon during final walkthrough step */
+    #wt-redraw-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.9);
+      z-index: 504;
+      pointer-events: none;
+      animation: wt-redraw-pulse 1.4s ease-in-out infinite;
+    }
+    @keyframes wt-redraw-pulse {
+      0%   { transform: scale(1);   opacity: 0.9; }
+      50%  { transform: scale(1.35); opacity: 0.3; }
+      100% { transform: scale(1);   opacity: 0.9; }
+    }
+
     /* ---- Tooltip card ---- */
     .wt-tooltip {
       position: absolute;
@@ -3068,6 +3083,7 @@
         <!-- Walkthrough Overlay -->
         <div id="wt-overlay" class="wt-overlay">
           <div id="wt-spotlight-cutout" class="wt-spotlight-cutout" style="display:none;"></div>
+          <div id="wt-redraw-ring" style="display:none;"></div>
           <div id="wt-tooltip" class="wt-tooltip">
             <!-- Hero header — team logos + wordmark, only visible on step 0 -->
             <div class="wt-hero-header" id="wt-hero-header">
@@ -5102,6 +5118,60 @@
       }
     }
 
+    /* ---- Final step: spotlight real tile's redraw icon ---- */
+    function showRedrawIconSpotlight(tileIndex) {
+      const phoneEl  = document.querySelector('.phone-mockup');
+      const tileEl   = document.querySelectorAll('#bingo-grid .bingo-tile')[tileIndex];
+      const ring     = document.getElementById('wt-redraw-ring');
+      const cutout   = document.getElementById('wt-spotlight-cutout');
+      const tooltip  = document.getElementById('wt-tooltip');
+      if (!phoneEl || !tileEl || !ring) return;
+
+      const pr  = phoneEl.getBoundingClientRect();
+      const tr  = tileEl.getBoundingClientRect();
+
+      // Spotlight the whole tile
+      const tTop  = tr.top  - pr.top;
+      const tLeft = tr.left - pr.left;
+      cutout.style.cssText = `display:block;top:${tTop}px;left:${tLeft}px;width:${tr.width}px;height:${tr.height}px;border-radius:20px;`;
+
+      // Find the redraw button inside the tile and ring it
+      const btn = tileEl.querySelector('.redraw-tile-btn');
+      if (btn) {
+        const br = btn.getBoundingClientRect();
+        const bTop  = br.top  - pr.top;
+        const bLeft = br.left - pr.left;
+        const size  = Math.max(br.width, br.height);
+        ring.style.cssText = `display:block;top:${bTop}px;left:${bLeft}px;width:${size}px;height:${size}px;`;
+      }
+
+      // Position tooltip below the tile
+      const TOOLTIP_W = 285, PAD = 10;
+      const centerX = tLeft + tr.width / 2;
+      const tooltipLeft = Math.max(PAD, Math.min(centerX - TOOLTIP_W / 2, phoneEl.offsetWidth - TOOLTIP_W - PAD));
+      const arrowOffset = Math.max(16, Math.min(centerX - tooltipLeft - 12, TOOLTIP_W - 40));
+      tooltip.className = 'wt-tooltip';
+      tooltip.style.cssText = '';
+      tooltip.style.setProperty('--arrow-offset', `${arrowOffset}px`);
+      tooltip.style.left = `${tooltipLeft}px`;
+      if (phoneEl.offsetHeight - (tTop + tr.height) >= 170) {
+        tooltip.style.top = `${tTop + tr.height + 14}px`;
+        tooltip.classList.add('arrow-up');
+      } else {
+        tooltip.style.top = `${tTop - 14}px`;
+        tooltip.style.transform = 'translateY(-100%)';
+        tooltip.classList.add('arrow-down');
+      }
+    }
+
+    function hideRedrawIconSpotlight() {
+      const ring   = document.getElementById('wt-redraw-ring');
+      const cutout = document.getElementById('wt-spotlight-cutout');
+      if (ring)   ring.style.display   = 'none';
+      if (cutout) cutout.style.display = 'none';
+      document.getElementById('bingo-grid').classList.remove('pregame-active');
+    }
+
     /* ---- Core walkthrough flow ---- */
 
     function startWalkthrough() {
@@ -5133,6 +5203,7 @@
       walkthroughAnimating = false;
 
       stopHeartWidgetAnimation();
+      hideRedrawIconSpotlight();
       document.getElementById('wt-demo-tile')?.remove();
       const overlay = document.getElementById('wt-overlay');
       overlay.classList.remove('active', 'full-dark');
@@ -5159,6 +5230,9 @@
       // Always stop any running heart animation when changing steps
       stopHeartWidgetAnimation();
 
+      // Always clean up redraw spotlight unless we're about to show it
+      if (!step.isFinal) hideRedrawIconSpotlight();
+
       if (step.isWelcome) {
         // Welcome mode: hero card centered, demo tile hidden
         overlay.classList.add('welcome');
@@ -5170,8 +5244,16 @@
         overlay.classList.remove('welcome');
         overlay.classList.add('heart-step');
         if (demoTile) demoTile.style.visibility = 'hidden';
-        positionTooltipWelcome(); // clears inline styles so CSS centering takes over
+        positionTooltipWelcome();
         startHeartWidgetAnimation();
+      } else if (step.isFinal) {
+        // Final step: spotlight a real tile's redraw icon, hide demo tile
+        overlay.classList.remove('welcome');
+        overlay.classList.remove('heart-step');
+        if (demoTile) demoTile.style.visibility = 'hidden';
+        document.getElementById('bingo-grid').classList.add('pregame-active');
+        // Small delay so the grid repaints with icons before we measure positions
+        setTimeout(() => showRedrawIconSpotlight(7), 60);
       } else {
         // Normal mode: tile-anchored tooltip, demo tile visible
         overlay.classList.remove('welcome');
