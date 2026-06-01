@@ -5135,14 +5135,14 @@
       const tLeft = tr.left - pr.left;
       cutout.style.cssText = `display:block;top:${tTop}px;left:${tLeft}px;width:${tr.width}px;height:${tr.height}px;border-radius:20px;`;
 
-      // Find the redraw button inside the tile and ring it
+      // Find the redraw button inside the tile and ring it — centered on the button
       const btn = tileEl.querySelector('.redraw-tile-btn');
       if (btn) {
-        const br = btn.getBoundingClientRect();
-        const bTop  = br.top  - pr.top;
-        const bLeft = br.left - pr.left;
-        const size  = Math.max(br.width, br.height);
-        ring.style.cssText = `display:block;top:${bTop}px;left:${bLeft}px;width:${size}px;height:${size}px;`;
+        const br     = btn.getBoundingClientRect();
+        const bCx    = br.left + br.width  / 2 - pr.left;
+        const bCy    = br.top  + br.height / 2 - pr.top;
+        const rSize  = Math.max(br.width, br.height) + 8; // slightly larger for halo
+        ring.style.cssText = `display:block;top:${bCy - rSize/2}px;left:${bCx - rSize/2}px;width:${rSize}px;height:${rSize}px;`;
       }
 
       // Position tooltip below the tile
@@ -5340,9 +5340,9 @@
       const nextIdx = walkthroughStep + 1;
       if (nextIdx >= WALKTHROUGH_STEPS.length) { endWalkthrough(true); return; }
 
-      // Special entrance for the final (redraws) step — live card flip
+      // Final step: just show the current card with pregame icons — no jarring flip
       if (WALKTHROUGH_STEPS[nextIdx].isFinal) {
-        transitionToFinalStep();
+        renderWalkthroughStep(nextIdx);
         return;
       }
 
@@ -5384,20 +5384,12 @@
       WALKTHROUGH_STEPS[walkthroughStep]?.isFinal ? endWalkthrough(false) : nextWalkthroughStep();
     });
     document.getElementById('wt-back').addEventListener('click', () => prevWalkthroughStep());
-    // Skip → jump to the final card-setup step with the live flip animation
+    // Skip → jump straight to the final card-setup step
     document.getElementById('wt-skip').addEventListener('click', () => {
       if (walkthroughAnimating) return;
       const lastIdx = WALKTHROUGH_STEPS.length - 1;
-      // If already on the final step, do nothing
       if (walkthroughStep === lastIdx) return;
-      // Set demo tile to complete state for continuity, then run the flip sequence
-      setDemoState(
-        WALKTHROUGH_STEPS[lastIdx].tileState,
-        WALKTHROUGH_STEPS[lastIdx].progress,
-        WALKTHROUGH_STEPS[lastIdx].current,
-        null
-      );
-      transitionToFinalStep();
+      renderWalkthroughStep(lastIdx);
     });
 
     document.getElementById('howtoplay-btn').addEventListener('click', () => {
