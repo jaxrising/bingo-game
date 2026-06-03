@@ -3234,6 +3234,14 @@
     function updateAllTilesInPlace() {
       tiles.forEach((tile, index) => updateTileInPlace(index));
       updateStats();
+      if (!bingoTriggered && simulationRunning) {
+        const winning = detectBingo();
+        if (winning) {
+          bingoTriggered = true;
+          drawWinningLine(winning);
+          setTimeout(showBingoCelebration, 600);
+        }
+      }
     }
 
     function renderGrid(withAnimation = true) {
