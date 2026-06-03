@@ -1594,7 +1594,7 @@
       align-items: flex-end;
       justify-content: center;
       pointer-events: none;
-      z-index: 3;
+      z-index: 2;
       overflow: visible;
     }
 
@@ -1668,7 +1668,7 @@
       flex-direction: column;
       align-items: flex-start;
       justify-content: flex-end;
-      gap: 1px;
+      gap: 0;
       padding: 0 2px 3px;
       position: absolute;
       bottom: 0;
@@ -1684,21 +1684,21 @@
     .tile-name {
       font-size: 10px;
       font-weight: 500;
-      line-height: 12px;
+      line-height: 1.2;
       color: rgba(255, 255, 255, 0.72);
       text-align: left;
-      overflow: visible;
-      text-overflow: unset;
-      white-space: normal;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
       width: 100%;
     }
 
     .tile-stat-row {
       display: block;
       width: 100%;
-      white-space: normal;
-      overflow: visible;
-      line-height: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .tile-stat-value {
@@ -1713,9 +1713,7 @@
       font-weight: 400;
       color: rgba(255, 255, 255, 0.72);
       text-align: left;
-      white-space: normal;
-      overflow: visible;
-      text-overflow: unset;
+      white-space: nowrap;
       display: inline;
     }
 
@@ -2338,7 +2336,7 @@
       font-weight: 900;
       color: rgba(255,255,255,1);
       line-height: 1;
-      z-index: 2;
+      z-index: 1;
       font-style: normal;
       letter-spacing: -0.5px;
       pointer-events: none;
