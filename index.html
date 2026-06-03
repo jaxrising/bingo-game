@@ -940,50 +940,6 @@
       }
     }
 
-    .bingo-tile.state-pending-win {
-      border: 2px solid #ffffff;
-      box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
-      background: linear-gradient(#1d1e1f, #1d1e1f);
-      cursor: pointer;
-      animation: pendingWinPulse 1.5s ease-in-out infinite;
-    }
-
-    .bingo-tile.state-pending-win .tile-content .tile-stat-value,
-    .bingo-tile.state-pending-win .tile-content .tile-stat-label {
-      opacity: 0;
-    }
-
-    .bingo-tile.state-pending-win > .claim-btn {
-      display: flex;
-    }
-
-    .claim-btn {
-      display: none;
-      align-items: center;
-      justify-content: center;
-      width: 50px;
-      height: 16px;
-      background: #3772DF;
-      border-radius: 100px;
-      border: none;
-      font-family: inherit;
-      font-size: 10px;
-      font-weight: 700;
-      color: #ffffff;
-      cursor: pointer;
-      padding: 0;
-      position: absolute;
-      bottom: 6px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
-    }
-
-    @keyframes pendingWinPulse {
-      0%, 100% { box-shadow: 0 0 6px rgba(255, 255, 255, 0.8); }
-      50% { box-shadow: 0 0 14px rgba(255, 255, 255, 0.9), 0 0 24px rgba(255, 255, 255, 0.4); }
-    }
-
     /* On-field pulse: subtle brightness throb when player is actively accumulating stats */
     .bingo-tile.on-field {
       animation: onFieldPulse 1.2s ease-in-out;
@@ -992,109 +948,6 @@
       0%   { filter: brightness(1); }
       40%  { filter: brightness(1.25) saturate(1.3); }
       100% { filter: brightness(1); }
-    }
-
-    /* Heart shape achievement glow — driven by grid-level class */
-    .bingo-grid.heart-reveal .bingo-tile {
-      opacity: 0.25 !important;
-      transition: opacity 0.4s ease;
-    }
-    .bingo-grid.heart-reveal .bingo-tile[data-heart="true"] {
-      opacity: 1 !important;
-      border: 2px solid #eb34a4 !important;
-      box-shadow: 0 0 6px #eb36a5;
-      animation: heartGlowPulse 1.5s ease-in-out infinite !important;
-    }
-    .bingo-grid.heart-reveal .bingo-tile[data-heart="true"].state-pending-win .tile-content .tile-stat-value,
-    .bingo-grid.heart-reveal .bingo-tile[data-heart="true"].state-pending-win .tile-content .tile-stat-label {
-      opacity: 1 !important;
-    }
-    .bingo-grid.heart-reveal .bingo-tile[data-heart="true"].state-pending-win > .claim-btn {
-      display: none !important;
-    }
-    .bingo-grid.heart-reveal .bingo-tile[data-heart="true"].state-pending-win {
-      animation: heartGlowPulse 1.5s ease-in-out infinite !important;
-      border: 2px solid #eb34a4 !important;
-      cursor: default;
-    }
-
-    @keyframes heartGlowPulse {
-      0%, 100% { box-shadow: 0 0 6px #eb36a5; }
-      50% { box-shadow: 0 0 14px #eb36a5, 0 0 24px rgba(235, 52, 164, 0.4); }
-    }
-
-    /* Heart burst animation */
-    .heart-particle {
-      position: absolute;
-      pointer-events: none;
-      z-index: 100;
-      font-size: var(--heart-size, 20px);
-      animation: heartBurst var(--heart-duration, 800ms) ease-out forwards;
-      opacity: 0;
-    }
-
-    @keyframes heartBurst {
-      0% {
-        opacity: 1;
-        transform: translate(0, 0) scale(0) rotate(var(--heart-rotation, 0deg));
-      }
-      30% {
-        opacity: 1;
-        transform: translate(
-          calc(var(--heart-x, 0px) * 0.4),
-          calc(var(--heart-y, 0px) * 0.4)
-        ) scale(1.2) rotate(var(--heart-rotation, 0deg));
-      }
-      100% {
-        opacity: 0;
-        transform: translate(var(--heart-x, 0px), var(--heart-y, 0px)) scale(0.6) rotate(var(--heart-rotation, 0deg));
-      }
-    }
-
-    /* Achievement toast */
-    .achievement-toast {
-      position: fixed;
-      bottom: 40px;
-      left: 50%;
-      transform: translateX(-50%) translateY(120px);
-      background: #1d1e1f;
-      border: 1.5px solid #eb34a4;
-      border-radius: 14px;
-      padding: 14px 20px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      box-shadow: 0 8px 32px rgba(235, 52, 164, 0.3), 0 2px 8px rgba(0,0,0,0.4);
-      z-index: 9999;
-      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-      min-width: 280px;
-    }
-
-    .achievement-toast.active {
-      transform: translateX(-50%) translateY(0);
-    }
-
-    .achievement-toast-icon {
-      font-size: 28px;
-      flex-shrink: 0;
-    }
-
-    .achievement-toast-content {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .achievement-toast-title {
-      font-size: 14px;
-      font-weight: 700;
-      color: #ffffff;
-    }
-
-    .achievement-toast-subtitle {
-      font-size: 12px;
-      font-weight: 400;
-      color: #a1a2a3;
     }
 
     /* ===== WALKTHROUGH OVERLAY ===== */
@@ -1128,21 +981,6 @@
       z-index: 501;
       pointer-events: none;
       transition: top 0.32s ease, left 0.32s ease, width 0.32s ease, height 0.32s ease;
-    }
-
-    /* Pulsing ring around the redraw icon during final walkthrough step */
-    #wt-redraw-ring {
-      position: absolute;
-      border-radius: 50%;
-      border: 2px solid rgba(255,255,255,0.9);
-      z-index: 504;
-      pointer-events: none;
-      animation: wt-redraw-pulse 1.4s ease-in-out infinite;
-    }
-    @keyframes wt-redraw-pulse {
-      0%   { transform: scale(1);   opacity: 0.9; }
-      50%  { transform: scale(1.35); opacity: 0.3; }
-      100% { transform: scale(1);   opacity: 0.9; }
     }
 
     /* ---- Tooltip card ---- */
@@ -1272,47 +1110,6 @@
       50% { opacity: 1; }
     }
 
-    /* ===== WALKTHROUGH: HEARTS STEP WIDGET ===== */
-    .wt-widget {
-      display: none;
-      margin-top: 14px;
-      padding: 12px 14px;
-      background: rgba(255,255,255,0.06);
-      border-radius: 12px;
-    }
-    .wt-widget.active { display: block; }
-    .wt-heart-widget {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-    }
-    .wt-heart-mini {
-      width: 28px;
-      height: 26px;
-      flex-shrink: 0;
-      transition: fill 0.35s ease, stroke 0.35s ease, transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
-    }
-    .wt-heart-mini.lit {
-      fill: #D21212;
-      stroke: #FFFFFF;
-      transform: scale(1.15);
-    }
-    .wt-heart-widget-caption {
-      font-size: 10px;
-      font-weight: 400;
-      color: rgba(255,255,255,0.35);
-      text-align: center;
-      margin-top: 8px;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      transition: color 0.3s ease;
-    }
-    .wt-heart-widget-caption.unlocked {
-      color: #41BA42;
-      font-weight: 700;
-    }
-
     /* ===== WALKTHROUGH: WELCOME HERO MODE (Step 0) ===== */
     /* Tooltip inner wrapper — carries padding in welcome mode */
     .wt-tooltip-inner { padding: 0; } /* outer .wt-tooltip already has padding in normal mode */
@@ -1339,17 +1136,6 @@
       font-size: 13px;
       line-height: 1.55;
     }
-
-    /* ---- Heart step: tooltip centered vertically, demo tile hidden ---- */
-    .wt-overlay.heart-step .wt-tooltip {
-      left: 50% !important;
-      top: 50% !important;
-      transform: translate(-50%, -50%) !important;
-      bottom: auto !important;
-      width: calc(100% - 32px) !important;
-      max-width: 310px !important;
-    }
-    .wt-overlay.heart-step .wt-tooltip::before { display: none !important; }
 
     /* Hero header — team logos flanking the wordmark */
     .wt-hero-header {
@@ -1555,421 +1341,7 @@
       letter-spacing: 0.5px;
     }
 
-    /* ===== REDRAWS — entry card stat slot ===== */
-    /* Shown pre-game and during game (persists as record of redraws used) */
-    #redraw-stat-divider.hidden,
-    #redraw-stat-item.hidden { display: none; }
 
-    #redraw-stat-item .stat-value {
-      font-variant-numeric: tabular-nums;
-    }
-
-    /* ===== POWER OF LOVE TOKEN UI ===== */
-    /* ===== POWER OF LOVE — entry card stat slot ===== */
-    #pol-stat-divider,
-    #pol-stat-item { display: none; }
-
-    #pol-stat-divider.visible { display: block; }
-
-    #pol-stat-item.visible {
-      display: flex;
-      animation: polStatReveal 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-    }
-
-    @keyframes polStatReveal {
-      0%   { opacity: 0; transform: scale(0.6); }
-      100% { opacity: 1; transform: scale(1); }
-    }
-
-    #pol-stat-item .stat-value {
-      font-size: 15px;
-      line-height: 24px;
-    }
-
-    #pol-stat-item.pol-used .stat-value {
-      opacity: 0.35;
-    }
-
-    #pol-stat-item.pol-used .stat-label {
-      color: rgba(255,255,255,0.25);
-    }
-
-    /* ===== POWER OF LOVE — achievement progress tracker in entry card ===== */
-    /* Hidden by default; revealed when game starts — lives inline in .stats-row */
-    .pol-progress-divider,
-    .pol-progress-track { display: none; }
-
-    .pol-progress-divider.visible { display: block; }
-
-    .pol-progress-track.visible {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;          /* Match stat-item gap so label baselines align */
-      flex-shrink: 0;
-    }
-    .pol-progress-hearts {
-      display: flex;
-      align-items: center;
-      gap: 3px;
-      height: 24px;      /* Match stat-value line-height so labels sit on same baseline */
-    }
-    .pol-progress-heart {
-      width: 16px;
-      height: 14px;
-      flex-shrink: 0;
-      transition: fill 0.35s ease, stroke 0.35s ease;
-    }
-    .pol-progress-heart.earned {
-      fill: #D21212;
-      stroke: #FFFFFF;
-    }
-    .pol-progress-label {
-      font-family: 'Benton Sans', -apple-system, sans-serif;
-      font-size: 10px;
-      font-weight: 400;
-      color: #A1A2A3;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      line-height: 12px;
-      white-space: nowrap;
-    }
-    .pol-progress-track.unlocked .pol-progress-label {
-      color: #41BA42;
-    }
-
-    /* ===== POWER OF LOVE — heart icon on tiles ===== */
-    .pol-heart-btn {
-      position: absolute;
-      top: 4px;
-      right: 4px;
-      width: 18px;
-      height: 18px;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 11;
-      cursor: pointer;
-      background: none;
-      border: none;
-      padding: 0;
-      border-radius: 50%;
-      transition: transform 0.15s ease;
-    }
-    .pol-heart-btn:hover { transform: scale(1.2); }
-    .pol-heart-btn:active { transform: scale(0.9); }
-    .pol-heart-btn svg { width: 11px; height: 11px; pointer-events: none; }
-
-    /* Show stroked heart on all unclaimed tiles when PoL is active */
-    #bingo-grid.pol-active .bingo-tile:not(.state-complete):not(.free-spot) .pol-heart-btn {
-      display: flex;
-    }
-
-    /* Claimed-with-love tile: pink filled circle (overrides normal checkmark) */
-    .bingo-tile.pol-claimed .tile-checkmark {
-      display: none !important;
-    }
-    .bingo-tile.pol-claimed .pol-heart-btn {
-      display: flex !important;
-      background: linear-gradient(135deg, #eb34a4, #c2185b);
-      box-shadow: 0 2px 8px rgba(235,52,164,0.5);
-      animation: checkmarkPop 0.5s ease-out;
-      cursor: default;
-    }
-    .bingo-tile.pol-claimed .pol-heart-btn svg {
-      width: 9px;
-      height: 9px;
-    }
-    .bingo-tile.pol-claimed .pol-heart-btn:hover { transform: none; }
-
-    /* ===== POWER OF LOVE — confirmation modal ===== */
-    .pol-confirm-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.72);
-      z-index: 310;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      border-radius: 20px;
-    }
-    .pol-confirm-overlay.active { display: flex; }
-    .pol-confirm-card {
-      background: #18191a;
-      border-radius: 20px;
-      padding: 24px 20px 20px;
-      width: 260px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 24px 64px rgba(0,0,0,0.8);
-    }
-    .pol-confirm-emoji { font-size: 36px; line-height: 1; }
-    .pol-confirm-title {
-      font-size: 17px;
-      font-weight: 900;
-      color: #fff;
-      text-align: center;
-      letter-spacing: -0.3px;
-    }
-    .pol-confirm-body {
-      font-size: 12px;
-      color: rgba(255,255,255,0.5);
-      text-align: center;
-      line-height: 1.6;
-      max-width: 210px;
-    }
-    .pol-confirm-yes {
-      margin-top: 6px;
-      width: 100%;
-      padding: 13px 0;
-      background: linear-gradient(135deg, #eb34a4, #c2185b);
-      border: none;
-      border-radius: 100px;
-      color: #fff;
-      font-size: 14px;
-      font-weight: 800;
-      cursor: pointer;
-      box-shadow: 0 4px 20px rgba(235,52,164,0.45);
-      transition: opacity 0.15s;
-    }
-    .pol-confirm-yes:hover { opacity: 0.88; }
-    .pol-confirm-no {
-      font-size: 12px;
-      color: rgba(255,255,255,0.35);
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 4px 0;
-    }
-
-    /* ===== REDRAW — tile icon button (pre-game only) ===== */
-    .redraw-tile-btn {
-      position: absolute; top: 4px; right: 4px;
-      width: 18px; height: 18px;
-      display: none;
-      align-items: center; justify-content: center;
-      z-index: 11; cursor: pointer;
-      background: rgba(255,255,255,0.13);
-      border: none; padding: 2px; border-radius: 50%;
-      transition: background 0.15s, transform 0.15s;
-    }
-    .redraw-tile-btn svg { width: 11px; height: 11px; }
-    .redraw-tile-btn:active { transform: scale(0.88) rotate(-30deg); }
-
-    /* Show icon on all non-freespot tiles when pre-game */
-    #bingo-grid.pregame-active .bingo-tile:not(.free-spot) .redraw-tile-btn { display: flex; }
-
-    /* ===== REDRAW — tile confirmation modal ===== */
-    .redraw-confirm-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.72);
-      z-index: 310;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      border-radius: 20px;
-    }
-    .redraw-confirm-overlay.active { display: flex; }
-    .redraw-confirm-card {
-      background: #18191a;
-      border-radius: 20px;
-      padding: 24px 20px 20px;
-      width: 260px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 24px 64px rgba(0,0,0,0.8);
-    }
-    .redraw-confirm-icon { font-size: 32px; line-height: 1; }
-    .redraw-confirm-title {
-      font-size: 17px;
-      font-weight: 900;
-      color: #fff;
-      text-align: center;
-      letter-spacing: -0.3px;
-    }
-    .redraw-confirm-body {
-      font-size: 12px;
-      color: rgba(255,255,255,0.5);
-      text-align: center;
-      line-height: 1.6;
-      max-width: 210px;
-    }
-    .redraw-confirm-go {
-      margin-top: 6px;
-      width: 100%;
-      padding: 13px 0;
-      background: rgba(255,255,255,0.12);
-      border: 1.5px solid rgba(255,255,255,0.22);
-      border-radius: 100px;
-      color: #fff;
-      font-size: 14px;
-      font-weight: 800;
-      cursor: pointer;
-      transition: opacity 0.15s;
-    }
-    .redraw-confirm-go:hover { opacity: 0.82; }
-    .redraw-confirm-cancel {
-      font-size: 12px;
-      color: rgba(255,255,255,0.35);
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 4px 0;
-      transition: color 0.15s;
-    }
-    .redraw-confirm-cancel:hover { color: rgba(255,255,255,0.6); }
-
-    /* ===== REDRAW — detail sheet CTA ===== */
-    .redraw-sheet-btn {
-      display: none;
-      width: calc(100% - 32px);
-      margin: 0 16px 8px;
-      padding: 13px 16px;
-      background: rgba(255,255,255,0.08);
-      border: 1.5px solid rgba(255,255,255,0.18);
-      border-radius: 12px;
-      color: rgba(255,255,255,0.75);
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.3px;
-      cursor: pointer;
-      transition: opacity 0.15s, transform 0.15s, border-color 0.15s;
-      text-align: center;
-    }
-    .redraw-sheet-btn:hover { opacity: 0.88; border-color: rgba(255,255,255,0.30); }
-    .redraw-sheet-btn:active { transform: scale(0.97); }
-    .redraw-sheet-btn.exhausted { opacity: 0.35; cursor: not-allowed; pointer-events: none; }
-
-    .redraw-sheet-confirm {
-      display: none;
-      flex-direction: column;
-      gap: 10px;
-      padding: 14px 16px 16px;
-      animation: slideUpFade 0.2s ease-out;
-    }
-    .redraw-sheet-confirm.active { display: flex; }
-    .redraw-sheet-confirm-text {
-      font-size: 13px;
-      color: rgba(255,255,255,0.82);
-      text-align: center;
-      line-height: 1.5;
-    }
-    .redraw-sheet-confirm-text strong {
-      display: block;
-      font-size: 15px;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 4px;
-    }
-    .redraw-sheet-confirm-btns {
-      display: flex;
-      gap: 8px;
-    }
-    .redraw-confirm-yes {
-      flex: 1;
-      padding: 11px 0;
-      background: rgba(255,255,255,0.12);
-      border: 1.5px solid rgba(255,255,255,0.28);
-      border-radius: 10px;
-      color: #fff;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: opacity 0.15s;
-    }
-    .redraw-confirm-yes:hover { opacity: 0.85; }
-    .redraw-confirm-no {
-      padding: 11px 18px;
-      background: rgba(255,255,255,0.06);
-      border: none;
-      border-radius: 10px;
-      color: rgba(255,255,255,0.55);
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: opacity 0.15s;
-    }
-    .redraw-confirm-no:hover { opacity: 0.75; }
-
-    /* ===== POWER OF LOVE — detail sheet CTA ===== */
-    .pol-sheet-btn {
-      display: none;
-      width: calc(100% - 32px);
-      margin: 4px 16px 12px;
-      padding: 14px 0;
-      background: linear-gradient(135deg, #eb34a4, #c2185b);
-      border: none;
-      border-radius: 100px;
-      color: #fff;
-      font-size: 14px;
-      font-weight: 800;
-      cursor: pointer;
-      box-shadow: 0 4px 20px rgba(235,52,164,0.4);
-      transition: opacity 0.15s, transform 0.15s;
-      text-align: center;
-    }
-    .pol-sheet-btn:hover { opacity: 0.88; }
-    .pol-sheet-btn:active { transform: scale(0.97); }
-
-    /* Inline confirm panel inside detail sheet */
-    .pol-sheet-confirm {
-      display: none;
-      flex-direction: column;
-      gap: 10px;
-      margin: 4px 16px 12px;
-      padding: 14px 16px;
-      background: rgba(235,52,164,0.08);
-      border: 1px solid rgba(235,52,164,0.22);
-      border-radius: 16px;
-      animation: polConfirmIn 0.2s ease-out;
-    }
-    @keyframes polConfirmIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .pol-sheet-confirm.active { display: flex; }
-    .pol-sheet-confirm-text {
-      font-size: 13px;
-      color: rgba(255,255,255,0.82);
-      text-align: center;
-      line-height: 1.5;
-    }
-    .pol-sheet-confirm-text span {
-      display: block;
-      font-size: 11px;
-      color: rgba(255,255,255,0.4);
-      margin-top: 2px;
-    }
-    .pol-sheet-confirm-btns {
-      display: flex;
-      gap: 8px;
-    }
-    .pol-sheet-confirm-yes {
-      flex: 1;
-      padding: 11px 0;
-      background: linear-gradient(135deg, #eb34a4, #c2185b);
-      border: none;
-      border-radius: 100px;
-      color: #fff;
-      font-size: 13px;
-      font-weight: 800;
-      cursor: pointer;
-      box-shadow: 0 3px 12px rgba(235,52,164,0.4);
-    }
-    .pol-sheet-confirm-no {
-      padding: 11px 18px;
-      background: rgba(255,255,255,0.08);
-      border: none;
-      border-radius: 100px;
-      color: rgba(255,255,255,0.55);
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-    }
 
     /* ===== YOU LOSE — simplified (no revive) ===== */
     .you-lose-modal {
@@ -2226,18 +1598,17 @@
       line-height: 1.2;
       color: rgba(255, 255, 255, 0.72);
       text-align: left;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      overflow: visible;
+      text-overflow: unset;
+      white-space: normal;
       width: 100%;
     }
 
     .tile-stat-row {
       display: block;
       width: 100%;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      white-space: normal;
+      overflow: visible;
     }
 
     .tile-stat-value {
@@ -2252,7 +1623,9 @@
       font-weight: 400;
       color: rgba(255, 255, 255, 0.72);
       text-align: left;
-      white-space: nowrap;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: unset;
       display: inline;
     }
 
@@ -2275,30 +1648,6 @@
 
     .bingo-tile.state-complete .tile-checkmark {
       display: flex;
-    }
-
-    /* On pol-confirmed tiles, swap the green circle for the heart badge */
-    .bingo-tile.pol-confirmed .tile-checkmark {
-      display: none !important;
-    }
-
-    /* PoL Confirmed Badge — red heart + white checkmark, top-right of tile */
-    .pol-confirmed-badge {
-      position: absolute;
-      top: 4px;
-      right: 4px;
-      width: 16px;
-      height: 16px;
-      z-index: 12;
-      pointer-events: none;
-      opacity: 0;
-      transform: scale(0);
-      transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-      filter: drop-shadow(0px 1px 4px rgba(18,18,19,0.35));
-    }
-    .bingo-tile.pol-confirmed .pol-confirmed-badge {
-      opacity: 1;
-      transform: scale(1);
     }
 
     @keyframes checkmarkPop {
@@ -2840,6 +2189,20 @@
       background: rgba(255, 255, 255, 0.3);
       border-radius: 3px;
     }
+
+    .tile-player-number {
+      position: absolute;
+      top: 3px;
+      left: 4px;
+      font-size: 22px;
+      font-weight: 900;
+      color: rgba(255,255,255,0.9);
+      line-height: 1;
+      z-index: 2;
+      font-style: italic;
+      letter-spacing: -1px;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
@@ -2974,166 +2337,9 @@
                 <div class="stat-value" id="rank">--</div>
                 <div class="stat-label">RANK</div>
               </div>
-              <div class="stat-divider" id="redraw-stat-divider"></div>
-              <div class="stat-item" id="redraw-stat-item">
-                <div class="stat-value" id="redraw-stat-value">3</div>
-                <div class="stat-label">REDRAWS</div>
-              </div>
-              <div class="stat-divider" id="pol-stat-divider"></div>
-              <div class="stat-item" id="pol-stat-item">
-                <div class="stat-value" id="pol-stat-value">💝</div>
-                <div class="stat-label">POWER OF LOVE</div>
-              </div>
-              <!-- PoL heart progress — inline stat column, shown during gameplay -->
-              <div class="stat-divider pol-progress-divider" id="pol-progress-divider"></div>
-              <div class="pol-progress-track" id="pol-progress-track">
-                <div class="pol-progress-hearts">
-                  <svg class="pol-progress-heart" id="pol-heart-1" viewBox="0 0 24 24" fill="none" stroke="#6C6D6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-                  </svg>
-                  <svg class="pol-progress-heart" id="pol-heart-2" viewBox="0 0 24 24" fill="none" stroke="#6C6D6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-                  </svg>
-                  <svg class="pol-progress-heart" id="pol-heart-3" viewBox="0 0 24 24" fill="none" stroke="#6C6D6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-                  </svg>
-                </div>
-                <span class="pol-progress-label" id="pol-progress-label">Bonus Tile</span>
-              </div>
             </div>
           </div>
         </div>
-
-        <!-- Game Strip -->
-        <div class="game-strip">
-          <div class="team-section">
-            <div class="team-logo-container has-possession">
-              <img src="https://a.espncdn.com/i/teamlogos/nfl/500-dark/lar.png" alt="LAR" class="team-logo" id="away-logo">
-            </div>
-            <div class="team-info">
-              <span class="team-abbreviation" id="away-abbr">LAR</span>
-            </div>
-          </div>
-          <div class="score-section">
-            <div class="possession-indicator left active"></div>
-            <div class="score-value" id="away-score">0</div>
-          </div>
-          <div class="status-section">
-            <div class="game-clock" id="game-clock">15:00</div>
-            <div class="game-period" id="game-period">1st</div>
-          </div>
-          <div class="score-section">
-            <div class="score-value" id="home-score">0</div>
-            <div class="possession-indicator right"></div>
-          </div>
-          <div class="team-section">
-            <div class="team-logo-container has-possession right">
-              <img src="https://a.espncdn.com/i/teamlogos/nfl/500-dark/tb.png" alt="TB" class="team-logo" id="home-logo">
-            </div>
-            <div class="team-info">
-              <span class="team-abbreviation" id="home-abbr">TB</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Bingo Grid -->
-        <div class="bingo-container">
-          <div class="bingo-grid" id="bingo-grid">
-            <!-- Tiles generated by JavaScript -->
-          </div>
-        </div>
-
-        <!-- Home Indicator -->
-        <div class="home-indicator">
-          <div class="home-indicator-bar"></div>
-        </div>
-
-        <!-- Confetti Canvas -->
-        <canvas id="confetti-canvas"></canvas>
-
-        <!-- BINGO Celebration Overlay -->
-        <div class="bingo-celebration" id="bingo-celebration">
-          <div class="celebration-content">
-            <div class="bingo-text">BINGO!</div>
-            <div class="celebration-stats">
-              <div class="celebration-stat">
-                <span class="celebration-stat-value" id="celebration-rank">1st</span>
-                <span class="celebration-stat-label">Rank</span>
-              </div>
-              <div class="celebration-stat">
-                <span class="celebration-stat-value" id="celebration-hit-time">3rd - 2:00</span>
-                <span class="celebration-stat-label">Hit Time</span>
-              </div>
-            </div>
-            <div class="celebration-divider"></div>
-            <div class="celebration-buttons">
-              <button class="celebration-btn-primary" id="admire-bingo-btn">Behold My Board</button>
-              <button class="celebration-btn-secondary" id="share-bingo-btn">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
-                  <polyline points="16,6 12,2 8,6"/>
-                  <line x1="12" y1="2" x2="12" y2="15"/>
-                </svg>
-                Share
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Walkthrough Overlay -->
-        <div id="wt-overlay" class="wt-overlay">
-          <div id="wt-spotlight-cutout" class="wt-spotlight-cutout" style="display:none;"></div>
-          <div id="wt-redraw-ring" style="display:none;"></div>
-          <div id="wt-tooltip" class="wt-tooltip">
-            <!-- Hero header — team logos + wordmark, only visible on step 0 -->
-            <div class="wt-hero-header" id="wt-hero-header">
-              <img class="wt-hero-logo" id="wt-hero-logo-lar" src="" alt="LAR">
-              <div class="wt-hero-center">
-                <span class="wt-hero-eyebrow">Big Game</span>
-                <span class="wt-hero-wordmark">Bingo 🏈</span>
-              </div>
-              <img class="wt-hero-logo" id="wt-hero-logo-tb" src="" alt="TB">
-            </div>
-            <!-- Main content (inner wrapper handles padding in welcome mode) -->
-            <div class="wt-tooltip-inner">
-              <div class="wt-dots" id="wt-dots"></div>
-              <div class="wt-title" id="wt-title"></div>
-              <div class="wt-body" id="wt-body"></div>
-              <!-- Step-specific widget (hearts animation for PoL step) -->
-              <div class="wt-widget" id="wt-widget">
-                <div class="wt-heart-widget">
-                  <svg class="wt-heart-mini" id="wt-wh-1" viewBox="0 0 24 24" fill="none" stroke="#4A4B4D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-                  </svg>
-                  <svg class="wt-heart-mini" id="wt-wh-2" viewBox="0 0 24 24" fill="none" stroke="#4A4B4D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-                  </svg>
-                  <svg class="wt-heart-mini" id="wt-wh-3" viewBox="0 0 24 24" fill="none" stroke="#4A4B4D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-                  </svg>
-                </div>
-                <div class="wt-heart-widget-caption" id="wt-heart-caption">3 confirms = 1 heart</div>
-              </div>
-              <div class="wt-footer">
-                <button class="wt-skip" id="wt-skip">Skip to setup</button>
-                <div class="wt-nav">
-                  <button class="wt-btn wt-btn-back hidden" id="wt-back">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                      <path d="M13 8H3M7 12l-4-4 4-4" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </button>
-                  <button class="wt-btn" id="wt-btn">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                      <path d="M3 8h10M9 4l4 4-4 4" stroke="#111214" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </button>
-                  <span class="wt-tap-hint" id="wt-tap-hint" style="display:none">Tap tile ↑</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <!-- Tutorial Sheet Overlay -->
         <div class="tutorial-overlay" id="tutorial-overlay"></div>
         <div class="tutorial-sheet" id="tutorial-sheet">
@@ -3198,28 +2404,6 @@
           <button class="you-lose-dismiss" id="you-lose-dismiss">Got it</button>
         </div>
 
-        <!-- Redraw Tile — confirmation modal -->
-        <div class="redraw-confirm-overlay" id="redraw-tile-overlay">
-          <div class="redraw-confirm-card">
-            <div class="redraw-confirm-icon">↺</div>
-            <div class="redraw-confirm-title">Redraw Tile?</div>
-            <div class="redraw-confirm-body" id="redraw-tile-body">Are you sure you want to redraw this tile? You'll have 2 redraws remaining.</div>
-            <button class="redraw-confirm-go" id="redraw-tile-confirm">Redraw</button>
-            <button class="redraw-confirm-cancel" id="redraw-tile-cancel">Cancel</button>
-          </div>
-        </div>
-
-        <!-- Power of Love — confirmation modal -->
-        <div class="pol-confirm-overlay" id="pol-confirm-overlay">
-          <div class="pol-confirm-card">
-            <div class="pol-confirm-emoji">💝</div>
-            <div class="pol-confirm-title">Use your Love Token?</div>
-            <div class="pol-confirm-body">This claims the tile instantly — but you only get one. Choose wisely.</div>
-            <button class="pol-confirm-yes" id="pol-confirm-yes">Claim it 💝</button>
-            <button class="pol-confirm-no" id="pol-confirm-no">Not yet</button>
-          </div>
-        </div>
-
         <!-- Detail Sheet Overlay -->
         <div class="detail-sheet-overlay" id="detail-sheet-overlay"></div>
         
@@ -3252,28 +2436,6 @@
           </div>
           <div class="detail-sheet-indicator">
             <div class="detail-sheet-indicator-bar"></div>
-          </div>
-          <button class="redraw-sheet-btn" id="redraw-sheet-btn">↺&nbsp; Redraw Tile</button>
-          <div class="redraw-sheet-confirm" id="redraw-sheet-confirm">
-            <div class="redraw-sheet-confirm-text">
-              <strong>Redraw Tile?</strong>
-              Are you sure you want to redraw this tile? <span id="redraw-remaining-text">You have 3 redraws left this game.</span>
-            </div>
-            <div class="redraw-sheet-confirm-btns">
-              <button class="redraw-confirm-yes" id="redraw-confirm-yes">Confirm</button>
-              <button class="redraw-confirm-no" id="redraw-confirm-no">Cancel</button>
-            </div>
-          </div>
-          <button class="pol-sheet-btn" id="pol-sheet-btn">💝&nbsp; Claim tile with love token</button>
-          <div class="pol-sheet-confirm" id="pol-sheet-confirm">
-            <div class="pol-sheet-confirm-text">
-              Use your love token on this tile?
-              <span>You only get one — choose wisely.</span>
-            </div>
-            <div class="pol-sheet-confirm-btns">
-              <button class="pol-sheet-confirm-yes" id="pol-sheet-confirm-yes">Claim it 💝</button>
-              <button class="pol-sheet-confirm-no" id="pol-sheet-confirm-no">Not yet</button>
-            </div>
           </div>
         </div>
       </div>
@@ -3308,33 +2470,33 @@
       // MATTHEW STAFFORD (LAR QB) — 4 variants
       { id:'p1a', type:'player', name:'M. Stafford', fullName:'MATTHEW STAFFORD', team:'LAR', position:'QB', number:'9', stat:'Pass Yds',    target:250, playerId:12483 },
       { id:'p1b', type:'player', name:'M. Stafford', fullName:'MATTHEW STAFFORD', team:'LAR', position:'QB', number:'9', stat:'Pass TDs',    target:2,   playerId:12483 },
-      { id:'p1c', type:'player', name:'M. Stafford', fullName:'MATTHEW STAFFORD', team:'LAR', position:'QB', number:'9', stat:'Completions', target:22,  playerId:12483 },
+      { id:'p1c', type:'player', name:'M. Stafford', fullName:'MATTHEW STAFFORD', team:'LAR', position:'QB', number:'9', stat:'Comp', target:22,  playerId:12483 },
       { id:'p1d', type:'player', name:'M. Stafford', fullName:'MATTHEW STAFFORD', team:'LAR', position:'QB', number:'9', stat:'Pass Att',    target:35,  playerId:12483 },
 
       // BAKER MAYFIELD (TB QB) — 4 variants
       { id:'p2a', type:'player', name:'B. Mayfield', fullName:'BAKER MAYFIELD', team:'TB', position:'QB', number:'6', stat:'Pass Yds',      target:250, playerId:3052587 },
       { id:'p2b', type:'player', name:'B. Mayfield', fullName:'BAKER MAYFIELD', team:'TB', position:'QB', number:'6', stat:'Pass TDs',      target:2,   playerId:3052587 },
-      { id:'p2c', type:'player', name:'B. Mayfield', fullName:'BAKER MAYFIELD', team:'TB', position:'QB', number:'6', stat:'Completions',   target:20,  playerId:3052587 },
-      { id:'p2d', type:'player', name:'B. Mayfield', fullName:'BAKER MAYFIELD', team:'TB', position:'QB', number:'6', stat:'Interceptions', target:1,   playerId:3052587 },
+      { id:'p2c', type:'player', name:'B. Mayfield', fullName:'BAKER MAYFIELD', team:'TB', position:'QB', number:'6', stat:'Comp',   target:20,  playerId:3052587 },
+      { id:'p2d', type:'player', name:'B. Mayfield', fullName:'BAKER MAYFIELD', team:'TB', position:'QB', number:'6', stat:'INTs', target:1,   playerId:3052587 },
 
       // KYREN WILLIAMS (LAR RB) — 3 variants
       { id:'p3a', type:'player', name:'K. Williams', fullName:'KYREN WILLIAMS', team:'LAR', position:'RB', number:'23', stat:'Rush Yds',   target:75, playerId:4430737 },
       { id:'p3b', type:'player', name:'K. Williams', fullName:'KYREN WILLIAMS', team:'LAR', position:'RB', number:'23', stat:'Rush TDs',   target:1,  playerId:4430737 },
-      { id:'p3c', type:'player', name:'K. Williams', fullName:'KYREN WILLIAMS', team:'LAR', position:'RB', number:'23', stat:'Receptions', target:4,  playerId:4430737 },
+      { id:'p3c', type:'player', name:'K. Williams', fullName:'KYREN WILLIAMS', team:'LAR', position:'RB', number:'23', stat:'Recs', target:4,  playerId:4430737 },
 
       // BUCKY IRVING (TB RB) — 3 variants
       { id:'p4a', type:'player', name:'B. Irving', fullName:'BUCKY IRVING', team:'TB', position:'RB', number:'7', stat:'Rush Yds',   target:60, playerId:4596448 },
       { id:'p4b', type:'player', name:'B. Irving', fullName:'BUCKY IRVING', team:'TB', position:'RB', number:'7', stat:'Rush TDs',   target:1,  playerId:4596448 },
-      { id:'p4c', type:'player', name:'B. Irving', fullName:'BUCKY IRVING', team:'TB', position:'RB', number:'7', stat:'Receptions', target:3,  playerId:4596448 },
+      { id:'p4c', type:'player', name:'B. Irving', fullName:'BUCKY IRVING', team:'TB', position:'RB', number:'7', stat:'Recs', target:3,  playerId:4596448 },
 
       // PUKA NACUA (LAR WR) — 3 variants
       { id:'p5a', type:'player', name:'P. Nacua', fullName:'PUKA NACUA', team:'LAR', position:'WR', number:'12', stat:'Rec Yds',    target:80, playerId:4426515 },
-      { id:'p5b', type:'player', name:'P. Nacua', fullName:'PUKA NACUA', team:'LAR', position:'WR', number:'12', stat:'Receptions', target:6,  playerId:4426515 },
+      { id:'p5b', type:'player', name:'P. Nacua', fullName:'PUKA NACUA', team:'LAR', position:'WR', number:'12', stat:'Recs', target:6,  playerId:4426515 },
       { id:'p5c', type:'player', name:'P. Nacua', fullName:'PUKA NACUA', team:'LAR', position:'WR', number:'12', stat:'Rec TDs',    target:1,  playerId:4426515 },
 
       // EMEKA EGBUKA (TB WR) — 3 variants
       { id:'p6a', type:'player', name:'E. Egbuka', fullName:'EMEKA EGBUKA', team:'TB', position:'WR', number:'2', stat:'Rec Yds',    target:80, playerId:4567750 },
-      { id:'p6b', type:'player', name:'E. Egbuka', fullName:'EMEKA EGBUKA', team:'TB', position:'WR', number:'2', stat:'Receptions', target:5,  playerId:4567750 },
+      { id:'p6b', type:'player', name:'E. Egbuka', fullName:'EMEKA EGBUKA', team:'TB', position:'WR', number:'2', stat:'Recs', target:5,  playerId:4567750 },
       { id:'p6c', type:'player', name:'E. Egbuka', fullName:'EMEKA EGBUKA', team:'TB', position:'WR', number:'2', stat:'Rec TDs',    target:1,  playerId:4567750 },
 
       // JARED VERSE (LAR DE) — 2 variants
@@ -3350,42 +2512,42 @@
       { id:'p8d', type:'player', name:'Y. Diaby', fullName:'YAYA DIABY', team:'TB', position:'OLB', number:'38', stat:'Tackles', target:4, playerId:4686334 },
 
       // HARRISON MEVIS (LAR K) — 1 variant
-      { id:'p8e', type:'player', name:'H. Mevis', fullName:'HARRISON MEVIS', team:'LAR', position:'K', number:'92', stat:'Field Goals', target:3, playerId:4574716 },
+      { id:'p8e', type:'player', name:'H. Mevis', fullName:'HARRISON MEVIS', team:'LAR', position:'K', number:'92', stat:'FGs', target:3, playerId:4574716 },
 
       // CHASE McLAUGHLIN (TB K) — 1 variant
-      { id:'p8f', type:'player', name:'C. McLaughlin', fullName:'CHASE McLAUGHLIN', team:'TB', position:'K', number:'10', stat:'Field Goals', target:3, playerId:3150744 },
+      { id:'p8f', type:'player', name:'C. McLaughlin', fullName:'CHASE McLAUGHLIN', team:'TB', position:'K', number:'10', stat:'FGs', target:3, playerId:3150744 },
 
       // CADE OTTON (TB TE) — 2 variants
-      { id:'p9a', type:'player', name:'C. Otton', fullName:'CADE OTTON', team:'TB', position:'TE', number:'88', stat:'Receptions', target:4, playerId:4243331 },
+      { id:'p9a', type:'player', name:'C. Otton', fullName:'CADE OTTON', team:'TB', position:'TE', number:'88', stat:'Recs', target:4, playerId:4243331 },
       { id:'p9b', type:'player', name:'C. Otton', fullName:'CADE OTTON', team:'TB', position:'TE', number:'88', stat:'Rec Yds',    target:45, playerId:4243331 },
 
       // COLBY PARKINSON (LAR TE) — 2 variants
       { id:'p10a', type:'player', name:'C. Parkinson', fullName:'COLBY PARKINSON', team:'LAR', position:'TE', number:'84', stat:'Rec Yds',    target:40, playerId:4242557 },
-      { id:'p10b', type:'player', name:'C. Parkinson', fullName:'COLBY PARKINSON', team:'LAR', position:'TE', number:'84', stat:'Receptions', target:3,  playerId:4242557 },
+      { id:'p10b', type:'player', name:'C. Parkinson', fullName:'COLBY PARKINSON', team:'LAR', position:'TE', number:'84', stat:'Recs', target:3,  playerId:4242557 },
 
       // DEFENSE
       { id:'p11a', type:'player', name:'N. Landman', fullName:'NATE LANDMAN', team:'LAR', position:'LB', number:'46', stat:'Tackles', target:6, playerId:4243181 },
       { id:'p11b', type:'player', name:'N. Landman', fullName:'NATE LANDMAN', team:'LAR', position:'LB', number:'46', stat:'Sacks',   target:1, playerId:4243181 },
       { id:'p12a', type:'player', name:'T. Smith', fullName:'TYKEE SMITH', team:'TB', position:'DB', number:'24', stat:'Tackles',      target:4, playerId:4428522 },
-      { id:'p12b', type:'player', name:'T. Smith', fullName:'TYKEE SMITH', team:'TB', position:'DB', number:'24', stat:'Interceptions', target:1, playerId:4428522 },
+      { id:'p12b', type:'player', name:'T. Smith', fullName:'TYKEE SMITH', team:'TB', position:'DB', number:'24', stat:'INTs', target:1, playerId:4428522 },
 
       // LAR TEAM TILES — 7 variants
       { id:'t1',  type:'team', name:'LAR', fullName:'LOS ANGELES RAMS', team:'LAR', stat:'Total Pts',   target:24  },
       { id:'t2',  type:'team', name:'LAR', fullName:'LOS ANGELES RAMS', team:'LAR', stat:'1st Half Pts', target:10  },
-      { id:'t3',  type:'team', name:'LAR', fullName:'LOS ANGELES RAMS', team:'LAR', stat:'Passing Yds',  target:275 },
-      { id:'t4',  type:'team', name:'LAR', fullName:'LOS ANGELES RAMS', team:'LAR', stat:'Rushing Yds',  target:100 },
+      { id:'t3',  type:'team', name:'LAR', fullName:'LOS ANGELES RAMS', team:'LAR', stat:'Pass Yds',  target:275 },
+      { id:'t4',  type:'team', name:'LAR', fullName:'LOS ANGELES RAMS', team:'LAR', stat:'Rush Yds',  target:100 },
       { id:'t5',  type:'team', name:'LAR', fullName:'LOS ANGELES RAMS', team:'LAR', stat:'Total TDs',    target:3   },
-      { id:'t6',  type:'team', name:'LAR', fullName:'LOS ANGELES RAMS', team:'LAR', stat:'Total Sacks',  target:2   },
-      { id:'t7',  type:'team', name:'LAR', fullName:'LOS ANGELES RAMS', team:'LAR', stat:'First Downs',  target:18  },
+      { id:'t6',  type:'team', name:'LAR', fullName:'LOS ANGELES RAMS', team:'LAR', stat:'Sacks',  target:2   },
+      { id:'t7',  type:'team', name:'LAR', fullName:'LOS ANGELES RAMS', team:'LAR', stat:'1st Downs',  target:18  },
 
       // TB TEAM TILES — 7 variants
       { id:'t8',  type:'team', name:'TB', fullName:'TAMPA BAY BUCCANEERS', team:'TB', stat:'Total Pts',   target:27  },
       { id:'t9',  type:'team', name:'TB', fullName:'TAMPA BAY BUCCANEERS', team:'TB', stat:'1st Half Pts', target:14  },
-      { id:'t10', type:'team', name:'TB', fullName:'TAMPA BAY BUCCANEERS', team:'TB', stat:'Passing Yds',  target:285 },
-      { id:'t11', type:'team', name:'TB', fullName:'TAMPA BAY BUCCANEERS', team:'TB', stat:'Rushing Yds',  target:100 },
+      { id:'t10', type:'team', name:'TB', fullName:'TAMPA BAY BUCCANEERS', team:'TB', stat:'Pass Yds',  target:285 },
+      { id:'t11', type:'team', name:'TB', fullName:'TAMPA BAY BUCCANEERS', team:'TB', stat:'Rush Yds',  target:100 },
       { id:'t12', type:'team', name:'TB', fullName:'TAMPA BAY BUCCANEERS', team:'TB', stat:'Total TDs',    target:3   },
       { id:'t13', type:'team', name:'TB', fullName:'TAMPA BAY BUCCANEERS', team:'TB', stat:'Sacks',        target:2   },
-      { id:'t14', type:'team', name:'TB', fullName:'TAMPA BAY BUCCANEERS', team:'TB', stat:'First Downs',  target:18  },
+      { id:'t14', type:'team', name:'TB', fullName:'TAMPA BAY BUCCANEERS', team:'TB', stat:'1st Downs',  target:18  },
 
       // PROPS — 6 variants
       { id:'prop1', type:'prop', name:'Coin Flip',  fullName:'COIN FLIP',         team:'NFL', stat:'Heads',   target:0, customIcon:'coin'    },
@@ -3562,7 +2724,8 @@
       if (tile.target <= 0) return tile.state;
       if (tile.current < tile.target) return 'in-progress';
       if (tile.current >= tile.target && tile.current < tile.target + PENDING_THRESHOLD) return 'pending';
-      if (tile.current >= tile.target + PENDING_THRESHOLD) return 'pending-win';
+      // Auto-complete when past threshold
+      if (tile.current >= tile.target + PENDING_THRESHOLD) { tile.confirmed = true; return 'complete'; }
       return 'normal';
     }
 
@@ -3574,8 +2737,6 @@
       // Play sounds on state transitions
       if (oldState !== newState) {
         if (newState === 'pending' && oldState !== 'pending') {
-          playSound('tilePending');
-        } else if (newState === 'pending-win' && oldState !== 'pending-win') {
           playSound('tilePending');
         } else if (newState === 'complete' && oldState !== 'complete') {
           playSound('tileComplete');
@@ -3672,15 +2833,6 @@
       currentSheetTile = tile;
       currentSheetTileIndex = tileIndex;
 
-      // Show/hide Redraw CTA (pre-game only)
-      updateRedrawBtn(tile);
-
-      // Show/hide PoL CTA
-      const polBtn = document.getElementById('pol-sheet-btn');
-      if (polBtn) {
-        polBtn.style.display = (polUnlocked && !polUsed && tile.state !== 'complete' && tile.type !== 'freespot')
-          ? 'block' : 'none';
-      }
       
       const overlay = document.getElementById('detail-sheet-overlay');
       const sheet = document.getElementById('detail-sheet');
@@ -3775,14 +2927,14 @@
         const progress = Math.min((tile.current / tile.target) * 100, 100);
         progressFill.style.width = `${progress}%`;
         progressFill.className = 'detail-sheet-progress-fill';
-        if (tile.state === 'complete' || tile.state === 'pending-win') progressFill.classList.add('complete');
+        if (tile.state === 'complete') progressFill.classList.add('complete');
         if (tile.state === 'pending') progressFill.classList.add('pending');
       } else {
         statLabel.textContent = tile.stat || 'Complete to win';
         statValue.textContent = tile.state === 'complete' ? '✓' : '—';
         progressFill.style.width = tile.state === 'complete' ? '100%' : '0%';
         progressFill.className = 'detail-sheet-progress-fill';
-        if (tile.state === 'complete' || tile.state === 'pending-win') progressFill.classList.add('complete');
+        if (tile.state === 'complete') progressFill.classList.add('complete');
         if (tile.state === 'pending') progressFill.classList.add('pending');
       }
 
@@ -3794,10 +2946,7 @@
       playSound('cardOut');
       document.getElementById('detail-sheet-overlay').classList.remove('active');
       document.getElementById('detail-sheet').classList.remove('active');
-      // Reset inline confirm panels so they're clean next open
-      document.getElementById('pol-sheet-confirm').classList.remove('active');
-      document.getElementById('redraw-sheet-confirm').classList.remove('active');
-      document.getElementById('redraw-sheet-btn').style.display = 'none';
+      // No inline confirm panels to reset
       currentSheetTile = null;
       currentSheetTileIndex = -1;
     }
@@ -3837,9 +2986,6 @@
 
       tileEl.className = tileEl.className.replace(/state-[\w-]+/g, '').replace(/\s+/g, ' ').trim();
       tileEl.classList.add(`state-${tile.state}`);
-      if (tile.polClaimed) tileEl.classList.add('pol-claimed');
-      // Heart badge: show on normally-confirmed tiles (not PoL-claimed)
-      tileEl.classList.toggle('pol-confirmed', tile.polContributed === true);
 
       if (tile.target > 0) {
         const targetProgress = Math.min((tile.current / tile.target) * 100, 100);
@@ -3882,8 +3028,7 @@
         const tileEl = document.createElement('div');
         const animationClass = withAnimation && !gridInitialized ? 'animate-entry' : '';
         const coinFlipClass = tile.customIcon === 'coin' ? 'coin-flip-tile' : '';
-        const polClaimedClass = tile.polClaimed ? 'pol-claimed' : '';
-        tileEl.className = `bingo-tile ${animationClass} state-${tile.state} ${tile.type === 'freespot' ? 'free-spot' : ''} ${coinFlipClass} ${polClaimedClass}`.trim();
+        tileEl.className = `bingo-tile ${animationClass} state-${tile.state} ${tile.type === 'freespot' ? 'free-spot' : ''} ${coinFlipClass}`.trim();
         tileEl.dataset.tileId = tile.id;
 
         const progress = tile.target > 0 ? Math.min((tile.current / tile.target) * 100, 100) : 100;
@@ -3937,32 +3082,14 @@
               ${tileBackgroundHtml}
               <div class="tile-image ${tileImageObj.cls}">${tileImageObj.html}</div>
             </div>
+            ${tile.number ? `<div class="tile-player-number">${tile.number}</div>` : ''}
             <div class="tile-content">
               <div class="tile-name">${tile.name}</div>
               ${(statValue || statLabel) ? `<div class="tile-stat-row"><span class="tile-stat-value">${statValue}</span>${statLabel ? `<span class="tile-stat-label"> ${statLabel}</span>` : ''}</div>` : ''}
             </div>
-            <div class="claim-btn">CLAIM</div>
             <div class="tile-checkmark">
               <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
             </div>
-            <div class="pol-confirmed-badge">
-              <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M8 13.5C7.7 13.3 1.5 9.2 1.5 5.5C1.5 3.6 3 2 4.9 2C6.1 2 7.2 2.7 7.8 3.7C8.4 2.7 9.5 2 10.7 2C12.6 2 14 3.6 14 5.5C14 9.2 8.3 13.3 8 13.5Z"
-                      fill="#D21212" stroke="#FFFFFF" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
-                <polyline points="5.5,6.5 7,8.5 10.5,5" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-            <button class="pol-heart-btn" data-tile-index="${index}" aria-label="Claim with love token">
-              <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-              </svg>
-            </button>
-            <button class="redraw-tile-btn" data-tile-index="${index}" aria-label="Redraw tile">
-              <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="1 4 1 10 7 10"/>
-                <path d="M3.51 15a9 9 0 1 0 .49-4.98"/>
-              </svg>
-            </button>
             <div class="dead-tile-overlay">
               <div class="dead-tile-x">✕</div>
               <div class="dead-tile-label">Player Out</div>
@@ -3982,70 +3109,14 @@
         }
 
         if (tile.type !== 'freespot') {
-          // Redraw icon — intercept before tile click fires (pre-game only)
-          const redrawBtn = tileEl.querySelector('.redraw-tile-btn');
-          if (redrawBtn) {
-            redrawBtn.addEventListener('click', (e) => {
-              e.stopPropagation();
-              if (canReroll()) showRedrawTileModal(index);
-            });
-          }
-
-          // PoL heart button — intercept before tile click fires
-          const heartBtn = tileEl.querySelector('.pol-heart-btn');
-          if (heartBtn) {
-            heartBtn.addEventListener('click', (e) => {
-              e.stopPropagation();
-              if (polUnlocked && !polUsed && tile.state !== 'complete') {
-                polPendingTileIndex = index;
-                showPolConfirmModal();
-              }
-            });
-          }
-
           tileEl.addEventListener('click', (e) => {
-            if (walkthroughActive && !WALKTHROUGH_STEPS[walkthroughStep].tapTile) {
-              // During walkthrough, non-claim taps do nothing (tooltip handles it)
+            if (walkthroughActive) {
               e.stopPropagation();
               return;
             }
             if (tile.state === 'dead') {
               e.stopPropagation();
               showYouLoseModal(index);
-            } else if (tile.state === 'pending-win') {
-              e.stopPropagation();
-              tile.confirmed = true;
-              // Only player/team stat tiles (target > 0) contribute to PoL achievement
-              // Prop/coin/halftime tiles (target <= 0) just confirm — green circle, no heart badge
-              if (tile.target > 0) {
-                confirmCount++;
-                // Heart badge only marks the tile that actually triggers a heart fill
-                // (every 3rd confirm). All other confirmed tiles keep the green circle.
-                if (shouldSpawnHearts()) {
-                  tile.polContributed = true;
-                  spawnHearts(tileEl);
-                }
-                updatePolProgressTracker();
-              }
-              updateTileState(tile);
-              updateTileInPlace(index);
-              updateStats();
-              // Advance walkthrough if we're on the claim step
-              if (walkthroughActive && WALKTHROUGH_STEPS[walkthroughStep].tapTile) {
-                setTimeout(nextWalkthroughStep, 600);
-                return;
-              }
-              if (checkHeartPattern()) {
-                triggerHeartAchievement();
-              }
-              if (!bingoTriggered) {
-                const winningPattern = detectBingo();
-                if (winningPattern) {
-                  bingoTriggered = true;
-                  drawWinningLine(winningPattern);
-                  setTimeout(() => showBingoCelebration(), 800);
-                }
-              }
             } else {
               showDetailSheet(tile.id);
             }
@@ -4409,7 +3480,6 @@
         if (tile.type === 'freespot') return;
         tile.current = 0;
         tile.confirmed = false;
-        tile.polContributed = false;
         tile.dead = false;
         tile.state = 'normal';
         updateTileState(tile);
@@ -4439,36 +3509,7 @@
 
       // Deal a brand-new card — different tiles every game
       tiles.splice(0, tiles.length, ...dealCard());
-      rerollsRemaining = 3;
-      document.getElementById('redraw-stat-value').textContent = '3';
-      document.getElementById('redraw-stat-item').classList.remove('hidden');
-      document.getElementById('redraw-stat-divider').classList.remove('hidden');
-      document.getElementById('bingo-grid').classList.add('pregame-active');
-
-      // Reset PoL state
-      polUnlocked = false;
-      polUsed     = false;
-      polPendingTileIndex = null;
-      powerOfLoveTriggered = false;
       closeYouLoseModal();
-      closePolConfirmModal();
-      document.getElementById('bingo-grid').classList.remove('pol-active');
-      const polStatItem = document.getElementById('pol-stat-item');
-      const polStatDiv  = document.getElementById('pol-stat-divider');
-      polStatItem.classList.remove('visible', 'pol-used');
-      polStatDiv.classList.remove('visible');
-      polStatItem.style.display = 'none';
-      polStatDiv.style.display  = 'none';
-      document.getElementById('pol-stat-value').textContent = '💝';
-      document.getElementById('pol-sheet-btn').style.display = 'none';
-
-      // Reset and hide PoL progress tracker
-      confirmCount = 0;
-      const polTrack = document.getElementById('pol-progress-track');
-      const polTrackDiv = document.getElementById('pol-progress-divider');
-      if (polTrack) polTrack.classList.remove('visible', 'unlocked');
-      if (polTrackDiv) polTrackDiv.classList.remove('visible');
-      updatePolProgressTracker();
 
       gameScores = { away: 0, home: 0 };
       gameQuarter = 1;
@@ -4539,23 +3580,12 @@
       simulationCount++;
       heartAchievementTriggered = false;
       bingoTriggered = false;
-      confirmCount = 0;
-      heartsCollected = 0;
       resetTileValues();
       simulationRunning = true;
-
-      // Show PoL progress tracker (inline in stats row) and reset to 0 hearts
-      const polTrack = document.getElementById('pol-progress-track');
-      const polTrackDiv = document.getElementById('pol-progress-divider');
-      if (polTrack) polTrack.classList.add('visible');
-      if (polTrackDiv) polTrackDiv.classList.add('visible');
-      updatePolProgressTracker();
 
       // Ensure the center free tile is claimed before the game ticks
       claimFreeTile();
 
-      // Remove pre-game edit icons from tiles, keep redraws stat visible
-      document.getElementById('bingo-grid').classList.remove('pregame-active');
       
       const totalUpdates = duration / updateInterval;
       let updateCount = 0;
@@ -4620,15 +3650,17 @@
           const isPriorityTile = priorityTiles.has(index);
           
           if (tile.target <= 0) {
-            if (tile.state !== 'complete' && tile.state !== 'pending-win') {
+            if (tile.state !== 'complete') {
               if (isPriorityTile && willWin) {
                 const scheduleTime = priorityTileSchedule[index] || 0.8;
                 if (progress >= scheduleTime) {
-                  tile.state = 'pending-win';
+                  tile.state = 'complete';
+                  tile.confirmed = true;
                   updateTileInPlace(index);
                 }
               } else if (Math.random() < 0.02) {
-                tile.state = 'pending-win';
+                tile.state = 'complete';
+                tile.confirmed = true;
                 updateTileInPlace(index);
               }
             }
@@ -4698,7 +3730,6 @@
     // Initialize
     tiles.forEach(updateTileState);
     renderGrid(true);
-    document.getElementById('bingo-grid').classList.add('pregame-active');
 
     // Event listeners
     document.getElementById('detail-sheet-overlay').addEventListener('click', closeDetailSheet);
@@ -4756,15 +3787,8 @@
       isSimulating: () => simulationRunning
     };
 
-    // ===== VALENTINE'S DAY HEARTS + ACHIEVEMENT =====
-    let confirmCount = 0;
-    let heartsCollected = 0;
-    let powerOfLoveTriggered = false;
+    // ===== HEARTS + ACHIEVEMENT =====
     const HEARTS = ['❤️', '💗', '💖', '💝', '💕'];
-
-    function shouldSpawnHearts() {
-      return confirmCount > 0 && confirmCount % 3 === 0;
-    }
 
     function spawnHearts(tileEl) {
       const rect = tileEl.getBoundingClientRect();
@@ -4801,11 +3825,6 @@
         setTimeout(() => heart.remove(), duration + 50);
       }
 
-      heartsCollected++;
-      if (heartsCollected === 3 && !powerOfLoveTriggered) {
-        powerOfLoveTriggered = true;
-        setTimeout(() => unlockPowerOfLove(), 600);
-      }
     }
 
     function showAchievementToast(icon, title, subtitle) {
@@ -4845,62 +3864,6 @@
       stat: 'Pass Yds', target: 250, playerId: 3052587
     };
 
-    // Heart widget animation — array of timers so all can be cancelled cleanly
-    let wtHeartTimers = [];
-    let wtSpotlightTimer = null;
-
-    function startHeartWidgetAnimation() {
-      const widget  = document.getElementById('wt-widget');
-      const caption = document.getElementById('wt-heart-caption');
-      if (!widget) return;
-      widget.classList.add('active');
-
-      function resetHearts() {
-        for (let i = 1; i <= 3; i++) {
-          const h = document.getElementById(`wt-wh-${i}`);
-          if (h) { h.classList.remove('lit'); h.setAttribute('stroke', '#4A4B4D'); }
-        }
-        if (caption) { caption.textContent = '3 confirms = 1 heart'; caption.classList.remove('unlocked'); }
-      }
-
-      function fillHeart(n) {
-        const h = document.getElementById(`wt-wh-${n}`);
-        if (h) { h.classList.add('lit'); h.setAttribute('stroke', '#FFFFFF'); }
-      }
-
-      function schedule(fn, delay) {
-        const id = setTimeout(fn, delay);
-        wtHeartTimers.push(id);
-        return id;
-      }
-
-      function runCycle() {
-        resetHearts();
-        schedule(() => fillHeart(1), 500);
-        schedule(() => fillHeart(2), 1050);
-        schedule(() => {
-          fillHeart(3);
-          if (caption) { caption.textContent = 'Bonus Tile Unlocked!'; caption.classList.add('unlocked'); }
-        }, 1600);
-        schedule(runCycle, 3300); // loop
-      }
-      runCycle();
-    }
-
-    function stopHeartWidgetAnimation() {
-      wtHeartTimers.forEach(clearTimeout);
-      wtHeartTimers = [];
-      const widget = document.getElementById('wt-widget');
-      if (widget) widget.classList.remove('active');
-      for (let i = 1; i <= 3; i++) {
-        const h = document.getElementById(`wt-wh-${i}`);
-        if (h) { h.classList.remove('lit'); h.setAttribute('stroke', '#4A4B4D'); }
-      }
-      const caption = document.getElementById('wt-heart-caption');
-      if (caption) { caption.textContent = '3 confirms = 1 heart'; caption.classList.remove('unlocked'); }
-    }
-
-    // All 8 steps stay on the center free tile — only the tile state & stats change
     const WALKTHROUGH_STEPS = [
       {
         tileState: 'normal', progress: 0, current: 0,
@@ -4911,49 +3874,21 @@
       },
       {
         tileState: 'normal', progress: 0, current: 0,
-        title: 'Not Yet Active',
-        body: '0 yards. Your player hasn\'t touched the ball — tile stays dark until stats start moving.',
+        title: 'Tiles Start Empty',
+        body: 'Before kickoff your card is set. Each tile tracks a real stat from the game — nothing happens until the action starts.',
         btnText: 'Got it →'
       },
       {
-        tileState: 'in-progress', progress: 18, current: 45,
-        progressColor: '#F5C518',
-        title: 'Early Progress ⬡ Yellow',
-        body: '45 of 250 yards in. Under 33% of the target — the conic border glows yellow as your player warms up.',
-        btnText: 'Next →'
-      },
-      {
-        tileState: 'in-progress', progress: 65, current: 162,
-        progressColor: '#FF8C00',
-        title: 'Building Momentum 🔶 Orange',
-        body: '162 yards and climbing — past one-third of the target, the border turns orange.',
-        btnText: 'Keep going →'
-      },
-      {
-        tileState: 'pending', progress: 100, current: 252,
-        title: 'Almost There ✨ Shimmer',
-        body: '252 yards — target hit! Shimmer border means we\'re waiting on official stat confirmation.',
-        btnText: 'So close →'
-      },
-      {
-        tileState: 'pending-win', progress: 100, current: 260,
-        title: 'Tap to Claim! 🟢',
-        body: 'Lock in your square before anyone else does.',
-        tapTile: true
+        tileState: 'in-progress', progress: 45, current: 112, progressColor: '#FF8C00',
+        title: 'Progress Fills in Real Time',
+        body: 'As stats accumulate on the field, your tile fills up automatically. The closer to the target, the more intense it gets.',
+        btnText: 'Almost there →'
       },
       {
         tileState: 'complete', progress: 100, current: 260,
-        isHeartStep: true,
-        title: 'The Power of Love 💝',
-        body: 'Every tile you claim could unlock a heart. Collect all 3 to earn a rare Valentine\'s Day achievement — keep an eye on your entry card.',
-        btnText: 'Got it →'
-      },
-      {
-        tileState: 'normal', progress: 0, current: 0,
-        showRedrawIcon: true,
-        title: 'Redraw a Tile 🃏',
-        body: "Don't like a tile? You get 3 redraws before the game locks in. Tap any tile you want to swap, then tap to confirm.",
-        btnText: "Set Up My Card →",
+        title: 'Locked In',
+        body: 'Hit the target and your tile completes automatically. No taps needed — just watch your card come alive.',
+        btnText: 'Set Up My Card →',
         isFinal: true
       }
     ];
@@ -5000,30 +3935,19 @@
           <div class="tile-name">${WT_DEMO.name}</div>
           <div class="tile-stat-row"><span class="tile-stat-value" id="wt-stat-value">0</span><span class="tile-stat-label"> ${WT_DEMO.stat}</span></div>
         </div>
-        <div class="claim-btn" id="wt-claim-btn" style="display:none;">CLAIM</div>
         <div class="tile-checkmark" id="wt-checkmark" style="display:none;">
           <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
         </div>
-        <div id="wt-redraw-icon" style="display:none;position:absolute;top:4px;right:4px;width:18px;height:18px;background:rgba(0,0,0,0.45);border-radius:50%;align-items:center;justify-content:center;">
-          <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.98"/></svg>
-        </div>
+
       `;
 
-      el.addEventListener('click', () => {
-        if (!walkthroughActive || walkthroughAnimating) return;
-        if (!WALKTHROUGH_STEPS[walkthroughStep]?.tapTile) return;
-        // User claimed — flip to complete
-        el.className = 'bingo-tile state-complete';
-        document.getElementById('wt-claim-btn').style.display  = 'none';
-        document.getElementById('wt-checkmark').style.display  = 'flex';
-        setTimeout(nextWalkthroughStep, 650);
-      });
+
 
       document.getElementById('wt-overlay').appendChild(el);
       return el;
     }
 
-    function setDemoState(state, progress, current, color, showRedrawIcon) {
+    function setDemoState(state, progress, current, color) {
       const el = document.getElementById('wt-demo-tile');
       if (!el) return;
       el.className = `bingo-tile state-${state}`;
@@ -5035,12 +3959,9 @@
       }
       const sv = document.getElementById('wt-stat-value');
       if (sv) sv.textContent = current;
-      const cb = document.getElementById('wt-claim-btn');
-      if (cb) cb.style.display = state === 'pending-win' ? 'flex' : 'none';
       const ck = document.getElementById('wt-checkmark');
       if (ck) ck.style.display = state === 'complete' ? 'flex' : 'none';
-      const ri = document.getElementById('wt-redraw-icon');
-      if (ri) ri.style.display = showRedrawIcon ? 'flex' : 'none';
+
     }
 
     // Animated progress fill — drives the conic border and stat counter
@@ -5119,65 +4040,6 @@
       }
     }
 
-    /* ---- Final step: spotlight real tile's redraw icon ---- */
-    function showRedrawIconSpotlight(tileIndex) {
-      const phoneEl  = document.querySelector('.phone-mockup');
-      const tileEl   = document.querySelectorAll('#bingo-grid .bingo-tile')[tileIndex];
-      const ring     = document.getElementById('wt-redraw-ring');
-      const cutout   = document.getElementById('wt-spotlight-cutout');
-      const tooltip  = document.getElementById('wt-tooltip');
-      if (!phoneEl || !tileEl || !ring) return;
-
-      const pr  = phoneEl.getBoundingClientRect();
-      const tr  = tileEl.getBoundingClientRect();
-
-      // Spotlight the whole tile
-      const tTop  = tr.top  - pr.top;
-      const tLeft = tr.left - pr.left;
-      cutout.style.cssText = `display:block;top:${tTop}px;left:${tLeft}px;width:${tr.width}px;height:${tr.height}px;border-radius:20px;`;
-
-      // Find the redraw button inside the tile and ring it — centered on the button
-      const btn = tileEl.querySelector('.redraw-tile-btn');
-      if (btn) {
-        const br     = btn.getBoundingClientRect();
-        const bCx    = br.left + br.width  / 2 - pr.left;
-        const bCy    = br.top  + br.height / 2 - pr.top;
-        const rSize  = Math.max(br.width, br.height) + 8; // slightly larger for halo
-        ring.style.cssText = `display:block;top:${bCy - rSize/2}px;left:${bCx - rSize/2}px;width:${rSize}px;height:${rSize}px;`;
-      }
-
-      // Position tooltip below the tile
-      const TOOLTIP_W = 285, PAD = 10;
-      const centerX = tLeft + tr.width / 2;
-      const tooltipLeft = Math.max(PAD, Math.min(centerX - TOOLTIP_W / 2, phoneEl.offsetWidth - TOOLTIP_W - PAD));
-      const arrowOffset = Math.max(16, Math.min(centerX - tooltipLeft - 12, TOOLTIP_W - 40));
-      tooltip.className = 'wt-tooltip';
-      tooltip.style.cssText = '';
-      tooltip.style.setProperty('--arrow-offset', `${arrowOffset}px`);
-      tooltip.style.left = `${tooltipLeft}px`;
-      if (phoneEl.offsetHeight - (tTop + tr.height) >= 170) {
-        tooltip.style.top = `${tTop + tr.height + 14}px`;
-        tooltip.classList.add('arrow-up');
-      } else {
-        tooltip.style.top = `${tTop - 14}px`;
-        tooltip.style.transform = 'translateY(-100%)';
-        tooltip.classList.add('arrow-down');
-      }
-    }
-
-    function hideRedrawIconSpotlight(removePregame = true) {
-      // Cancel any pending spotlight timer so it can't fire after walkthrough ends
-      if (wtSpotlightTimer) { clearTimeout(wtSpotlightTimer); wtSpotlightTimer = null; }
-      const ring    = document.getElementById('wt-redraw-ring');
-      const cutout  = document.getElementById('wt-spotlight-cutout');
-      const overlay = document.getElementById('wt-overlay');
-      if (ring)    ring.style.display   = 'none';
-      if (cutout)  cutout.style.display = 'none';
-      // Restore full-dark in case we're stepping back from the final step
-      if (overlay && overlay.classList.contains('active')) overlay.classList.add('full-dark');
-      if (removePregame) document.getElementById('bingo-grid').classList.remove('pregame-active');
-    }
-
     /* ---- Core walkthrough flow ---- */
 
     function startWalkthrough() {
@@ -5208,9 +4070,6 @@
       walkthroughSeen      = true;
       walkthroughAnimating = false;
 
-      stopHeartWidgetAnimation();
-      // Keep pregame-active when user exits to card setup; only remove it when starting the game
-      hideRedrawIconSpotlight(startGame);
       document.getElementById('wt-demo-tile')?.remove();
       const overlay = document.getElementById('wt-overlay');
       overlay.classList.remove('active', 'full-dark');
@@ -5222,8 +4081,6 @@
         playSound('gameStart');
         simulateGame({ winRate: 1.0 });
       } else {
-        // Ensure redraw icons are visible in pre-game setup
-        document.getElementById('bingo-grid').classList.add('pregame-active');
         document.getElementById('simulate-btn').textContent = 'Start Game';
         document.getElementById('simulate-btn').classList.remove('active');
         document.getElementById('restart-btn').disabled = true;
@@ -5236,45 +4093,25 @@
       const overlay = document.getElementById('wt-overlay');
       const demoTile = document.getElementById('wt-demo-tile');
 
-      // Always stop any running heart animation when changing steps
-      stopHeartWidgetAnimation();
-
-      // Always clean up redraw spotlight unless we're about to show it
-      if (!step.isFinal) hideRedrawIconSpotlight();
-
       if (step.isWelcome) {
         // Welcome mode: hero card centered, demo tile hidden
         overlay.classList.add('welcome');
-        overlay.classList.remove('heart-step');
         if (demoTile) demoTile.style.visibility = 'hidden';
         positionTooltipWelcome();
-      } else if (step.isHeartStep) {
-        // Heart step: centered modal, demo tile hidden, CSS takes positioning
-        overlay.classList.remove('welcome');
-        overlay.classList.add('heart-step');
-        if (demoTile) demoTile.style.visibility = 'hidden';
-        positionTooltipWelcome();
-        startHeartWidgetAnimation();
       } else if (step.isFinal) {
-        // Final step: spotlight a real tile's redraw icon, hide demo tile
-        // Drop full-dark so the cutout box-shadow is the only dimmer (avoids double-black)
+        // Final step: show demo tile normally, position tooltip
         overlay.classList.remove('welcome');
-        overlay.classList.remove('heart-step');
-        overlay.classList.remove('full-dark');
-        if (demoTile) demoTile.style.visibility = 'hidden';
-        document.getElementById('bingo-grid').classList.add('pregame-active');
-        // Small delay so the grid repaints with icons before we measure positions
-        wtSpotlightTimer = setTimeout(() => showRedrawIconSpotlight(7), 60);
+        if (demoTile) demoTile.style.visibility = 'visible';
+        positionTooltip();
       } else {
         // Normal mode: tile-anchored tooltip, demo tile visible
         overlay.classList.remove('welcome');
-        overlay.classList.remove('heart-step');
         if (demoTile) demoTile.style.visibility = 'visible';
         positionTooltip();
       }
 
       // Snap tile to this step's state (no animation — animation is in nextWalkthroughStep)
-      setDemoState(step.tileState, step.progress, step.current, step.progressColor || null, step.showRedrawIcon || false);
+      setDemoState(step.tileState, step.progress, step.current, step.progressColor || null);
 
       // Dots
       document.getElementById('wt-dots').innerHTML = WALKTHROUGH_STEPS.map((_, i) =>
@@ -5287,70 +4124,16 @@
       const btn     = document.getElementById('wt-btn');
       const backBtn = document.getElementById('wt-back');
       const tapHint = document.getElementById('wt-tap-hint');
-      if (step.tapTile) {
-        btn.style.display     = 'none';
-        tapHint.style.display = 'inline';
-      } else {
-        btn.style.display     = 'flex';
-        tapHint.style.display = 'none';
-      }
+      btn.style.display     = 'flex';
+      tapHint.style.display = 'none';
       // Show back button on all steps except the first
       if (backBtn) backBtn.classList.toggle('hidden', stepIndex === 0);
-    }
-
-    /* ---- Final-step transition: scrim reveal → grid flip → new card → tooltip ---- */
-    function transitionToFinalStep() {
-      if (walkthroughAnimating) return;
-      walkthroughAnimating = true;
-
-      const overlay  = document.getElementById('wt-overlay');
-      const lastIdx  = WALKTHROUGH_STEPS.length - 1;
-      const gridTiles = document.querySelectorAll('#bingo-grid .bingo-tile');
-
-      // 1 — Fade to scrim so the grid beneath peeks through
-      overlay.classList.remove('welcome');
-      overlay.classList.add('revealing');
-
-      setTimeout(() => {
-        // 2 — Trigger flip animation on all grid tiles
-        gridTiles.forEach(t => {
-          t.classList.remove('animate-flip');
-          void t.offsetWidth; // reflow to reset animation
-          t.classList.add('animate-flip');
-        });
-
-        // 3 — Deal a fresh card mid-flip (tiles are face-down at this moment)
-        setTimeout(() => {
-          tiles.splice(0, tiles.length, ...dealCard());
-          shuffleTilesArray();
-          updateAllTilesInPlace();
-        }, 260);
-
-        // 4 — Restore full-dark overlay
-        setTimeout(() => {
-          overlay.classList.remove('revealing');
-        }, 720);
-
-        // 5 — Clean up flip class, render step 6 tooltip
-        setTimeout(() => {
-          gridTiles.forEach(t => t.classList.remove('animate-flip'));
-          walkthroughAnimating = false;
-          renderWalkthroughStep(lastIdx);
-        }, 950);
-
-      }, 180);
     }
 
     function nextWalkthroughStep() {
       if (walkthroughAnimating) return;
       const nextIdx = walkthroughStep + 1;
       if (nextIdx >= WALKTHROUGH_STEPS.length) { endWalkthrough(true); return; }
-
-      // Final step: just show the current card with pregame icons — no jarring flip
-      if (WALKTHROUGH_STEPS[nextIdx].isFinal) {
-        renderWalkthroughStep(nextIdx);
-        return;
-      }
 
       const from = WALKTHROUGH_STEPS[walkthroughStep];
       const to   = WALKTHROUGH_STEPS[nextIdx];
@@ -5390,12 +4173,10 @@
       WALKTHROUGH_STEPS[walkthroughStep]?.isFinal ? endWalkthrough(false) : nextWalkthroughStep();
     });
     document.getElementById('wt-back').addEventListener('click', () => prevWalkthroughStep());
-    // Skip → jump straight to the final card-setup step
+    // Skip → end walkthrough
     document.getElementById('wt-skip').addEventListener('click', () => {
       if (walkthroughAnimating) return;
-      const lastIdx = WALKTHROUGH_STEPS.length - 1;
-      if (walkthroughStep === lastIdx) return;
-      renderWalkthroughStep(lastIdx);
+      endWalkthrough(false);
     });
 
     document.getElementById('howtoplay-btn').addEventListener('click', () => {
@@ -5416,266 +4197,6 @@
     }
     document.getElementById('tutorial-overlay').addEventListener('click', closeTutorialSheet);
     document.getElementById('tutorial-close-btn').addEventListener('click', closeTutorialSheet);
-
-    // ===== REROLL SYSTEM (pre-game tile redraw) =====
-    let rerollsRemaining = 3;
-    let redrawPendingTileIndex = null;
-
-    function showRedrawTileModal(tileIndex) {
-      if (!canReroll()) return;
-      redrawPendingTileIndex = tileIndex;
-      const remaining = rerollsRemaining - 1;
-      document.getElementById('redraw-tile-body').textContent =
-        remaining === 0
-          ? 'Are you sure? This is your last redraw.'
-          : `Are you sure you want to redraw this tile? You'll have ${remaining} redraw${remaining !== 1 ? 's' : ''} remaining.`;
-      document.getElementById('redraw-tile-overlay').classList.add('active');
-    }
-
-    function closeRedrawTileModal() {
-      document.getElementById('redraw-tile-overlay').classList.remove('active');
-      redrawPendingTileIndex = null;
-    }
-
-    document.getElementById('redraw-tile-confirm').addEventListener('click', () => {
-      const idx = redrawPendingTileIndex;
-      closeRedrawTileModal();
-      if (idx !== null) rerollTile(idx);
-    });
-    document.getElementById('redraw-tile-cancel').addEventListener('click', closeRedrawTileModal);
-    document.getElementById('redraw-tile-overlay').addEventListener('click', (e) => {
-      if (e.target === e.currentTarget) closeRedrawTileModal();
-    });
-
-    function canReroll() {
-      return !simulationRunning && !walkthroughActive && rerollsRemaining > 0;
-    }
-
-    function updateRedrawBtn(tile) {
-      const btn = document.getElementById('redraw-sheet-btn');
-      if (!btn) return;
-      if (!simulationRunning && !walkthroughActive && tile && tile.type !== 'freespot') {
-        btn.style.display = 'block';
-        btn.textContent = rerollsRemaining > 0
-          ? `↺  Redraw Tile (${rerollsRemaining} left)`
-          : '↺  No Redraws Left';
-        btn.classList.toggle('exhausted', rerollsRemaining === 0);
-      } else {
-        btn.style.display = 'none';
-      }
-    }
-
-    function rerollTile(tileIndex) {
-      if (!canReroll() || tileIndex < 0) return;
-      rerollsRemaining--;
-      // Keep entry card in sync
-      const redrawStatEl = document.getElementById('redraw-stat-value');
-      if (redrawStatEl) redrawStatEl.textContent = rerollsRemaining;
-
-      // Build sets of what's currently on the card
-      const currentIds    = new Set(tiles.map(t => t.id));
-      const playerCounts  = {};
-      tiles.forEach(t => {
-        if (t.playerId && t.type === 'player') {
-          playerCounts[t.playerId] = (playerCounts[t.playerId] || 0) + 1;
-        }
-      });
-
-      // Remove the outgoing tile from the constraint sets
-      const outgoing = tiles[tileIndex];
-      currentIds.delete(outgoing.id);
-      if (outgoing.playerId) playerCounts[outgoing.playerId] = Math.max(0, (playerCounts[outgoing.playerId] || 1) - 1);
-
-      // Shuffle pool and pick first valid replacement
-      const pool = TILE_POOL.map(t => ({ ...t }));
-      for (let i = pool.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [pool[i], pool[j]] = [pool[j], pool[i]];
-      }
-
-      let replacement = null;
-      for (const candidate of pool) {
-        if (currentIds.has(candidate.id)) continue;
-        if (candidate.playerId && (playerCounts[candidate.playerId] || 0) >= 2) continue;
-        replacement = { ...candidate, current: 0, confirmed: false, dead: false, state: 'normal' };
-        break;
-      }
-      if (!replacement) return; // Shouldn't happen with 59-tile pool
-
-      // Flip the tile with a quick animation then re-render
-      const tileEl = document.querySelectorAll('.bingo-tile')[tileIndex];
-      if (tileEl) {
-        tileEl.classList.add('animate-flip');
-        setTimeout(() => {
-          tiles[tileIndex] = replacement;
-          renderGrid(false);
-        }, 120);
-      } else {
-        tiles[tileIndex] = replacement;
-        renderGrid(false);
-      }
-    }
-
-    // Redraw button handlers
-    document.getElementById('redraw-sheet-btn').addEventListener('click', () => {
-      if (!canReroll() || !currentSheetTile) return;
-      const afterRedraw = rerollsRemaining - 1;
-      document.getElementById('redraw-remaining-text').textContent =
-        afterRedraw === 0
-          ? "This is your last redraw."
-          : `You'll have ${afterRedraw} redraw${afterRedraw !== 1 ? 's' : ''} remaining.`;
-      document.getElementById('redraw-sheet-btn').style.display = 'none';
-      document.getElementById('redraw-sheet-confirm').classList.add('active');
-    });
-
-    document.getElementById('redraw-confirm-no').addEventListener('click', () => {
-      document.getElementById('redraw-sheet-confirm').classList.remove('active');
-      updateRedrawBtn(currentSheetTile);
-    });
-
-    document.getElementById('redraw-confirm-yes').addEventListener('click', () => {
-      if (currentSheetTileIndex < 0) return;
-      const idx = currentSheetTileIndex;
-      document.getElementById('redraw-sheet-confirm').classList.remove('active');
-      closeDetailSheet();
-      rerollTile(idx);
-    });
-
-    // ===== POWER OF LOVE (SECRET ACHIEVEMENT) =====
-    let polUnlocked = false;  // earned after 3 heart spawns
-    let polUsed     = false;  // single-use token
-    let polPendingTileIndex = null; // tile targeted by the confirm modal
-
-    function unlockPowerOfLove() {
-      polUnlocked = true;
-
-      // Heart tracker in the stats row already shows all 3 hearts filled —
-      // no need to show the legacy pol-stat-item; keep it hidden.
-
-      // Add pol-active to grid so heart buttons appear on unclaimed tiles
-      document.getElementById('bingo-grid').classList.add('pol-active');
-
-      // Cryptic toast — no spoiler
-      showAchievementToast('💝', 'A secret power has been unlocked…', 'Check your entry card');
-    }
-
-    // Update the 3-heart progress tracker in the entry card
-    function updatePolProgressTracker() {
-      const track   = document.getElementById('pol-progress-track');
-      const label   = document.getElementById('pol-progress-label');
-      if (!track) return;
-
-      const earned = Math.min(Math.floor(confirmCount / 3), 3);
-
-      for (let i = 1; i <= 3; i++) {
-        const heart = document.getElementById(`pol-heart-${i}`);
-        if (!heart) continue;
-        if (i <= earned) {
-          heart.setAttribute('fill', '#D21212');
-          heart.setAttribute('stroke', '#FFFFFF');
-          heart.classList.add('earned');
-        } else {
-          heart.setAttribute('fill', 'none');
-          heart.setAttribute('stroke', '#6C6D6F');
-          heart.classList.remove('earned');
-        }
-      }
-
-      if (earned >= 3) {
-        track.classList.add('unlocked');
-        if (label) label.textContent = 'Unlocked!';
-      } else {
-        track.classList.remove('unlocked');
-        if (label) label.textContent = 'Bonus Tile';
-      }
-    }
-
-    function showPolConfirmModal() {
-      document.getElementById('pol-confirm-overlay').classList.add('active');
-    }
-
-    function closePolConfirmModal() {
-      document.getElementById('pol-confirm-overlay').classList.remove('active');
-      polPendingTileIndex = null;
-    }
-
-    function claimWithLoveToken(tileIndex) {
-      if (!polUnlocked || polUsed) return;
-      polUsed = true;
-
-      const tile = tiles[tileIndex];
-      tile.confirmed  = true;
-      tile.state      = 'complete';
-      tile.polClaimed = true;
-
-      // Remove pol-active so all other heart icons vanish
-      document.getElementById('bingo-grid').classList.remove('pol-active');
-
-      // Update entry-card slot to "used" state
-      document.getElementById('pol-stat-value').textContent = '💝';
-      document.getElementById('pol-stat-item').classList.add('pol-used');
-
-      // Re-render the claimed tile with pol-claimed class + filled heart
-      updateTileInPlace(tileIndex);
-
-      // Close detail sheet if it was for this tile
-      if (currentSheetTile && currentSheetTile.id === tile.id) {
-        closeDetailSheet();
-      }
-
-      updateStats();
-      closePolConfirmModal();
-
-      showAchievementToast('💝', 'Power of Love!', `${tile.name} claimed with your love token`);
-
-      // Check for heart pattern achievement after claiming
-      if (checkHeartPattern()) {
-        triggerHeartAchievement();
-      }
-
-      // Check for bingo after claiming
-      if (!bingoTriggered) {
-        const winningPattern = detectBingo();
-        if (winningPattern) {
-          bingoTriggered = true;
-          drawWinningLine(winningPattern);
-          setTimeout(() => showBingoCelebration(), 800);
-        }
-      }
-    }
-
-    // Confirm modal buttons
-    document.getElementById('pol-confirm-yes').addEventListener('click', () => {
-      if (polPendingTileIndex !== null) claimWithLoveToken(polPendingTileIndex);
-    });
-    document.getElementById('pol-confirm-no').addEventListener('click', closePolConfirmModal);
-
-    // Detail sheet PoL CTA — swap to inline confirm panel
-    function showSheetConfirm() {
-      document.getElementById('pol-sheet-btn').style.display = 'none';
-      document.getElementById('pol-sheet-confirm').classList.add('active');
-    }
-    function hideSheetConfirm() {
-      document.getElementById('pol-sheet-confirm').classList.remove('active');
-      // Re-show the CTA only if token still available
-      if (polUnlocked && !polUsed) {
-        document.getElementById('pol-sheet-btn').style.display = 'block';
-      }
-    }
-
-    document.getElementById('pol-sheet-btn').addEventListener('click', () => {
-      if (polUnlocked && !polUsed && currentSheetTileIndex >= 0) {
-        polPendingTileIndex = currentSheetTileIndex;
-        showSheetConfirm();
-      }
-    });
-    document.getElementById('pol-sheet-confirm-yes').addEventListener('click', () => {
-      if (polPendingTileIndex !== null) claimWithLoveToken(polPendingTileIndex);
-    });
-    document.getElementById('pol-sheet-confirm-no').addEventListener('click', () => {
-      hideSheetConfirm();
-      polPendingTileIndex = null;
-    });
 
     // You Lose modal (simplified — no revive)
     function showYouLoseModal(tileIndex) {
@@ -5701,7 +4222,7 @@
       if (heartAchievementTriggered) return false;
       return HEART_PATTERN.every(i => {
         const s = tiles[i].state;
-        return s === 'complete' || s === 'pending-win';
+        return s === 'complete';
       });
     }
 
