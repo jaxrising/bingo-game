@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link rel="icon" href="data:,">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Big Game Bingo - Game Simulator</title>
@@ -2614,7 +2615,7 @@
 
         <!-- Bingo Celebration Overlay -->
         <div class="bingo-celebration" id="bingo-celebration" style="display:none;">
-          <video id="bingo-win-video" src="_assets/Bingo%20Win.mp4" playsinline muted></video>
+          <video id="bingo-win-video" src="_assets/Bingo%20Win.mp4" playsinline muted preload="auto"></video>
           <div class="bingo-share-modal" id="bingo-share-modal">
             <div class="bingo-share-handle"></div>
             <div class="bingo-share-title">BINGO! 🎉</div>
@@ -3697,7 +3698,8 @@
       if (shareModal) shareModal.classList.remove('visible');
       if (video) {
         video.currentTime = 0;
-        video.play().catch(() => {});
+        video.load();
+        video.play().catch((e) => { console.warn('Bingo video play failed:', e); if (shareModal) shareModal.classList.add('visible'); });
         video.onended = () => {
           if (shareModal) shareModal.classList.add('visible');
         };
