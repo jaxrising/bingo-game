@@ -727,6 +727,29 @@
       color: var(--text-primary);
     }
 
+    .scoreboard {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface-secondary, #161B22);
+      padding: 0 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .team-logo-wrapper {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .team-logo-img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+    }
+
     .score-section {
       display: flex;
       flex-direction: column;
@@ -2390,6 +2413,28 @@
             </div>
           </div>
         </div>
+        <!-- Scoreboard -->
+        <div class="scoreboard">
+          <div class="score-section">
+            <div class="team-logo-wrapper">
+              <img class="team-logo-img" src="https://a.espncdn.com/i/teamlogos/nfl/500-dark/phi.png" alt="PHI">
+            </div>
+            <div class="score-value" id="away-score">0</div>
+            <div class="possession-indicator left" id="away-possession"></div>
+          </div>
+          <div class="status-section">
+            <div class="game-clock" id="game-clock">15:00</div>
+            <div class="game-period" id="game-period">1st</div>
+          </div>
+          <div class="score-section">
+            <div class="team-logo-wrapper">
+              <img class="team-logo-img" src="https://a.espncdn.com/i/teamlogos/nfl/500-dark/kc.png" alt="KC">
+            </div>
+            <div class="score-value" id="home-score">0</div>
+            <div class="possession-indicator right" id="home-possession"></div>
+          </div>
+        </div>
+
         <!-- Tutorial Sheet Overlay -->
         <div class="tutorial-overlay" id="tutorial-overlay"></div>
         <div class="tutorial-sheet" id="tutorial-sheet">
@@ -2524,6 +2569,7 @@
               <div class="wt-footer">
                 <button class="wt-skip" id="wt-skip">Skip to setup</button>
                 <div class="wt-nav">
+                  <span class="wt-tap-hint" id="wt-tap-hint" style="display:none;">Tap tile</span>
                   <button class="wt-nav-btn wt-back-btn" id="wt-back">←</button>
                   <button class="wt-nav-btn wt-next-btn" id="wt-btn">→</button>
                 </div>
