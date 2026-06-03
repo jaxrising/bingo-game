@@ -3960,7 +3960,17 @@
         });
 
         updateStats();
-        
+
+        // Check for bingo after every simulation tick
+        if (!bingoTriggered) {
+          const winning = detectBingo();
+          if (winning) {
+            bingoTriggered = true;
+            drawWinningLine(winning);
+            setTimeout(showBingoCelebration, 600);
+          }
+        }
+
         if (updateCount >= totalUpdates) {
           clearInterval(simulationInterval);
           simulationInterval = null;
