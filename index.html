@@ -1517,6 +1517,7 @@
       height: 100%;
       position: absolute;
       inset: 0;
+      overflow: hidden;
       flex-shrink: 0;
       margin: 0;
       border-radius: 4px;
@@ -2329,15 +2330,14 @@
 
     .tile-player-number {
       position: absolute;
-      top: 2px;
+      top: 3px;
       left: 4px;
-      font-size: 24px;
+      font-size: 10px;
       font-weight: 900;
-      color: rgba(255,255,255,0.9);
+      color: #ffffff;
       line-height: 1;
-      z-index: 0;
+      z-index: 5;
       font-style: normal;
-      letter-spacing: -0.5px;
       pointer-events: none;
     }
   </style>
@@ -3290,13 +3290,13 @@
           const statValue = tile.target > 0 ? tile.target : '';
 
           tileEl.innerHTML = `
-            ${tile.number ? `<div class="tile-player-number">${tile.number}</div>` : ''}
             <div class="tile-header">
               <div class="tile-header-bg" style="background: ${teamColor};"></div>
               <div class="tile-header-gradient"></div>
               ${tileBackgroundHtml}
               <div class="tile-image ${tileImageObj.cls}">${tileImageObj.html}</div>
             </div>
+            ${tile.number ? `<div class="tile-player-number">${tile.number}</div>` : ''}
             <div class="tile-content">
               <div class="tile-name">${tile.name}</div>
               ${(statValue || statLabel) ? `<div class="tile-stat-row"><span class="tile-stat-value">${statValue}</span>${statLabel ? `<span class="tile-stat-label"> ${statLabel}</span>` : ''}</div>` : ''}
