@@ -727,27 +727,93 @@
       color: var(--text-primary);
     }
 
-    .scoreboard {
+    .game-strip {
+      width: 393px;
+      background: #233342;
+      padding: 8px 12px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: var(--surface-secondary, #161B22);
-      padding: 0 12px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid var(--divider);
+      position: relative;
+      overflow: hidden;
+      min-height: 76px;
+      flex-shrink: 0;
     }
 
-    .team-logo-wrapper {
-      width: 32px;
-      height: 32px;
+    .game-strip::before,
+    .game-strip::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      width: 152px;
+      height: 76px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .game-strip::before {
+      left: 0;
+      background: radial-gradient(ellipse at 0% 0%, rgba(0, 53, 148, 0.9) 0%, rgba(0, 53, 148, 0.4) 45%, transparent 75%);
+    }
+
+    .game-strip::after {
+      right: 0;
+      background: radial-gradient(ellipse at 100% 0%, rgba(167, 25, 48, 0.9) 0%, rgba(167, 25, 48, 0.4) 45%, transparent 75%);
+    }
+
+    .team-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      flex: 0 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .team-logo-container {
+      position: relative;
+      width: 56px;
+      height: 56px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    .team-logo-img {
-      width: 28px;
-      height: 28px;
+    .team-logo {
+      width: 48px;
+      height: 48px;
       object-fit: contain;
+    }
+
+    .team-logo-container.has-possession::before {
+      content: '★';
+      position: absolute;
+      left: -2px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 8px;
+      color: #ffffff;
+    }
+
+    .team-logo-container.has-possession.right::before {
+      left: auto;
+      right: -2px;
+    }
+
+    .team-info {
+      display: flex;
+      align-items: baseline;
+      gap: 1px;
+      font-size: 12px;
+      height: 14px;
+      justify-content: center;
+    }
+
+    .team-abbreviation {
+      font: var(--type-callout);
+      color: var(--text-primary);
     }
 
     .score-section {
@@ -2413,25 +2479,35 @@
             </div>
           </div>
         </div>
-        <!-- Scoreboard -->
-        <div class="scoreboard">
-          <div class="score-section">
-            <div class="team-logo-wrapper">
-              <img class="team-logo-img" src="https://a.espncdn.com/i/teamlogos/nfl/500-dark/phi.png" alt="PHI">
+        <!-- Game Strip -->
+        <div class="game-strip">
+          <div class="team-section">
+            <div class="team-logo-container has-possession">
+              <img src="https://a.espncdn.com/i/teamlogos/nfl/500-dark/phi.png" alt="PHI" class="team-logo" id="away-logo">
             </div>
+            <div class="team-info">
+              <span class="team-abbreviation" id="away-abbr">PHI</span>
+            </div>
+          </div>
+          <div class="score-section">
+            <div class="possession-indicator left active"></div>
             <div class="score-value" id="away-score">0</div>
-            <div class="possession-indicator left" id="away-possession"></div>
           </div>
           <div class="status-section">
             <div class="game-clock" id="game-clock">15:00</div>
             <div class="game-period" id="game-period">1st</div>
           </div>
           <div class="score-section">
-            <div class="team-logo-wrapper">
-              <img class="team-logo-img" src="https://a.espncdn.com/i/teamlogos/nfl/500-dark/kc.png" alt="KC">
-            </div>
             <div class="score-value" id="home-score">0</div>
-            <div class="possession-indicator right" id="home-possession"></div>
+            <div class="possession-indicator right"></div>
+          </div>
+          <div class="team-section">
+            <div class="team-logo-container right">
+              <img src="https://a.espncdn.com/i/teamlogos/nfl/500-dark/kc.png" alt="KC" class="team-logo" id="home-logo">
+            </div>
+            <div class="team-info">
+              <span class="team-abbreviation" id="home-abbr">KC</span>
+            </div>
           </div>
         </div>
 
