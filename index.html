@@ -1669,12 +1669,12 @@
       align-items: flex-start;
       justify-content: flex-end;
       gap: 0;
-      padding: 0 2px 3px;
+      padding: 0 2px 2px;
       position: absolute;
       bottom: 0;
       left: 0;
       right: 0;
-      height: 42px;
+      height: 38px;
       min-height: 0;
       background: transparent;
       border-radius: 0;
@@ -1684,7 +1684,7 @@
     .tile-name {
       font-size: 10px;
       font-weight: 500;
-      line-height: 1.2;
+      line-height: 11px;
       color: rgba(255, 255, 255, 0.72);
       text-align: left;
       overflow: hidden;
@@ -1696,9 +1696,10 @@
     .tile-stat-row {
       display: block;
       width: 100%;
-      white-space: normal;
-      overflow: visible;
-      word-break: break-word;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 11px;
     }
 
     .tile-stat-value {
@@ -1713,7 +1714,7 @@
       font-weight: 400;
       color: rgba(255, 255, 255, 0.72);
       text-align: left;
-      white-space: normal;
+      white-space: nowrap;
       display: inline;
     }
 
@@ -3299,7 +3300,8 @@
             ${tile.number ? `<div class="tile-player-number">${tile.number}</div>` : ''}
             <div class="tile-content">
               <div class="tile-name">${tile.name}</div>
-              ${(statValue || statLabel) ? `<div class="tile-stat-row"><span class="tile-stat-value">${statValue}</span>${statLabel ? `<span class="tile-stat-label"> ${statLabel}</span>` : ''}</div>` : ''}
+              ${statValue ? `<div class="tile-stat-row"><span class="tile-stat-value">${statValue}</span></div>` : ''}
+              ${statLabel ? `<div class="tile-stat-row"><span class="tile-stat-label">${statLabel}</span></div>` : ''}
             </div>
             <div class="tile-checkmark">
               <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
