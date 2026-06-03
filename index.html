@@ -4130,6 +4130,12 @@
         btnText: 'Almost there →'
       },
       {
+        tileState: 'pending', progress: 95, current: 247, progressColor: '#41BA42',
+        title: 'Almost There',
+        body: "Your player is on the verge — tile lights up and pulses as it locks in. Hold tight.",
+        btnText: 'One more →'
+      },
+      {
         tileState: 'complete', progress: 100, current: 260,
         title: 'Locked In',
         body: 'Hit the target and your tile completes automatically. No taps needed — just watch your card come alive.',
@@ -4200,7 +4206,9 @@
       if (color) {
         el.style.setProperty('--progress-color', color);
         el.style.setProperty('--progress-shadow',
-          color === '#F5C518' ? 'rgba(245,197,24,0.4)' : 'rgba(255,140,0,0.4)');
+          color === '#F5C518' ? 'rgba(245,197,24,0.4)' :
+          color === '#41BA42' ? 'rgba(65,186,66,0.4)' :
+          'rgba(255,140,0,0.4)');
       }
       const sv = document.getElementById('wt-stat-value');
       if (sv) sv.textContent = current;
