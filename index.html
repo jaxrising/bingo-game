@@ -2334,7 +2334,7 @@
       left: 4px;
       font-size: 24px;
       font-weight: 900;
-      color: rgba(255,255,255,1);
+      color: rgba(255,255,255,0.9);
       line-height: 1;
       z-index: 0;
       font-style: normal;
@@ -3291,11 +3291,11 @@
           const statValue = tile.target > 0 ? tile.target : '';
 
           tileEl.innerHTML = `
+            ${tile.number ? `<div class="tile-player-number">${tile.number}</div>` : ''}
             <div class="tile-header">
               <div class="tile-header-bg" style="background: ${teamColor};"></div>
               <div class="tile-header-gradient"></div>
               ${tileBackgroundHtml}
-              ${tile.number ? `<div class="tile-player-number">${tile.number}</div>` : ''}
               <div class="tile-image ${tileImageObj.cls}">${tileImageObj.html}</div>
             </div>
             <div class="tile-content">
