@@ -1669,12 +1669,12 @@
       align-items: flex-start;
       justify-content: flex-end;
       gap: 0;
-      padding: 0 2px 2px;
+      padding: 0 2px 3px;
       position: absolute;
       bottom: 0;
       left: 0;
       right: 0;
-      height: 38px;
+      height: 30px;
       min-height: 0;
       background: transparent;
       border-radius: 0;
@@ -1684,7 +1684,7 @@
     .tile-name {
       font-size: 10px;
       font-weight: 500;
-      line-height: 11px;
+      line-height: 1.2;
       color: rgba(255, 255, 255, 0.72);
       text-align: left;
       overflow: hidden;
@@ -1699,7 +1699,7 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      line-height: 11px;
+      line-height: 1.2;
     }
 
     .tile-stat-value {
@@ -3287,21 +3287,24 @@
         } else {
           const tileBackgroundHtml = getTileBackground(tile);
           const tileImageObj = getTileImage(tile);
-          const statLabel = tile.stat ? tile.stat.replace(/\n/g, '<br>') : '';
+          const statLabel = tile.stat ? tile.stat.replace(/\n/g, ' ') : '';
           const statValue = tile.target > 0 ? tile.target : '';
 
-          tileEl.innerHTML = `
+          const tileHeaderHtml = `
             <div class="tile-header">
               <div class="tile-header-bg" style="background: ${teamColor};"></div>
               <div class="tile-header-gradient"></div>
               ${tileBackgroundHtml}
               <div class="tile-image ${tileImageObj.cls}">${tileImageObj.html}</div>
             </div>
-            ${tile.number ? `<div class="tile-player-number">${tile.number}</div>` : ''}
+            ${tile.number ? `<div class="tile-player-number">${tile.number}</div>` : ''}`;
+
+          // Render single-line stat first, then check for overflow
+          tileEl.innerHTML = `
+            ${tileHeaderHtml}
             <div class="tile-content">
               <div class="tile-name">${tile.name}</div>
-              ${statValue ? `<div class="tile-stat-row"><span class="tile-stat-value">${statValue}</span></div>` : ''}
-              ${statLabel ? `<div class="tile-stat-row"><span class="tile-stat-label">${statLabel}</span></div>` : ''}
+              ${(statValue || statLabel) ? `<div class="tile-stat-row"><span class="tile-stat-value">${statValue}</span>${statLabel ? `<span class="tile-stat-label"> ${statLabel}</span>` : ''}</div>` : ''}
             </div>
             <div class="tile-checkmark">
               <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
@@ -3322,6 +3325,20 @@
               <rect class="border-shimmer" x="1.5" y="1.5" width="72" height="93" rx="6" ry="6" stroke="url(#shimmerGradient-${tile.id})" />
             </svg>
           `;
+
+          // If stat row overflows (would show "..."), switch to split layout
+          if (statValue && statLabel) {
+            const statRow = tileEl.querySelector('.tile-stat-row');
+            if (statRow && statRow.scrollWidth > statRow.clientWidth) {
+              const tileContent = tileEl.querySelector('.tile-content');
+              tileContent.innerHTML = `
+                <div class="tile-name">${tile.name}</div>
+                <div class="tile-stat-row"><span class="tile-stat-value">${statValue}</span></div>
+                <div class="tile-stat-row"><span class="tile-stat-label">${statLabel}</span></div>
+              `;
+              tileContent.style.height = '38px';
+            }
+          }
         }
 
         if (tile.type !== 'freespot') {
