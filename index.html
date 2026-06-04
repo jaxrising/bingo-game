@@ -579,20 +579,23 @@
 
     .stats-row {
       display: flex;
-      align-items: flex-start;
-      gap: 12px;
+      align-items: stretch;
+      justify-content: space-between;
     }
 
     .stat-item {
       display: flex;
       flex-direction: column;
+      align-items: center;
       gap: 4px;
+      flex: 1;
+      padding: 0 4px;
     }
 
     .stat-value {
-      font-family: 'Benton Sans', -apple-system, sans-serif;
-      font-size: 16px;
-      font-weight: 400;
+      font-family: 'Playoff Pro Cond', 'BentonSans', -apple-system, sans-serif;
+      font-size: 20px;
+      font-weight: 700;
       color: var(--text-primary);
       line-height: 24px;
     }
@@ -603,13 +606,23 @@
       font-weight: 400;
       color: var(--color-grey-60);
       line-height: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.2px;
     }
 
     .stat-divider {
       width: 0.5px;
       align-self: stretch;
-      background: var(--divider);
+      background: rgba(220, 221, 223, 0.3);
       flex-shrink: 0;
+    }
+
+    .full-card-icon {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .settings-icon {
@@ -2468,13 +2481,34 @@
               </div>
               <div class="stat-divider"></div>
               <div class="stat-item">
-                <div class="stat-value" id="hit-time">--</div>
-                <div class="stat-label">HIT TIME</div>
+                <div class="stat-value" id="bingos-hit">--</div>
+                <div class="stat-label">LINES/BINGOS HIT</div>
+              </div>
+              <div class="stat-divider"></div>
+              <div class="stat-item">
+                <div class="full-card-icon" id="full-card-icon">
+                  <!-- X Circle (default) -->
+                  <svg id="full-card-x" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="10" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+                    <path d="M15 9L9 15M9 9L15 15" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+                  </svg>
+                  <!-- Checkmark Circle (shown when full card complete) -->
+                  <svg id="full-card-check" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none;">
+                    <circle cx="12" cy="12" r="10" fill="#41BA42"/>
+                    <path d="M7.5 12L10.5 15L16.5 9" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="stat-label">FULL CARD</div>
               </div>
               <div class="stat-divider"></div>
               <div class="stat-item">
                 <div class="stat-value" id="rank">--</div>
                 <div class="stat-label">RANK</div>
+              </div>
+              <div class="stat-divider"></div>
+              <div class="stat-item">
+                <div class="stat-value" id="pct">--</div>
+                <div class="stat-label">PCT</div>
               </div>
             </div>
           </div>
@@ -3373,9 +3407,31 @@
     }
 
     function updateStats() {
-      const hitTiles = tiles.filter(t => t.state === 'complete').length;
+      // Count completed non-free tiles (max 24)
+      const hitTiles = tiles.filter(t => t.state === 'complete' && t.type !== 'freespot').length;
       const tilesHitEl = document.getElementById('tiles-hit');
       if (tilesHitEl) tilesHitEl.textContent = `${hitTiles}/24`;
+
+      // Count completed bingo lines
+      const completedLines = BINGO_PATTERNS.filter(p =>
+        p.indices.every(i => tiles[i] && tiles[i].state === 'complete')
+      ).length;
+      const bingosHitEl = document.getElementById('bingos-hit');
+      if (bingosHitEl) bingosHitEl.textContent = completedLines > 0 ? completedLines : '--';
+
+      // Full card: all 25 tiles complete (including free square)
+      const isFullCard = tiles.every(t => t.state === 'complete');
+      const fullCardX = document.getElementById('full-card-x');
+      const fullCardCheck = document.getElementById('full-card-check');
+      if (fullCardX && fullCardCheck) {
+        fullCardX.style.display = isFullCard ? 'none' : 'block';
+        fullCardCheck.style.display = isFullCard ? 'block' : 'none';
+      }
+
+      // PCT — percentage of non-free tiles complete
+      const pct = hitTiles > 0 ? Math.round((hitTiles / 24) * 100) + '%' : '--';
+      const pctEl = document.getElementById('pct');
+      if (pctEl) pctEl.textContent = pct;
     }
 
     // ===== SIMULATION SYSTEM =====
@@ -3692,10 +3748,8 @@
       if (hitTimeEl) hitTimeEl.textContent = celebrationHitTime;
       if (rankEl) rankEl.textContent = `${celebrationRank}${getOrdinalSuffix(celebrationRank)}`;
       
-      // Update entry card stats
-      const entryHitTimeEl = document.getElementById('hit-time');
+      // Update entry card rank stat
       const entryRankEl = document.getElementById('rank');
-      if (entryHitTimeEl) entryHitTimeEl.textContent = celebrationHitTime;
       if (entryRankEl) entryRankEl.textContent = `${celebrationRank}${getOrdinalSuffix(celebrationRank)}`;
       
       celebration.style.display = 'flex';
@@ -3777,8 +3831,15 @@
       
       // Reset entry card to default values
       document.getElementById('tiles-hit').textContent = '0/24';
-      document.getElementById('hit-time').textContent = '--';
+      const bingosHitEl = document.getElementById('bingos-hit');
+      if (bingosHitEl) bingosHitEl.textContent = '--';
+      const pctEl = document.getElementById('pct');
+      if (pctEl) pctEl.textContent = '--';
       document.getElementById('rank').textContent = '--';
+      const fullCardX = document.getElementById('full-card-x');
+      const fullCardCheck = document.getElementById('full-card-check');
+      if (fullCardX) fullCardX.style.display = 'block';
+      if (fullCardCheck) fullCardCheck.style.display = 'none';
       
       document.querySelectorAll('.winning-tile').forEach(el => el.classList.remove('winning-tile'));
       document.querySelectorAll('.bingo-tile[data-heart]').forEach(el => delete el.dataset.heart);
