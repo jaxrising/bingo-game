@@ -4465,17 +4465,19 @@
         priorityTileSchedule[coinFlipIndex] = 0.05;
       }
 
-      // Always prioritize heart pattern tiles + a bingo line
+      // Schedule heart-pattern positions across Q2-Q4 (starting at 0.35 so
+      // none cluster in Q1/early Q2 and accidentally form a pre-bingo line)
       HEART_PATTERN.forEach((tileIndex, i) => {
         if (tiles[tileIndex].type === 'freespot') return;
         if (tileIndex === coinFlipIndex) return;
         priorityTiles.add(tileIndex);
-        priorityTileSchedule[tileIndex] = 0.25 + (i * 0.05);
+        priorityTileSchedule[tileIndex] = 0.35 + (i * 0.04);
       });
+      // Target bingo line completes in Q3/Q4 (0.65-0.95) — never before halftime
       targetPattern.indices.forEach((tileIndex, i) => {
         if (!priorityTiles.has(tileIndex)) {
           priorityTiles.add(tileIndex);
-          priorityTileSchedule[tileIndex] = 0.5 + (i * 0.1);
+          priorityTileSchedule[tileIndex] = 0.65 + (i * 0.07);
         }
       });
       
@@ -4587,8 +4589,8 @@
 
         updateStats();
 
-        // Check for bingo after every simulation tick
-        if (!bingoTriggered) {
+        // Check for bingo — hard gate: cannot fire before Q3 (progress >= 0.5)
+        if (!bingoTriggered && progress >= 0.5) {
           const winning = detectBingo();
           if (winning) {
             bingoTriggered = true;
