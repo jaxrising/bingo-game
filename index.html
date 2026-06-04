@@ -1855,6 +1855,105 @@
       }
     }
 
+    /* ===== WILDCARD POLL OVERLAY ===== */
+    .wildcard-poll-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(16, 17, 19, 0.75);
+      z-index: 50;
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .wildcard-poll-overlay.active {
+      display: flex;
+    }
+
+    .poll-card {
+      width: 267px;
+      background: rgba(18, 24, 31, 0.92);
+      border: 1px solid #3A3B3C;
+      border-radius: 20px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 284px;
+    }
+
+    .poll-prompt {
+      font-family: 'Benton Sans', -apple-system, sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 18px;
+      color: #FFFFFF;
+      text-align: center;
+    }
+
+    .poll-options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .poll-option {
+      height: 44px;
+      background: #000000;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px 0 0;
+      cursor: pointer;
+      border: 1.5px solid transparent;
+      transition: border-color 0.15s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .poll-option:active {
+      opacity: 0.8;
+    }
+
+    .poll-option.selected {
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    .poll-option-fill {
+      position: absolute;
+      top: 0; left: 0; bottom: 0;
+      width: 0%;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      transition: width 0.4s ease;
+    }
+
+    .poll-option-name {
+      font-family: 'Benton Sans', -apple-system, sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 18px;
+      color: #FFFFFF;
+      padding-left: 12px;
+      position: relative;
+      z-index: 1;
+      flex: 1;
+    }
+
+    .poll-option-pct {
+      font-family: 'Playoff Pro Cond', -apple-system, sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #FFFFFF;
+      width: 45px;
+      text-align: right;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      position: relative;
+      z-index: 1;
+    }
+
     /* Confetti Canvas */
     /* BINGO Celebration Overlay */
     .bingo-celebration {
@@ -2647,6 +2746,35 @@
         <!-- Bingo Grid -->
         <div id="bingo-grid" class="bingo-grid" style="margin-top: 8px;"></div>
 
+        <!-- Wildcard Poll Overlay -->
+        <div class="wildcard-poll-overlay" id="wildcard-poll-overlay">
+          <div class="poll-card">
+            <div class="poll-prompt">What will Bad Bunny close with<br>at halftime?</div>
+            <div class="poll-options" id="poll-options">
+              <div class="poll-option" data-song="DtMF">
+                <div class="poll-option-fill" id="poll-fill-0"></div>
+                <span class="poll-option-name">DtMF</span>
+                <span class="poll-option-pct" id="poll-pct-0"></span>
+              </div>
+              <div class="poll-option" data-song="BAILE INoLVIDABLE">
+                <div class="poll-option-fill" id="poll-fill-1"></div>
+                <span class="poll-option-name">BAILE INoLVIDABLE</span>
+                <span class="poll-option-pct" id="poll-pct-1"></span>
+              </div>
+              <div class="poll-option" data-song="NUEVAYoL">
+                <div class="poll-option-fill" id="poll-fill-2"></div>
+                <span class="poll-option-name">NUEVAYoL</span>
+                <span class="poll-option-pct" id="poll-pct-2"></span>
+              </div>
+              <div class="poll-option" data-song="Other">
+                <div class="poll-option-fill" id="poll-fill-3"></div>
+                <span class="poll-option-name">Other</span>
+                <span class="poll-option-pct" id="poll-pct-3"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Bingo Celebration Overlay -->
         <div class="bingo-celebration" id="bingo-celebration" style="display:none;">
           <video id="bingo-win-video" src="_assets/Bingo%20Win.mp4" playsinline muted preload="auto"></video>
@@ -3434,6 +3562,33 @@
       if (pctEl) pctEl.textContent = pct;
     }
 
+    // ===== WILDCARD POLL SYSTEM =====
+    let wildcardPollTriggered = false;
+    let wildcardPollSelection = null;
+    let wildcardEarned = false;
+
+    function showWildcardPoll() {
+      const overlay = document.getElementById('wildcard-poll-overlay');
+      if (!overlay) return;
+      overlay.classList.add('active');
+
+      // Wire up option taps
+      const options = overlay.querySelectorAll('.poll-option');
+      options.forEach((opt) => {
+        opt.addEventListener('click', () => {
+          if (wildcardPollSelection) return; // already picked
+          wildcardPollSelection = opt.dataset.song;
+          opt.classList.add('selected');
+          // more states to come — hand off to next Figma screen
+        });
+      });
+    }
+
+    function hideWildcardPoll() {
+      const overlay = document.getElementById('wildcard-poll-overlay');
+      if (overlay) overlay.classList.remove('active');
+    }
+
     // ===== SIMULATION SYSTEM =====
     let simulationRunning = false;
     let bingoTriggered = false;
@@ -3896,6 +4051,10 @@
       simulationCount++;
       heartAchievementTriggered = false;
       bingoTriggered = false;
+      wildcardPollTriggered = false;
+      wildcardPollSelection = null;
+      wildcardEarned = false;
+      hideWildcardPoll();
       resetTileValues();
       simulationRunning = true;
 
@@ -3951,6 +4110,13 @@
         } else if (progress > 0.25) {
           gameQuarter = 2;
           document.getElementById('game-period').textContent = '2nd';
+        }
+
+        // Wildcard poll: trigger at 2-minute warning of Q2
+        // Q2 runs from progress 0.25-0.5, two-minute warning = ~88% through Q2
+        if (!wildcardPollTriggered && gameQuarter === 2 && progress >= 0.47) {
+          wildcardPollTriggered = true;
+          showWildcardPoll();
         }
         
         if (Math.random() < 0.03) {
