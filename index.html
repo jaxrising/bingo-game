@@ -3814,7 +3814,6 @@
     let wildcardEarned = false;
     let wildcardUnlockMode = false;
     let wildcardPendingTileIndex = null;
-    let wildcardCorrectTriggered = false;
     let gamePaused = false;
 
     function generatePollPercentages(selectedIndex) {
@@ -3839,12 +3838,12 @@
       document.getElementById('poll-card')?.style.setProperty('display', 'none');
       document.getElementById('poll-locked-card')?.classList.add('active');
       document.getElementById('poll-correct-card')?.classList.remove('active');
-      // Auto-advance to correct card after 5s (simulates waiting for the halftime show)
+      // Auto-advance to correct card after 2s — simulates halftime show ending
       setTimeout(() => {
         if (document.getElementById('poll-locked-card')?.classList.contains('active')) {
           showCorrectCard();
         }
-      }, 5000);
+      }, 2000);
     }
 
     function showCorrectCard() {
@@ -3925,7 +3924,8 @@
 
       continueBtn?.addEventListener('click', () => showLockedInCard());
       document.getElementById('poll-close-btn')?.addEventListener('click', () => {
-        overlay.classList.remove('active');
+        // Skip the wait — jump straight to correct answer
+        showCorrectCard();
       });
       document.getElementById('poll-use-wildcard-btn')?.addEventListener('click', () => enterUnlockMode());
     }
@@ -4444,7 +4444,6 @@
       wildcardPollTriggered = false;
       wildcardPollSelection = null;
       wildcardEarned = false;
-      wildcardCorrectTriggered = false;
       wildcardUnlockMode = false;
       wildcardPendingTileIndex = null;
       gamePaused = false;
@@ -4563,6 +4562,11 @@
               const remainingProgress = tile.target - tile.current;
               const increment = Math.random() * (remainingProgress * 0.12) + 0.5;
               tile.current = Math.round(Math.min(tile.current + increment, tile.target * 1.3));
+              // Hard cap: non-priority tiles can go in-progress/pending but cannot
+              // flip green before Q3 — prevents accidental early bingo lines
+              if (progress < 0.55) {
+                tile.current = Math.min(tile.current, tile.target + PENDING_THRESHOLD - 1);
+              }
               updateTileState(tile);
               updateTileInPlace(index);
             }
