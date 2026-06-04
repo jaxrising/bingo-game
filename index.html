@@ -1894,7 +1894,8 @@
     .poll-options {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 12px;
+      align-self: stretch;
     }
 
     .poll-option {
@@ -1906,27 +1907,27 @@
       justify-content: space-between;
       padding: 0 12px 0 0;
       cursor: pointer;
-      border: 1.5px solid transparent;
-      transition: border-color 0.15s ease;
+      border: 1px solid transparent;
+      transition: border-color 0.15s ease, opacity 0.25s ease;
       position: relative;
       overflow: hidden;
     }
 
-    .poll-option:active {
-      opacity: 0.8;
+    .poll-option.selected {
+      border-color: #8D8E90;
     }
 
-    .poll-option.selected {
-      border-color: rgba(255, 255, 255, 0.4);
+    .poll-option.dimmed {
+      opacity: 0.5;
     }
 
     .poll-option-fill {
       position: absolute;
       top: 0; left: 0; bottom: 0;
       width: 0%;
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.1);
       border-radius: 20px;
-      transition: width 0.4s ease;
+      transition: width 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
     .poll-option-name {
@@ -1943,15 +1944,43 @@
 
     .poll-option-pct {
       font-family: 'Playoff Pro Cond', -apple-system, sans-serif;
-      font-size: 14px;
+      font-size: 20px;
       font-weight: 700;
+      line-height: 24px;
       color: #FFFFFF;
       width: 45px;
       text-align: right;
       opacity: 0;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.3s ease 0.2s;
       position: relative;
       z-index: 1;
+    }
+
+    .poll-option-pct.visible {
+      opacity: 1;
+    }
+
+    .poll-continue-btn {
+      display: none;
+      background: #3772DF;
+      border: none;
+      border-radius: 100px;
+      height: 32px;
+      padding: 0 16px;
+      color: #FFFFFF;
+      font-family: 'Benton Sans', -apple-system, sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+    }
+
+    .poll-continue-btn.visible {
+      display: block;
+    }
+
+    .poll-continue-btn:active {
+      opacity: 0.8;
     }
 
     /* Confetti Canvas */
@@ -2772,6 +2801,7 @@
                 <span class="poll-option-pct" id="poll-pct-3"></span>
               </div>
             </div>
+            <button class="poll-continue-btn" id="poll-continue-btn">Continue</button>
           </div>
         </div>
 
@@ -3567,26 +3597,81 @@
     let wildcardPollSelection = null;
     let wildcardEarned = false;
 
+    function generatePollPercentages(selectedIndex) {
+      // Generate 4 random percentages summing to 100, giving selected a plausible share
+      const vals = [0, 0, 0, 0];
+      // Randomize with selected getting 10-50%
+      vals[selectedIndex] = 10 + Math.floor(Math.random() * 40);
+      let remaining = 100 - vals[selectedIndex];
+      const others = [0, 1, 2, 3].filter(i => i !== selectedIndex);
+      // Split remainder randomly among others
+      const a = 1 + Math.floor(Math.random() * (remaining - 3));
+      const b = 1 + Math.floor(Math.random() * (remaining - a - 2));
+      const c = remaining - a - b;
+      vals[others[0]] = a;
+      vals[others[1]] = b;
+      vals[others[2]] = c;
+      return vals;
+    }
+
     function showWildcardPoll() {
       const overlay = document.getElementById('wildcard-poll-overlay');
       if (!overlay) return;
       overlay.classList.add('active');
 
-      // Wire up option taps
       const options = overlay.querySelectorAll('.poll-option');
-      options.forEach((opt) => {
+      const continueBtn = document.getElementById('poll-continue-btn');
+
+      options.forEach((opt, i) => {
         opt.addEventListener('click', () => {
-          if (wildcardPollSelection) return; // already picked
+          if (wildcardPollSelection) return;
           wildcardPollSelection = opt.dataset.song;
-          opt.classList.add('selected');
-          // more states to come — hand off to next Figma screen
+
+          const percentages = generatePollPercentages(i);
+
+          options.forEach((o, j) => {
+            if (j === i) {
+              o.classList.add('selected');
+            } else {
+              o.classList.add('dimmed');
+            }
+            // Animate fill bar
+            const fill = o.querySelector('.poll-option-fill');
+            if (fill) setTimeout(() => { fill.style.width = percentages[j] + '%'; }, 50);
+            // Show percentage
+            const pct = o.querySelector('.poll-option-pct');
+            if (pct) {
+              pct.textContent = percentages[j] + '%';
+              setTimeout(() => pct.classList.add('visible'), 100);
+            }
+          });
+
+          if (continueBtn) continueBtn.classList.add('visible');
         });
       });
+
+      if (continueBtn) {
+        continueBtn.addEventListener('click', () => {
+          // Next state — stub until next Figma screen is handed over
+          hideWildcardPoll();
+        });
+      }
     }
 
     function hideWildcardPoll() {
       const overlay = document.getElementById('wildcard-poll-overlay');
-      if (overlay) overlay.classList.remove('active');
+      if (!overlay) return;
+      overlay.classList.remove('active');
+      // Reset option states
+      overlay.querySelectorAll('.poll-option').forEach(o => {
+        o.classList.remove('selected', 'dimmed');
+        const fill = o.querySelector('.poll-option-fill');
+        if (fill) fill.style.width = '0%';
+        const pct = o.querySelector('.poll-option-pct');
+        if (pct) { pct.textContent = ''; pct.classList.remove('visible'); }
+      });
+      const continueBtn = document.getElementById('poll-continue-btn');
+      if (continueBtn) continueBtn.classList.remove('visible');
     }
 
     // ===== SIMULATION SYSTEM =====
