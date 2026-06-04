@@ -4473,6 +4473,17 @@
         priorityTileSchedule[coinFlipIndex] = 0.05;
       }
 
+      // Halftime tiles (Bad Bunny) complete right after halftime (0.52–0.64)
+      let htOffset = 0;
+      tiles.forEach((tile, index) => {
+        if (tile.type !== 'halftime') return;
+        if (!priorityTiles.has(index)) {
+          priorityTiles.add(index);
+          priorityTileSchedule[index] = 0.52 + (htOffset * 0.06);
+          htOffset++;
+        }
+      });
+
       // Target bingo line completes in Q3/Q4 (0.65-0.95) — never before halftime
       targetPattern.indices.forEach((tileIndex, i) => {
         if (!priorityTiles.has(tileIndex)) {
