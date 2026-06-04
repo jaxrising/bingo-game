@@ -3838,12 +3838,6 @@
       document.getElementById('poll-card')?.style.setProperty('display', 'none');
       document.getElementById('poll-locked-card')?.classList.add('active');
       document.getElementById('poll-correct-card')?.classList.remove('active');
-      // Auto-advance to correct card after 2s — simulates halftime show ending
-      setTimeout(() => {
-        if (document.getElementById('poll-locked-card')?.classList.contains('active')) {
-          showCorrectCard();
-        }
-      }, 2000);
     }
 
     function showCorrectCard() {
@@ -3924,8 +3918,10 @@
 
       continueBtn?.addEventListener('click', () => showLockedInCard());
       document.getElementById('poll-close-btn')?.addEventListener('click', () => {
-        // Skip the wait — jump straight to correct answer
-        showCorrectCard();
+        // Dismiss the locked-in card, then show correct answer after 5s
+        document.getElementById('poll-locked-card')?.classList.remove('active');
+        document.getElementById('wildcard-poll-overlay')?.classList.remove('active');
+        setTimeout(() => showCorrectCard(), 5000);
       });
       document.getElementById('poll-use-wildcard-btn')?.addEventListener('click', () => enterUnlockMode());
     }
