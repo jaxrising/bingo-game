@@ -1983,6 +1983,193 @@
       opacity: 0.8;
     }
 
+    /* Locked In card */
+    .poll-locked-card {
+      display: none;
+      width: 267px;
+      background: rgba(18, 24, 31, 0.92);
+      border: 1px solid #3A3B3C;
+      border-radius: 20px;
+      padding: 12px;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin-top: 332px;
+    }
+
+    .poll-locked-card.active {
+      display: flex;
+    }
+
+    .poll-locked-title {
+      font-family: 'Benton Sans', -apple-system, sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 18px;
+      color: #FFFFFF;
+      text-align: center;
+    }
+
+    .poll-locked-body {
+      font-family: 'Benton Sans', -apple-system, sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 20px;
+      color: rgba(255, 255, 255, 0.72);
+      text-align: center;
+    }
+
+    /* Correct answer card */
+    .poll-correct-card {
+      display: none;
+      width: 267px;
+      background: rgba(18, 24, 31, 0.92);
+      border: 1px solid #3A3B3C;
+      border-radius: 20px;
+      padding: 12px;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin-top: 284px;
+    }
+
+    .poll-correct-card.active {
+      display: flex;
+    }
+
+    .poll-correct-text {
+      font-family: 'Benton Sans', -apple-system, sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 18px;
+      color: #FFFFFF;
+      text-align: center;
+    }
+
+    .poll-use-wildcard-btn {
+      background: #3772DF;
+      border: none;
+      border-radius: 100px;
+      height: 32px;
+      padding: 0 16px;
+      color: #FFFFFF;
+      font-family: 'Benton Sans', -apple-system, sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+    }
+
+    .poll-use-wildcard-btn:active { opacity: 0.8; }
+
+    /* Tile Unlock button overlay */
+    .tile-unlock-btn {
+      display: none;
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: #3772DF;
+      border: none;
+      border-radius: 100px;
+      height: 24px;
+      padding: 0 12px;
+      color: #FFFFFF;
+      font-family: 'Benton Sans', -apple-system, sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      z-index: 20;
+      white-space: nowrap;
+      transition: opacity 0.15s ease;
+    }
+
+    .tile-unlock-btn:active { opacity: 0.7; }
+
+    .wildcard-unlock-mode .tile-unlock-btn {
+      display: block;
+    }
+
+    /* Dim overlay on board during unlock mode */
+    .wildcard-unlock-mode .bingo-tile:not(.state-complete) {
+      filter: brightness(0.7);
+    }
+
+    /* Wildcard confirm modal */
+    .wildcard-confirm-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(16, 17, 19, 0.75);
+      z-index: 60;
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .wildcard-confirm-overlay.active {
+      display: flex;
+    }
+
+    .wildcard-confirm-card {
+      width: 267px;
+      background: rgba(18, 24, 31, 0.92);
+      border: 1px solid #3A3B3C;
+      border-radius: 20px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin-top: 365px;
+    }
+
+    .wildcard-confirm-text {
+      font-family: 'Benton Sans', -apple-system, sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 18px;
+      color: #FFFFFF;
+      text-align: center;
+    }
+
+    .wildcard-confirm-btns {
+      display: flex;
+      flex-direction: row;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .wildcard-cancel-btn {
+      background: transparent;
+      border: 1px solid #CCCCCC;
+      border-radius: 100px;
+      height: 32px;
+      padding: 0 16px;
+      color: #FFFFFF;
+      font-family: 'Benton Sans', -apple-system, sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity 0.15s ease;
+    }
+
+    .wildcard-cancel-btn:active { opacity: 0.7; }
+
+    .wildcard-confirm-btn {
+      background: #5990F6;
+      border: none;
+      border-radius: 100px;
+      height: 32px;
+      padding: 0 16px;
+      color: #000000;
+      font-family: 'Benton Sans', -apple-system, sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity 0.15s ease;
+    }
+
+    .wildcard-confirm-btn:active { opacity: 0.7; }
+
     /* Confetti Canvas */
     /* BINGO Celebration Overlay */
     .bingo-celebration {
@@ -2777,7 +2964,7 @@
 
         <!-- Wildcard Poll Overlay -->
         <div class="wildcard-poll-overlay" id="wildcard-poll-overlay">
-          <div class="poll-card">
+          <div class="poll-card" id="poll-card">
             <div class="poll-prompt">What will Bad Bunny close with<br>at halftime?</div>
             <div class="poll-options" id="poll-options">
               <div class="poll-option" data-song="DtMF">
@@ -2802,6 +2989,30 @@
               </div>
             </div>
             <button class="poll-continue-btn" id="poll-continue-btn">Continue</button>
+          </div>
+
+          <!-- Locked In card (shown after Continue) -->
+          <div class="poll-locked-card" id="poll-locked-card">
+            <div class="poll-locked-title">Locked in! Check back after the halftime show.</div>
+            <div class="poll-locked-body">Nail it and you'll earn a Wildcard Tile, allowing you to claim any bingo tile.</div>
+            <button class="poll-continue-btn visible" id="poll-close-btn">Close</button>
+          </div>
+
+          <!-- Correct answer card (shown at end of halftime) -->
+          <div class="poll-correct-card" id="poll-correct-card">
+            <div class="poll-correct-text">Correct! You called Bad Bunny's closing song. Your Wildcard Tile is ready to use.</div>
+            <button class="poll-use-wildcard-btn" id="poll-use-wildcard-btn">Use my Wildcard Tile</button>
+          </div>
+        </div>
+
+        <!-- Wildcard Confirm Modal -->
+        <div class="wildcard-confirm-overlay" id="wildcard-confirm-overlay">
+          <div class="wildcard-confirm-card">
+            <div class="wildcard-confirm-text">Are you sure you want to use your Wildcard Tile? You can only use this once.</div>
+            <div class="wildcard-confirm-btns">
+              <button class="wildcard-cancel-btn" id="wildcard-cancel-btn">Cancel</button>
+              <button class="wildcard-confirm-btn" id="wildcard-confirm-btn">Confirm</button>
+            </div>
           </div>
         </div>
 
@@ -3366,6 +3577,7 @@
       const tile = tiles[index];
       const tileEl = document.querySelector(`.bingo-tile[data-tile-id="${tile.id}"]`);
       if (!tileEl) return;
+      tileEl.dataset.tileIndex = index;
 
       // Freespot: update class and re-render to unclaimed state on reset
       if (tile.type === 'freespot') {
@@ -3446,6 +3658,7 @@
         const coinFlipClass = tile.customIcon === 'coin' ? 'coin-flip-tile' : '';
         tileEl.className = `bingo-tile ${animationClass} state-${tile.state} ${tile.type === 'freespot' ? 'free-spot' : ''} ${coinFlipClass}`.trim();
         tileEl.dataset.tileId = tile.id;
+        tileEl.dataset.tileIndex = index;
 
         const progress = tile.target > 0 ? Math.min((tile.current / tile.target) * 100, 100) : 100;
         const teamColor = tile.type === 'freespot' ? 'transparent' : getTeamColor(tile.team, tile);
@@ -3596,28 +3809,90 @@
     let wildcardPollTriggered = false;
     let wildcardPollSelection = null;
     let wildcardEarned = false;
+    let wildcardUnlockMode = false;
+    let wildcardPendingTileIndex = null;
+    let wildcardCorrectTriggered = false;
 
     function generatePollPercentages(selectedIndex) {
-      // Generate 4 random percentages summing to 100, giving selected a plausible share
       const vals = [0, 0, 0, 0];
-      // Randomize with selected getting 10-50%
       vals[selectedIndex] = 10 + Math.floor(Math.random() * 40);
       let remaining = 100 - vals[selectedIndex];
       const others = [0, 1, 2, 3].filter(i => i !== selectedIndex);
-      // Split remainder randomly among others
       const a = 1 + Math.floor(Math.random() * (remaining - 3));
       const b = 1 + Math.floor(Math.random() * (remaining - a - 2));
       const c = remaining - a - b;
-      vals[others[0]] = a;
-      vals[others[1]] = b;
-      vals[others[2]] = c;
+      vals[others[0]] = a; vals[others[1]] = b; vals[others[2]] = c;
       return vals;
+    }
+
+    function showPollCard() {
+      document.getElementById('poll-card')?.style.setProperty('display', 'flex');
+      document.getElementById('poll-locked-card')?.classList.remove('active');
+      document.getElementById('poll-correct-card')?.classList.remove('active');
+    }
+
+    function showLockedInCard() {
+      document.getElementById('poll-card')?.style.setProperty('display', 'none');
+      document.getElementById('poll-locked-card')?.classList.add('active');
+      document.getElementById('poll-correct-card')?.classList.remove('active');
+    }
+
+    function showCorrectCard() {
+      const overlay = document.getElementById('wildcard-poll-overlay');
+      overlay?.classList.add('active');
+      document.getElementById('poll-card')?.style.setProperty('display', 'none');
+      document.getElementById('poll-locked-card')?.classList.remove('active');
+      document.getElementById('poll-correct-card')?.classList.add('active');
+    }
+
+    function enterUnlockMode() {
+      wildcardUnlockMode = true;
+      const overlay = document.getElementById('wildcard-poll-overlay');
+      overlay?.classList.remove('active');
+      // Add unlock buttons to all incomplete non-free tiles
+      const grid = document.getElementById('bingo-grid');
+      if (!grid) return;
+      grid.classList.add('wildcard-unlock-mode');
+      tiles.forEach((tile, i) => {
+        if (tile.type === 'freespot' || tile.state === 'complete') return;
+        const tileEl = grid.querySelector(`[data-tile-index="${i}"]`);
+        if (!tileEl) return;
+        if (!tileEl.querySelector('.tile-unlock-btn')) {
+          const btn = document.createElement('button');
+          btn.className = 'tile-unlock-btn';
+          btn.textContent = 'Unlock';
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            wildcardPendingTileIndex = i;
+            showConfirmModal();
+          });
+          tileEl.style.position = 'relative';
+          tileEl.appendChild(btn);
+        }
+      });
+    }
+
+    function exitUnlockMode() {
+      wildcardUnlockMode = false;
+      const grid = document.getElementById('bingo-grid');
+      if (!grid) return;
+      grid.classList.remove('wildcard-unlock-mode');
+      grid.querySelectorAll('.tile-unlock-btn').forEach(btn => btn.remove());
+    }
+
+    function showConfirmModal() {
+      document.getElementById('wildcard-confirm-overlay')?.classList.add('active');
+    }
+
+    function hideConfirmModal() {
+      document.getElementById('wildcard-confirm-overlay')?.classList.remove('active');
     }
 
     function showWildcardPoll() {
       const overlay = document.getElementById('wildcard-poll-overlay');
       if (!overlay) return;
       overlay.classList.add('active');
+      showPollCard();
 
       const options = overlay.querySelectorAll('.poll-option');
       const continueBtn = document.getElementById('poll-continue-btn');
@@ -3626,43 +3901,58 @@
         opt.addEventListener('click', () => {
           if (wildcardPollSelection) return;
           wildcardPollSelection = opt.dataset.song;
-
           const percentages = generatePollPercentages(i);
-
           options.forEach((o, j) => {
-            if (j === i) {
-              o.classList.add('selected');
-            } else {
-              o.classList.add('dimmed');
-            }
-            // Animate fill bar
+            j === i ? o.classList.add('selected') : o.classList.add('dimmed');
             const fill = o.querySelector('.poll-option-fill');
             if (fill) setTimeout(() => { fill.style.width = percentages[j] + '%'; }, 50);
-            // Show percentage
             const pct = o.querySelector('.poll-option-pct');
-            if (pct) {
-              pct.textContent = percentages[j] + '%';
-              setTimeout(() => pct.classList.add('visible'), 100);
-            }
+            if (pct) { pct.textContent = percentages[j] + '%'; setTimeout(() => pct.classList.add('visible'), 100); }
           });
-
           if (continueBtn) continueBtn.classList.add('visible');
         });
       });
 
-      if (continueBtn) {
-        continueBtn.addEventListener('click', () => {
-          // Next state — stub until next Figma screen is handed over
-          hideWildcardPoll();
-        });
-      }
+      continueBtn?.addEventListener('click', () => showLockedInCard());
+      document.getElementById('poll-close-btn')?.addEventListener('click', () => {
+        overlay.classList.remove('active');
+      });
+      document.getElementById('poll-use-wildcard-btn')?.addEventListener('click', () => enterUnlockMode());
     }
+
+    // Confirm modal buttons
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('wildcard-cancel-btn')?.addEventListener('click', () => hideConfirmModal());
+      document.getElementById('wildcard-confirm-btn')?.addEventListener('click', () => {
+        hideConfirmModal();
+        exitUnlockMode();
+        if (wildcardPendingTileIndex !== null) {
+          const tile = tiles[wildcardPendingTileIndex];
+          if (tile) {
+            tile.state = 'complete';
+            tile.confirmed = true;
+            updateTileInPlace(wildcardPendingTileIndex);
+            updateStats();
+            // Check for bingo after wildcard use
+            if (!bingoTriggered) {
+              const winning = detectBingo();
+              if (winning) {
+                bingoTriggered = true;
+                drawWinningLine(winning);
+                setTimeout(showBingoCelebration, 600);
+              }
+            }
+          }
+          wildcardPendingTileIndex = null;
+        }
+        wildcardEarned = false;
+      });
+    });
 
     function hideWildcardPoll() {
       const overlay = document.getElementById('wildcard-poll-overlay');
       if (!overlay) return;
       overlay.classList.remove('active');
-      // Reset option states
       overlay.querySelectorAll('.poll-option').forEach(o => {
         o.classList.remove('selected', 'dimmed');
         const fill = o.querySelector('.poll-option-fill');
@@ -3670,8 +3960,12 @@
         const pct = o.querySelector('.poll-option-pct');
         if (pct) { pct.textContent = ''; pct.classList.remove('visible'); }
       });
-      const continueBtn = document.getElementById('poll-continue-btn');
-      if (continueBtn) continueBtn.classList.remove('visible');
+      document.getElementById('poll-continue-btn')?.classList.remove('visible');
+      document.getElementById('poll-locked-card')?.classList.remove('active');
+      document.getElementById('poll-correct-card')?.classList.remove('active');
+      document.getElementById('poll-card')?.style.setProperty('display', 'flex');
+      exitUnlockMode();
+      hideConfirmModal();
     }
 
     // ===== SIMULATION SYSTEM =====
@@ -4139,7 +4433,12 @@
       wildcardPollTriggered = false;
       wildcardPollSelection = null;
       wildcardEarned = false;
+      wildcardCorrectTriggered = false;
+      wildcardUnlockMode = false;
+      wildcardPendingTileIndex = null;
+      document.getElementById('game-clock').style.color = '';
       hideWildcardPoll();
+      hideConfirmModal();
       resetTileValues();
       simulationRunning = true;
 
@@ -4198,10 +4497,22 @@
         }
 
         // Wildcard poll: trigger at 2-minute warning of Q2
-        // Q2 runs from progress 0.25-0.5, two-minute warning = ~88% through Q2
         if (!wildcardPollTriggered && gameQuarter === 2 && progress >= 0.47) {
           wildcardPollTriggered = true;
           showWildcardPoll();
+        }
+
+        // Halftime clock display + correct answer reveal
+        if (progress >= 0.5 && progress < 0.54) {
+          document.getElementById('game-clock').textContent = 'Halftime';
+          document.getElementById('game-clock').style.color = '#F35858';
+          document.getElementById('game-period').textContent = '';
+          if (!wildcardCorrectTriggered && wildcardPollSelection) {
+            wildcardCorrectTriggered = true;
+            setTimeout(showCorrectCard, 800);
+          }
+        } else if (progress >= 0.54) {
+          document.getElementById('game-clock').style.color = '';
         }
         
         if (Math.random() < 0.03) {
